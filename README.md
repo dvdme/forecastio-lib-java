@@ -16,11 +16,11 @@ Tested under Windows 7 64bits and and Ubuntu 13.04 64bits, but it should run eve
 * It reads all the available flags. 
 
 ####What it does not:
-* It does not read errors, alerts and errors (the confidence in the prediction provided by the API).
+* It does not read alerts and errors (the confidence in the prediction provided by the API).
 * It does not implements the `callback` request option. Did not seamed relevant for this.
 
 ####To Do:
-  * Improve timezone support
+  * Improve time zone support
   * Add support to errors (confidence in prediction)
   * Add support to alerts
   * (maybe) Add the hability to export data to CSV
@@ -40,7 +40,7 @@ for better understanding of the data and for the APY key. - You'll need a key to
 
 ####External Libraries: 
 
-* #####minimal-json
+* **minimal-json**
 ForecastIO-Lib-Java uses the [minimal-json](https://github.com/ralfstx/minimal-json) for 
 parsing the Json API response. I find this library to be great...
 This in not a dependency because I added the classes to my project.
@@ -167,7 +167,7 @@ Flag report:
 Issues
 ------
 To report issues please do it in [Github](https://github.com/dvdme/forecastio-lib-java) or
-send me an [email](david.dme@gmail.com)
+send me <a href="mailto:david.dme@gmail.com">email</a>.<br>
 
 Documentation
 -------------
