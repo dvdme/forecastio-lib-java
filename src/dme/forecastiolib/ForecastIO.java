@@ -371,7 +371,14 @@ public class ForecastIO {
 			return false;
 		}
 
-		try {
+        return getForecast(this.forecast);
+
+
+	}//getForecast - end
+
+    public boolean getForecast(JsonObject forecast) {
+        this.forecast = forecast;
+        try {
 			this.currently = forecast.get("currently").asObject();
 		} catch (NullPointerException e) {
 			this.currently = null;
@@ -397,8 +404,19 @@ public class ForecastIO {
 			this.flags = null;
 		}
 
-		return true;
-	}//getForecast - end
+	    return true;
+    }//getForecast - end
+
+    /**
+     * Returns the url that is created by internal UrlBuilder method
+     *
+     * @param LATITUDE
+     * @param LONGITUDE
+     * @return url string.
+     */
+    public String getUrl(String LATITUDE, String LONGITUDE) {
+        return urlBuilder(LATITUDE, LONGITUDE);
+    }
 
 	private String httpGET(String requestURL) {
 
