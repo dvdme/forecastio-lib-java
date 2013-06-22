@@ -1,17 +1,25 @@
 ForecastIO-Lib-Java
 ===================
 A Java library for the [Forecast.io](http://www.forecast.io) API.
-It is still quite functional at this point.
+It is quite functional at this point.
 It still does not fully implements the API but it handles most 
 of the data and I intended to continue further development.
 Code is available as an Eclipse project.
 A jar file is available under the jar folder for convenience.
 
-Java 1.7
-Tested under Windows 7 64bits and and Ubuntu 13.04 64bits, but it should run everywhere.
+Java 1.7<br>
+Tested under Windows 7 64bits, Linux Mint 15 and Ubuntu 13.04 64bits, but it should run everywhere.
+
+####Update:
+* Thanks to a contribution by [brobzilla](http://github.com/brobzilla), ForecastIO-Lib-Java can be used with an external HTTP library. 
+  The request URL can be obtained by the `getUrl` method in the `ForecastIO` class.
+  The ForecastIO method `getForecast` can now also be called with a `JsonObject` or with a `String` as parameter.
+  Check the "Usage Examples" bellow to see how to use an external HTTP library.
+* Better error handling while using the internal HTTP method.
 
 ####What is does:
 * It can read Data Points and Data blocks from the [Forecast.io](http://www.forecast.io) API.
+  * This means it can read Currently, Minutely, Hourly and Daily data.
 * It reads all available fields.
 * It reads all the available flags. 
 
@@ -20,19 +28,19 @@ Tested under Windows 7 64bits and and Ubuntu 13.04 64bits, but it should run eve
 * It does not implements the `callback` request option. Did not seamed relevant for this.
 
 ####To Do:
-  * Improve time zone support
-  * Add support to errors (confidence in prediction)
-  * Add support to alerts
-  * (maybe) Add the hability to export data to CSV
-  * (maybe) Add the hability of converting units of recived data: 
-    (This would make sense if there were the need of displaying data in various units without having to make multiple queries.)
+* Improve time zone support
+* Add support to errors (confidence in prediction)
+* Add support to alerts
+* (maybe) Add the ability to export data to CSV
+* (maybe) Add the ability of converting units of received data: 
+      (This would make sense if there were the need of displaying data in various units without having to make multiple queries.)
 
 ####How it works:
 The ForecastIO-Lib-Java currently has 8 classes (I'll probably add two more to deal with errors and alerts).
 The main class is `ForecastIO`: It handles the connection the gets the initial data from the API.
 The classes `FIOCurrently`, `FIOMinutely`, `FIOHourly`, `FIODaily` and `FIOFlags` 
 contain the currently, minutely, hourly, daily and flags reports.
-The classes `FIODataPoint`, `FIODataBlock` are handle the data in the previous reports 
+The classes `FIODataPoint`, `FIODataBlock` handle the data in the previous reports 
 (except for the flags). Most of the work is done by the `FIODataPoint` class.
 
 Please refer to the API docs [https://developer.forecast.io](https://developer.forecast.io) 
@@ -44,7 +52,7 @@ for better understanding of the data and for the APY key. - You'll need a key to
 ForecastIO-Lib-Java uses the [minimal-json](https://github.com/ralfstx/minimal-json) for 
 parsing the Json API response. I find this library to be great...
 This in not a dependency because I added the classes to my project.
-[https://github.com/ralfstx/minimal-json](https://github.com/ralfstx/minimal-json)
+[https://github.com/ralfstx/minimal-json](https://github.com/ralfstx/minimal-json<br>
 [http://eclipsesource.com/blogs/2013/04/18/minimal-json-parser-for-java/](http://eclipsesource.com/blogs/2013/04/18/minimal-json-parser-for-java/)
 
 ######About the package name
@@ -65,6 +73,21 @@ fio.setExclude("hourly,minutely");             //excluded the minutely and hourl
 fio.getForecast("38.7252993", "-9.1500364");   //sets the latitude and longitude - not optional
                                                //it will fail to get forecast if it is not set
                                                //this method should be called after the options were set
+```
+
+...or using an external http library:
+
+```java
+ForecastIO fio = new ForecastIO(your_api_key); //instantiate the class with the API key. 
+fio.setUnits(ForecastIO.UNITS_SI);             //sets the units as SI - optional
+fio.setExclude("hourly,minutely");             //excluded the minutely and hourly reports from the reply
+String response = Some_External_Http_Library.GET(fio.getUrl("38.7252993", "-9.1500364")); //use the getUrl method to access the
+                                                                                          //generated request URL.
+//Parse the reply
+//Option 1, (easiest):
+fio.getForecast(response);
+//Option 2
+fio.getForecast(JsonObject.readFrom(response));
 ```
 
 Currently, minutely, hourly, daily and flags classes are all initialized in the same way,
@@ -180,14 +203,25 @@ History
 I started writing this library for two main reasons: 
 First, I wanted to make a serious open source library that was meant 
 to used by anyone and not just by me for quite sometime now.
-Second, I came across the forecast.io API that I found to be functional
+Second, I came across the [Forecast.io](http://www.forecast.io) API that I found to be functional
 with clear and good information.
 Also, I like the weather and weather data and weather prediction so this
 is going to be very useful for me to implement my crazy ideas about
 weather software.
 
+Contributors
+------------
+* [David Ervideira](http://github.com/dvdme) 
+  * Initial implementation
+
+* [Rob Kennedy](http://github.com/brobzilla)
+  * Add the possibility to use an external http library
+
 License
 -------
 The code is available under the terms of the [Eclipse Public License](http://www.eclipse.org/legal/epl-v10.html).
 
-03-06-2013
+Last Update
+-----------
+22-06-2013
+

@@ -12,7 +12,7 @@ public class FIOLibTest {
 	private static final String apikey = "YOUR_API_KEY";
 	  	   
 	public static void main(String[] args) {
-		
+	
 		//Some coordinates for testing
 		//Lisbon:   38.7252993 , -9.1500364
 		//Madrid:   40.41678 , -3.70379
@@ -26,7 +26,7 @@ public class FIOLibTest {
 		ForecastIO fio = new ForecastIO(apikey);
 		fio.setUnits(ForecastIO.UNITS_SI);
 		fio.getForecast("38.7252993", "-9.1500364");
-
+		
 		//ForecastIO info
 		System.out.println("Latitude: "+fio.getLatitude());
 		System.out.println("Longitude: "+fio.getLongitude());

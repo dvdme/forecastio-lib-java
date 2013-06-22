@@ -365,20 +365,53 @@ public class ForecastIO {
 
 		try {
 			String reply = httpGET( urlBuilder(LATITUDE, LONGITUDE) );
+			if(reply == null)
+				return false;
 			this.forecast = JsonObject.readFrom(reply);
 		} catch (NullPointerException e) {
 			System.err.println("Unable to connect to the API: "+e.getMessage());
 			return false;
 		}
 
-        return getForecast(this.forecast);
+		return getForecast(this.forecast);
 
 
 	}//getForecast - end
 
-    public boolean getForecast(JsonObject forecast) {
-        this.forecast = forecast;
-        try {
+	/*
+	 * This change was suggested and made by github user brobzilla to add
+	 * the ability to use an external http library. I found this to be a
+	 * nice suggestion and improvement. However, because http libraries 
+	 * usually return the raw string response, I find that it would be
+	 * useful to add a getForecast method that receives the response
+	 * String as parameter.   
+	 */
+
+	/**
+	 * Parses the forecast reports for the given coordinates with the setted options
+	 * Useful to use with an external http library
+	 * @param http_response String
+	 * @return
+	 */
+
+	public boolean getForecast(String http_response) {
+
+		this.forecast = JsonObject.readFrom(http_response);
+		return getForecast(this.forecast);
+	}
+
+	/**
+	 * Parses the forecast reports for the given coordinates with the setted options
+	 * Useful to use with an external http library
+	 * Hint: The getForecast(String http_response) could be more useful since it receives 
+	 *       the raw response String instead of the JsonObect. 
+	 * @param forecast JsonObject
+	 * @return
+	 */
+
+	public boolean getForecast(JsonObject forecast) {
+		this.forecast = forecast;
+		try {
 			this.currently = forecast.get("currently").asObject();
 		} catch (NullPointerException e) {
 			this.currently = null;
@@ -404,19 +437,20 @@ public class ForecastIO {
 			this.flags = null;
 		}
 
-	    return true;
-    }//getForecast - end
+		return true;
+	}//getForecast - end
 
-    /**
-     * Returns the url that is created by internal UrlBuilder method
-     *
-     * @param LATITUDE
-     * @param LONGITUDE
-     * @return url string.
-     */
-    public String getUrl(String LATITUDE, String LONGITUDE) {
-        return urlBuilder(LATITUDE, LONGITUDE);
-    }
+	/**
+	 * Returns the url that is created by internal UrlBuilder method.
+	 * Useful to use with an external http library
+	 *
+	 * @param LATITUDE
+	 * @param LONGITUDE
+	 * @return url string.
+	 */
+	public String getUrl(String LATITUDE, String LONGITUDE) {
+		return urlBuilder(LATITUDE, LONGITUDE);
+	}
 
 	private String httpGET(String requestURL) {
 
@@ -435,15 +469,19 @@ public class ForecastIO {
 			connection.setDoInput(true);
 			connection.setDoOutput(false);
 			connection.connect();
-
-			scanner = new Scanner(request.openStream());
-			response = scanner.useDelimiter("\\Z").next();		
-
+			if(connection.getResponseCode() == 400){
+				System.out.println("Bad Responde. Maybe an invalid location was provided.\n");
+				return null;
+			}
+			else {
+				scanner = new Scanner(request.openStream());
+				response = scanner.useDelimiter("\\Z").next();
+				scanner.close();
+			}
 		} catch (IOException e) {
 			System.err.println("Error: "+e.getMessage());		
 			response = null;
-		} finally {
-			scanner.close();
+		} finally {		
 			connection.disconnect();
 		}
 
