@@ -10,7 +10,11 @@ A jar file is available under the jar folder for convenience.
 Java 1.7<br>
 Tested under Windows 7 64bits, Linux Mint 15 and Ubuntu 13.04 64bits, but it should run everywhere.
 
-####Update:
+####Update (27-06-2013):
+* Fixed bug in timeURL in the internal url builder. ( Contribution by [matthew-cox](https://github.com/matthew-cox) ) 
+* Fixes some typos in the README.md
+
+####Update (22-06-2013):
 * Thanks to a contribution by [brobzilla](http://github.com/brobzilla), ForecastIO-Lib-Java can be used with an external HTTP library. 
   The request URL can be obtained by the `getUrl` method in the `ForecastIO` class.
   The ForecastIO method `getForecast` can now also be called with a `JsonObject` or with a `String` as parameter.
@@ -69,7 +73,7 @@ Data is initialized and fetched by the ForecastIO class:
 ```java
 ForecastIO fio = new ForecastIO(your_api_key); //instantiate the class with the API key. 
 fio.setUnits(ForecastIO.UNITS_SI);             //sets the units as SI - optional
-fio.setExclude("hourly,minutely");             //excluded the minutely and hourly reports from the reply
+fio.setExcludeURL("hourly,minutely");             //excluded the minutely and hourly reports from the reply
 fio.getForecast("38.7252993", "-9.1500364");   //sets the latitude and longitude - not optional
                                                //it will fail to get forecast if it is not set
                                                //this method should be called after the options were set
@@ -101,7 +105,7 @@ Most data is accessed like this:
 
 ```java
 currently.get().temperature(); //gets the temperature data for the currently report
-daily.get(3).humidity();       //gets the humidity data for day 4 in the daily report
+daily.getDay(3).humidity();       //gets the humidity data for day 4 in the daily report
 ```
 
 The following examples print the data available in each class.
@@ -223,5 +227,5 @@ The code is available under the terms of the [Eclipse Public License](http://www
 
 Last Update
 -----------
-22-06-2013
+27-06-2013
 
