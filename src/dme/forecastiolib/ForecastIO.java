@@ -334,7 +334,7 @@ public class ForecastIO {
 		url += ForecastIOApiKey+"/";
 		url += LATITUDE+","+LONGITUDE;
 		if(timeURL!=null)
-			url += timeURL;
+			url += ","+timeURL;
 		url += "?units="+unitsURL;
 		if(excludeURL!=null)
 			url += "&exclude="+excludeURL;
