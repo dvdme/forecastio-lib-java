@@ -271,13 +271,13 @@ public class FIODataPoint {
 	 * in the class ForecastIO.
 	 * For more information refer to the API Docs:
 	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-	 * @return A Double number with the temperature. Returns -1 if the field is not defined.
+	 * @return A Double number with the temperature. Returns null if the field is not defined.
 	 */
 	public Double temperature(){
 		if(this.datapoint.containsKey("temperature"))
 			return asDouble(this.datapoint.get("temperature"));
 		else
-			return -1d;
+			return null;
 	}
 
 	/**
@@ -285,13 +285,13 @@ public class FIODataPoint {
 	 * in the class ForecastIO.
 	 * For more information refer to the API Docs:
 	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-	 * @return A Double number with the minimum temperature. Returns -1 if the field is not defined.
+	 * @return A Double number with the minimum temperature. Returns null if the field is not defined.
 	 */
 	public Double temperatureMin(){
 		if(this.datapoint.containsKey("temperatureMin"))
 			return asDouble(this.datapoint.get("temperatureMin"));
 		else
-			return -1d;
+			return null;
 	}
 
 	/**
@@ -316,13 +316,13 @@ public class FIODataPoint {
 	 * in the class ForecastIO.
 	 * For more information refer to the API Docs:
 	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-	 * @return A Double number with the maximum temperature. Returns -1 if the field is not defined.
+	 * @return A Double number with the maximum temperature. Returns null if the field is not defined.
 	 */
 	public Double temperatureMax(){
 		if(this.datapoint.containsKey("temperatureMax"))
 			return asDouble(this.datapoint.get("temperatureMax"));
 		else
-			return -1d;
+			return null;
 	}
 
 	/**
@@ -430,13 +430,13 @@ public class FIODataPoint {
 	 * in the class ForecastIO.
 	 * For more information refer to the API Docs:
 	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-	 * @return A Double number with the visibility. Returns -1 if the field is not defined.
+	 * @return A Double number with the visibility. Returns null if the field is not defined.
 	 */
 	public Double visibility(){
 		if(this.datapoint.containsKey("visibility"))
 			return asDouble(this.datapoint.get("visibility"));
 		else
-			return -1d;
+			return null;
 	}
 
 	/**
