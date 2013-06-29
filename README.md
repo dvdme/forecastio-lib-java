@@ -10,9 +10,12 @@ A jar file is available under the jar folder for convenience.
 Java 1.7<br>
 Tested under Windows 7 64bits, Linux Mint 15 and Ubuntu 13.04 64bits, but it should run everywhere.
 
+####Update (29-06-2013):
+* Return null if the field is not defined rather than -1d where -1 might be an accurate value.( Contribution by [matthew-cox](https://github.com/matthew-cox) ) 
+
 ####Update (27-06-2013):
 * Fixed bug in timeURL in the internal url builder. ( Contribution by [matthew-cox](https://github.com/matthew-cox) ) 
-* Fixes some typos in the README.md
+* Fixed some typos in the README.md
 
 ####Update (22-06-2013):
 * Thanks to a contribution by [brobzilla](http://github.com/brobzilla), ForecastIO-Lib-Java can be used with an external HTTP library. 
@@ -216,7 +219,7 @@ weather software.
 Contributors
 ------------
 * [David Ervideira](http://github.com/dvdme) 
-  * Initial implementation
+  * Initial implementation and main development 
 
 * [Rob Kennedy](http://github.com/brobzilla)
   * Add the possibility to use an external http library
@@ -227,5 +230,5 @@ The code is available under the terms of the [Eclipse Public License](http://www
 
 Last Update
 -----------
-27-06-2013
+29-06-2013
 
