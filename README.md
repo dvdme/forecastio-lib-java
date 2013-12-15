@@ -10,6 +10,16 @@ A jar file is available under the jar folder for convenience.
 Java 1.7<br>
 Tested under Windows 7 64bits, Linux Mint 15 and Ubuntu 13.04 64bits, but it should run everywhere.
 
+####Update (15-12-2013):
+* Alerts are now supported.
+* Errors are now supported.
+* New properties in DataPoints are now supported.
+* The URL is now constructed with StringBulder().
+* Improved the internal httpGET method and it should not return truncated responses anymore. ( Suggestion by [DragiPandeliev](https://github.com/DragiPandeliev) )
+* The request is now has `Accept-Encoding: gzip` added to the header, acording with the heartly recommendation of [Forecast.io](https://developer.forecast.io/docs/v2) documentation.
+* Improved flags class.
+* Other code improvements.
+
 ####Update (29-06-2013):
 * Return null if the field is not defined rather than -1d where -1 might be an accurate value.( Contribution by [matthew-cox](https://github.com/matthew-cox) ) 
 
@@ -28,25 +38,27 @@ Tested under Windows 7 64bits, Linux Mint 15 and Ubuntu 13.04 64bits, but it sho
 * It can read Data Points and Data blocks from the [Forecast.io](http://www.forecast.io) API.
   * This means it can read Currently, Minutely, Hourly and Daily data.
 * It reads all available fields.
-* It reads all the available flags. 
+* It reads all the available flags except one - `metno-license`. 
+* It reads all the available alerts. 
+* It reads all the available errors. 
 
 ####What it does not:
-* It does not read alerts and errors (the confidence in the prediction provided by the API).
+* ~~It does not read alerts and errors (the confidence in the prediction provided by the API).~~ Already implemented.
 * It does not implements the `callback` request option. Did not seamed relevant for this.
 
 ####To Do:
-* Improve time zone support
-* Add support to errors (confidence in prediction)
-* Add support to alerts
+* ~~Improve time zone support~~ Kind of done.
+* ~~Add support to errors (confidence in prediction)~~ Done.
+* ~~Add support to alerts~~ Done.
 * (maybe) Add the ability to export data to CSV
 * (maybe) Add the ability of converting units of received data: 
       (This would make sense if there were the need of displaying data in various units without having to make multiple queries.)
 
 ####How it works:
-The ForecastIO-Lib-Java currently has 8 classes (I'll probably add two more to deal with errors and alerts).
+The ForecastIO-Lib-Java currently has 9 classes (I'll probably add two more to deal with errors).
 The main class is `ForecastIO`: It handles the connection the gets the initial data from the API.
-The classes `FIOCurrently`, `FIOMinutely`, `FIOHourly`, `FIODaily` and `FIOFlags` 
-contain the currently, minutely, hourly, daily and flags reports.
+The classes `FIOCurrently`, `FIOMinutely`, `FIOHourly`, `FIODaily`, `FIOFlags` and `FIOAlerts` 
+contain the currently, minutely, hourly, daily, flags and alerts reports.
 The classes `FIODataPoint`, `FIODataBlock` handle the data in the previous reports 
 (except for the flags). Most of the work is done by the `FIODataPoint` class.
 
@@ -193,11 +205,25 @@ Flag report:
 	for(int i=0; i<flags.availableFlags().length; i++)
 		System.out.println(flags.availableFlags()[i]);
 ```
+Alerts report:
+```java
+    FIOAlerts alerts = new FIOAlerts(fio);
+	//Check if there are alerts
+	if(alerts.NumberOfAlerts() <= 0){
+		System.out.println("No alerts for this locatoin.");
+	} 
+	//if there are alerts, print them.
+	else {
+		System.out.println("Alerts");
+		for(int i=0; i<alerts.NumberOfAlerts(); i++)
+			System.out.println(alerts.getAlert(i));
+	}
+```
 
 Issues
 ------
 To report issues please do it in [Github](https://github.com/dvdme/forecastio-lib-java) or
-send me <a href="mailto:david.dme@gmail.com">email</a>.<br>
+send me an <a href="mailto:david.dme@gmail.com">email</a>.<br>
 
 Documentation
 -------------
@@ -209,7 +235,7 @@ History
 -------
 I started writing this library for two main reasons: 
 First, I wanted to make a serious open source library that was meant 
-to used by anyone and not just by me for quite sometime now.
+to used by anyone and not just by me for quite sometime.
 Second, I came across the [Forecast.io](http://www.forecast.io) API that I found to be functional
 with clear and good information.
 Also, I like the weather and weather data and weather prediction so this
@@ -230,5 +256,5 @@ The code is available under the terms of the [Eclipse Public License](http://www
 
 Last Update
 -----------
-29-06-2013
+15-12-2013
 

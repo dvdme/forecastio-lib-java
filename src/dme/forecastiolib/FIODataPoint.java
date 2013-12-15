@@ -267,7 +267,7 @@ public class FIODataPoint {
 	}
 
 	/**
-	 * The temperature at the given time in degrees in using the units defined
+	 * The temperature at the given time using the units defined
 	 * in the class ForecastIO.
 	 * For more information refer to the API Docs:
 	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
@@ -276,6 +276,20 @@ public class FIODataPoint {
 	public Double temperature(){
 		if(this.datapoint.containsKey("temperature"))
 			return asDouble(this.datapoint.get("temperature"));
+		else
+			return null;
+	}
+	
+	/**
+	 * The temperature error at the given time using the units defined
+	 * in the class ForecastIO.
+	 * For more information refer to the API Docs:
+	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @return A Double number with the temperature. Returns null if the field is not defined.
+	 */
+	public Double temperatureError(){
+		if(this.datapoint.containsKey("temperatureError"))
+			return asDouble(this.datapoint.get("temperatureError"));
 		else
 			return null;
 	}
@@ -290,6 +304,20 @@ public class FIODataPoint {
 	public Double temperatureMin(){
 		if(this.datapoint.containsKey("temperatureMin"))
 			return asDouble(this.datapoint.get("temperatureMin"));
+		else
+			return null;
+	}
+	
+	/**
+	 * The minimum temperature error expected for a given day the units defined
+	 * in the class ForecastIO.
+	 * For more information refer to the API Docs:
+	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @return A Double number with the minimum temperature. Returns null if the field is not defined.
+	 */
+	public Double temperatureMinError(){
+		if(this.datapoint.containsKey("temperatureMinError"))
+			return asDouble(this.datapoint.get("temperatureMinError"));
 		else
 			return null;
 	}
@@ -324,9 +352,23 @@ public class FIODataPoint {
 		else
 			return null;
 	}
+	
+	/**
+	 * The maximum temperature error expected for a given day the units defined
+	 * in the class ForecastIO.
+	 * For more information refer to the API Docs:
+	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @return A Double number with the maximum temperature. Returns null if the field is not defined.
+	 */
+	public Double temperatureMaxError(){
+		if(this.datapoint.containsKey("temperatureMaxError"))
+			return asDouble(this.datapoint.get("temperatureMaxError"));
+		else
+			return null;
+	}
 
 	/**
-	 * The time at with the maximum temperature is expected to occur.
+	 * The time at which the maximum temperature is expected to occur.
 	 * For more information refer to the API Docs:
 	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
 	 * @return An human-readable time string formated as [HH:mm:ss]  Returns "no data" if the field is not defined.
@@ -336,6 +378,82 @@ public class FIODataPoint {
 			DateFormat dfm = new SimpleDateFormat("HH:mm:ss");
 			dfm.setTimeZone(TimeZone.getTimeZone(timezone));
 			String time = dfm.format( Long.parseLong(String.valueOf(this.datapoint.get("temperatureMaxTime"))) * 1000 );
+			return time;
+		}
+		else
+			return "no data";
+	}
+	
+	/**
+	 * The apparent temperature at the given time using the units defined
+	 * in the class ForecastIO.
+	 * For more information refer to the API Docs:
+	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @return A Double number with the apparentTemperature. Returns null if the field is not defined.
+	 */
+	public Double apparentTemperature(){
+		if(this.datapoint.containsKey("apparentTemperature"))
+			return asDouble(this.datapoint.get("apparentTemperature"));
+		else
+			return null;
+	}
+
+	/**
+	 * The minimum apparent temperature expected for a given day the units defined
+	 * in the class ForecastIO.
+	 * For more information refer to the API Docs:
+	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @return A Double number with the minimum apparent temperature. Returns null if the field is not defined.
+	 */
+	public Double apparentTemperatureMin(){
+		if(this.datapoint.containsKey("apparentTemperatureMin"))
+			return asDouble(this.datapoint.get("apparentTemperatureMin"));
+		else
+			return null;
+	}
+
+	/**
+	 * The time at with the minimum apparent temperature is expected to occur.
+	 * For more information refer to the API Docs:
+	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @return An human-readable time string formated as [HH:mm:ss]  Returns "no data" if the field is not defined.
+	 */
+	public String apparentTemperatureMinTime(){
+		if(this.datapoint.containsKey("temperatureMinTime")){
+			DateFormat dfm = new SimpleDateFormat("HH:mm:ss");
+			dfm.setTimeZone(TimeZone.getTimeZone(timezone));
+			String time = dfm.format( Long.parseLong(String.valueOf(this.datapoint.get("apparentTemperatureMinTime"))) * 1000 );
+			return time;
+		}
+		else
+			return "no data";
+	}
+
+	/**
+	 * The maximum apparent temperature expected for a given day the units defined
+	 * in the class ForecastIO.
+	 * For more information refer to the API Docs:
+	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @return A Double number with the apparent maximum temperature. Returns null if the field is not defined.
+	 */
+	public Double apparentTemperatureMax(){
+		if(this.datapoint.containsKey("apparentTemperatureMax"))
+			return asDouble(this.datapoint.get("apparentTemperatureMax"));
+		else
+			return null;
+	}
+
+	/**
+	 * The time at which the apparent maximum temperature is expected to occur.
+	 * For more information refer to the API Docs:
+	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @return An human-readable time string formated as [HH:mm:ss]  Returns "no data" if the field is not defined.
+	 */
+	public String apparentTemperatureMaxTime(){
+		if(this.datapoint.containsKey("apparentTemperatureMaxTime")){
+			DateFormat dfm = new SimpleDateFormat("HH:mm:ss");
+			dfm.setTimeZone(TimeZone.getTimeZone(timezone));
+			String time = dfm.format( Long.parseLong(String.valueOf(this.datapoint.get("apparentTemperatureMaxTime"))) * 1000 );
 			return time;
 		}
 		else
@@ -355,6 +473,20 @@ public class FIODataPoint {
 		else
 			return -1d;
 	}
+	
+	/**
+	 * The dew point error for a given time with the units defined
+	 * in the class ForecastIO.
+	 * For more information refer to the API Docs:
+	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @return A Double number with the dew point. Returns -1 if the field is not defined.
+	 */
+	public Double dewPointError(){
+		if(this.datapoint.containsKey("dewPointError"))
+			return asDouble(this.datapoint.get("dewPointError"));
+		else
+			return -1d;
+	}
 
 	/**
 	 * The wind speed for a given time with the units defined
@@ -369,6 +501,20 @@ public class FIODataPoint {
 		else
 			return -1d;
 	}
+	
+	/**
+	 * The wind speed error for a given time with the units defined
+	 * in the class ForecastIO.
+	 * For more information refer to the API Docs:
+	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @return A Double number with the wind speed. Returns -1 if the field is not defined.
+	 */
+	public Double windSpeedError(){
+		if(this.datapoint.containsKey("windSpeedError"))
+			return asDouble(this.datapoint.get("windSpeedError"));
+		else
+			return -1d;
+	}
 
 	/**
 	 * The wind direction for a given time in degrees.
@@ -379,6 +525,19 @@ public class FIODataPoint {
 	public Double windBearing(){
 		if(this.datapoint.containsKey("windBearing"))
 			return asDouble(this.datapoint.get("windBearing"));
+		else
+			return -1d;
+	}
+	
+	/**
+	 * The wind direction error for a given time in degrees.
+	 * For more information refer to the API Docs:
+	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @return A Double number with the wind direction. Returns -1 if the field is not defined.
+	 */
+	public Double windBearingError(){
+		if(this.datapoint.containsKey("windBearingError"))
+			return asDouble(this.datapoint.get("windBearingError"));
 		else
 			return -1d;
 	}
@@ -396,10 +555,22 @@ public class FIODataPoint {
 		else
 			return -1d;
 	}
+	
+	/**
+	 * A numerical the percentage of sky occluded by clouds error. 
+	 * For more information refer to the API Docs:
+	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @return A Double number with the cloud cover. Returns -1 if the field is not defined.
+	 */
+	public Double cloudCoverError(){
+		if(this.datapoint.containsKey("cloudCoverError"))
+			return asDouble(this.datapoint.get("cloudCoverError"));
+		else
+			return -1d;
+	}
 
 	/**
-	 * A numerical value between 0 and 1 (inclusive) 
-	 * representing the relative humidity.
+	 * A numerical value representing the relative humidity error.
 	 * For more information refer to the API Docs:
 	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
 	 * @return A Double number with the humidity. Returns -1 if the field is not defined.
@@ -407,6 +578,20 @@ public class FIODataPoint {
 	public Double humidity(){
 		if(this.datapoint.containsKey("humidity"))
 			return asDouble(this.datapoint.get("humidity"));
+		else
+			return -1d;
+	}
+	
+	/**
+	 * A numerical value between 0 and 1 (inclusive) 
+	 * representing the relative humidity.
+	 * For more information refer to the API Docs:
+	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @return A Double number with the humidity. Returns -1 if the field is not defined.
+	 */
+	public Double humidityError(){
+		if(this.datapoint.containsKey("humidityError"))
+			return asDouble(this.datapoint.get("humidityError"));
 		else
 			return -1d;
 	}
@@ -424,6 +609,20 @@ public class FIODataPoint {
 		else
 			return -1d;
 	}
+	
+	/**
+	 * A numerical value with the sea level pressure error with the units defined
+	 * in the class ForecastIO.
+	 * For more information refer to the API Docs:
+	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @return A Double number with the pressure. Returns -1 if the field is not defined.
+	 */
+	public Double pressureError(){
+		if(this.datapoint.containsKey("pressureError"))
+			return asDouble(this.datapoint.get("pressureError"));
+		else
+			return -1d;
+	}
 
 	/**
 	 * A numerical value with the average visibility with the units defined
@@ -435,6 +634,20 @@ public class FIODataPoint {
 	public Double visibility(){
 		if(this.datapoint.containsKey("visibility"))
 			return asDouble(this.datapoint.get("visibility"));
+		else
+			return null;
+	}
+	
+	/**
+	 * A numerical value with the visibility error with the units defined
+	 * in the class ForecastIO.
+	 * For more information refer to the API Docs:
+	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @return A Double number with the visibility. Returns null if the field is not defined.
+	 */
+	public Double visibilityError(){
+		if(this.datapoint.containsKey("visibilityError"))
+			return asDouble(this.datapoint.get("visibilityError"));
 		else
 			return null;
 	}
@@ -450,6 +663,34 @@ public class FIODataPoint {
 
 		if(this.datapoint.containsKey("ozone"))
 			return asDouble(this.datapoint.get("ozone"));
+		else
+			return -1d;
+	}
+	
+	/**
+	 * Nesrest Storm Bearing
+	 * For more information refer to the API Docs:
+	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @return A Double number with the ozone. Returns -1 if the field is not defined.
+	 */
+	public Double nearestStormBearing(){
+
+		if(this.datapoint.containsKey("nearestStormBearing"))
+			return asDouble(this.datapoint.get("nearestStormBearing"));
+		else
+			return -1d;
+	}
+	
+	/**
+	 * Nesrest Storm Distance
+	 * For more information refer to the API Docs:
+	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @return A Double number with the ozone. Returns -1 if the field is not defined.
+	 */
+	public Double nearestStormDistance(){
+
+		if(this.datapoint.containsKey("nearestStormDistance"))
+			return asDouble(this.datapoint.get("nearestStormDistance"));
 		else
 			return -1d;
 	}

@@ -84,7 +84,10 @@ public class FIOFlags {
 	 * @return array with the stations
 	 */
 	public String [] darkskyUnavailable(){
-		return flags.get("darksky-unavailable");
+		if(flags.containsKey("unavailable"))
+			return flags.get("darksky-unavailable");
+		else
+			return new String[]{"no data"};
 	}
 
 	/**
@@ -94,7 +97,10 @@ public class FIOFlags {
 	 * @return array with the stations
 	 */
 	public String [] darkskyStations(){
-		return flags.get("darksky-stations");
+		if(flags.containsKey("darksky-stations"))
+			return flags.get("darksky-stations");
+		else 
+			return new String[]{"no data"};
 	}
 
 	/**
@@ -104,7 +110,10 @@ public class FIOFlags {
 	 * @return array with the stations
 	 */
 	public String [] datapointStations(){
-		return flags.get("datapoint-stations");
+		if(flags.containsKey("datapoint-stations"))
+				return flags.get("datapoint-stations");
+		else
+			return new String[]{"no data"};
 	}
 
 	/**
@@ -114,7 +123,10 @@ public class FIOFlags {
 	 * @return array with the stations
 	 */
 	public String [] isdStations(){
-		return flags.get("isd-stations");
+		if(flags.containsKey("isd-stations"))
+			return flags.get("isd-stations");
+		else
+			return new String[]{"no data"};
 	}
 
 	/**
@@ -124,7 +136,10 @@ public class FIOFlags {
 	 * @return array with the stations
 	 */
 	public String [] lampStations(){
-		return flags.get("lamp-stations");
+		if(flags.containsKey("lamp-stations"))
+			return flags.get("lamp-stations");
+		else
+			return new String[]{"no data"};
 	}
 
 	/**
@@ -134,7 +149,10 @@ public class FIOFlags {
 	 * @return array with the stations
 	 */
 	public String [] metarStations(){
-		return flags.get("metar-stations");
+		if(flags.containsKey("metar-stations"))
+			return flags.get("metar-stations");
+		else
+			return new String[]{"no data"};
 	}
 
 	//TODO metno-licenses
@@ -146,7 +164,10 @@ public class FIOFlags {
 	 * @return array with the sources
 	 */
 	public String [] sources(){
-		return flags.get("sources");
+		if(flags.containsKey("sources"))
+			return flags.get("sources");
+		else
+			return new String[]{"no data"};
 	}
 
 	/**

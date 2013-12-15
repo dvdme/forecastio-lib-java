@@ -1,5 +1,6 @@
 package test.forecastiolib;
 
+import dme.forecastiolib.FIOAlerts;
 import dme.forecastiolib.FIOCurrently;
 import dme.forecastiolib.FIODaily;
 import dme.forecastiolib.FIOFlags;
@@ -87,11 +88,31 @@ public class FIOLibTest {
 		
 		//Flags data
 		FIOFlags flags = new FIOFlags(fio);
-		for(int i=0; i<flags.metarStations().length; i++)
-			System.out.println("Metar Stations: "+flags.metarStations()[i]);
-		System.out.println("\n");
+		System.out.println("Available Flags: ");
 		for(int i=0; i<flags.availableFlags().length; i++)
 			System.out.println(flags.availableFlags()[i]);
+		System.out.println("\n");
+		for(int i=0; i<flags.metarStations().length; i++)
+			System.out.println("Metar Station: "+flags.metarStations()[i]);
+		System.out.println("\n");
+		for(int i=0; i<flags.isdStations().length; i++)
+			System.out.println("ISD Station: "+flags.isdStations()[i]);
+		System.out.println("\n");
+		for(int i=0; i<flags.sources().length; i++)
+			System.out.println("Source: "+flags.sources()[i]);
+		System.out.println("\n");
+		System.out.println("Units: " + flags.units());
+		System.out.println("\n");
+		
+		//Alerts data
+		FIOAlerts alerts = new FIOAlerts(fio);
+		if(alerts.NumberOfAlerts() <= 0){
+			System.out.println("No alerts for this locatoin.");
+		} else {
+			System.out.println("Alerts");
+			for(int i=0; i<alerts.NumberOfAlerts(); i++)
+				System.out.println(alerts.getAlert(i));
+		}
 		
 	}//main
 

@@ -1,10 +1,13 @@
 package dme.forecastiolib;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Scanner;
+import java.util.zip.GZIPInputStream;
 
+import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 
 public class ForecastIO {
@@ -31,6 +34,7 @@ public class ForecastIO {
 	private JsonObject hourly;
 	private JsonObject daily;
 	private JsonObject flags;
+	private JsonArray alerts;
 
 	public ForecastIO(String API_KEY){	
 
@@ -41,6 +45,8 @@ public class ForecastIO {
 			this.minutely = new JsonObject();
 			this.hourly = new JsonObject();
 			this.daily = new JsonObject();
+			this.flags = new JsonObject();
+			this.alerts = new JsonArray();
 			this.timeURL = null;
 			this.excludeURL = null;
 			this.extend = false;
@@ -60,6 +66,8 @@ public class ForecastIO {
 			this.minutely = new JsonObject();
 			this.hourly = new JsonObject();
 			this.daily = new JsonObject();
+			this.flags = new JsonObject();
+			this.alerts = new JsonArray();
 			this.timeURL = null;
 			this.excludeURL = null;
 			this.extend = false;
@@ -82,6 +90,8 @@ public class ForecastIO {
 			this.minutely = new JsonObject();
 			this.hourly = new JsonObject();
 			this.daily = new JsonObject();
+			this.flags = new JsonObject();
+			this.alerts = new JsonArray();
 			this.timeURL = null;
 			this.excludeURL = null;
 			this.extend = false;
@@ -264,6 +274,14 @@ public class ForecastIO {
 	public JsonObject getFlags(){
 		return this.flags;
 	}
+	
+	/**
+	 * Returns the alerts data 
+	 * @return JsonObject with the data
+	 */
+	public JsonArray getAlerts(){
+		return this.alerts;
+	}
 
 	/**
 	 * Returns the daily data block
@@ -327,21 +345,32 @@ public class ForecastIO {
 		else
 			return true;
 	}
+	
+	/**
+	 * Checks if there is any flags data available
+	 * @return true or false
+	 */
+	public boolean hasAlerts(){
+		if(this.alerts == null)
+			return false;
+		else
+			return true;
+	}
 
 	private String urlBuilder(String LATITUDE, String LONGITUDE){
-		String url = "";
-		url += ForecastIOURL;
-		url += ForecastIOApiKey+"/";
-		url += LATITUDE+","+LONGITUDE;
+		StringBuilder url = new StringBuilder("");
+		url.append(ForecastIOURL);
+		url.append(ForecastIOApiKey+"/");
+		url.append(LATITUDE+","+LONGITUDE);
 		if(timeURL!=null)
-			url += ","+timeURL;
-		url += "?units="+unitsURL;
+			url.append(","+timeURL);
+		url.append("?units="+unitsURL);
 		if(excludeURL!=null)
-			url += "&exclude="+excludeURL;
+			url.append("&exclude="+excludeURL);
 		if(extend)
-			url += "&extend=hourly";
+			url.append("&extend=hourly");
 
-		return url;
+		return url.toString();
 	}
 
 	/**
@@ -391,7 +420,6 @@ public class ForecastIO {
 	 * Parses the forecast reports for the given coordinates with the setted options
 	 * Useful to use with an external http library
 	 * @param http_response String
-	 * @return
 	 */
 
 	public boolean getForecast(String http_response) {
@@ -406,7 +434,7 @@ public class ForecastIO {
 	 * Hint: The getForecast(String http_response) could be more useful since it receives 
 	 *       the raw response String instead of the JsonObect. 
 	 * @param forecast JsonObject
-	 * @return
+	 * @return true if successful
 	 */
 
 	public boolean getForecast(JsonObject forecast) {
@@ -436,6 +464,11 @@ public class ForecastIO {
 		} catch (NullPointerException e) {
 			this.flags = null;
 		}
+		try {
+			this.alerts = forecast.get("alerts").asArray();
+		} catch (NullPointerException e) {
+			this.alerts = null;
+		}
 
 		return true;
 	}//getForecast - end
@@ -457,7 +490,9 @@ public class ForecastIO {
 		//Variables
 		URL request = null;
 		HttpURLConnection connection = null;
-		Scanner scanner = null;
+		//Scanner scanner = null;
+		BufferedReader reader = null;
+		String s = "";
 		String response = "";
 
 		try {
@@ -468,15 +503,36 @@ public class ForecastIO {
 			connection.setUseCaches(false);
 			connection.setDoInput(true);
 			connection.setDoOutput(false);
+			connection.setRequestProperty("Accept-Encoding", "gzip");
 			connection.connect();
 			if(connection.getResponseCode() == 400){
 				System.out.println("Bad Responde. Maybe an invalid location was provided.\n");
 				return null;
 			}
 			else {
-				scanner = new Scanner(request.openStream());
-				response = scanner.useDelimiter("\\Z").next();
-				scanner.close();
+				
+				try {
+					if(connection.getRequestProperty("Accept-Encoding") != null){
+						reader = new BufferedReader(new InputStreamReader( new GZIPInputStream( connection.getInputStream())));
+						while( (s = reader.readLine()) != null )
+							response = s;
+					} else {
+						reader = new BufferedReader(new InputStreamReader( connection.getInputStream() ));
+						while( (s = reader.readLine()) != null )
+							response = s;
+					}
+				} catch (IOException e){
+					System.err.println("Error: "+e.getMessage());
+				} finally {
+					if (reader != null) {
+                        try {
+                            reader.close();
+                            reader = null;
+                        } catch (IOException e) {
+                        	System.err.println("Error: "+e.getMessage());
+                        }
+                    }
+				}
 			}
 		} catch (IOException e) {
 			System.err.println("Error: "+e.getMessage());		
@@ -484,7 +540,7 @@ public class ForecastIO {
 		} finally {		
 			connection.disconnect();
 		}
-
+		
 		return response;
 	}//httpGET - end
 
