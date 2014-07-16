@@ -1,7 +1,9 @@
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
+import net.sf.json.JSONSerializer;
+import dme.forecastiolib.FIODataPoint;
 import dme.forecastiolib.ForecastIO;
-import dme.forecastiolib.enums.FIODataBlockEnum;
+import dme.forecastiolib.enums.FIODataBlocksEnum;
 import dme.forecastiolib.enums.FIOLangEnum;
 import dme.forecastiolib.enums.FIOUnitsEnum;
 import dme.forecastiolib.exceptions.JSONSlotNotFoundException;
@@ -22,7 +24,18 @@ public class main {
         JSONObject currently = (JSONObject)forecast.forecast.get("currently");
         
         System.out.println(currently.toString());
-        System.out.println(currently.get("summary").toString());
+        System.out.println(forecast.forecast.get("currently").toString());
+        
+        FIODataPoint currentlyData = new FIODataPoint(forecast.getCurrently());
+        //FIODataPoint currentlyData = new FIODataPoint(forecast.getCurrently());
+        
+        currentlyData.getNearestStormBearing();
+        
+        System.out.println(currentlyData.getSummary());
+        
+        System.out.println("fine.");
+        
+        
     }
 
 }

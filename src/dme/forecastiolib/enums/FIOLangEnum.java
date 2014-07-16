@@ -3,6 +3,8 @@ package dme.forecastiolib.enums;
 
 /**
  * Defines the languages supported by the API.
+ * 
+ * @author Theo FIDRY <theo.fidry@gmail.com>
  */
 public final class FIOLangEnum {
 

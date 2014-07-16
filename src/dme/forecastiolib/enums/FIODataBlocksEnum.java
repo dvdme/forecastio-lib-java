@@ -3,8 +3,10 @@ package dme.forecastiolib.enums;
 
 /**
  * Defines the excluded data blocks supported by the API.
+ * 
+ * @author Theo FIDRY <theo.fidry@gmail.com>
  */
-public final class FIODataBlockEnum {
+public final class FIODataBlocksEnum {
 
     /**
      * Supported data blocks.
@@ -20,7 +22,6 @@ public final class FIODataBlockEnum {
      * Test if the parameter passed is a valid 'enum'.
      * 
      * @param dataBlock
-     * 
      * @return
      */
     public static boolean isElement(String dataBlock) {
@@ -39,5 +40,5 @@ public final class FIODataBlockEnum {
         return false;
     }
     
-    private FIODataBlockEnum() {}
+    private FIODataBlocksEnum() {}
 }

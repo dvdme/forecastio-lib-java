@@ -13,7 +13,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
 import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
-import dme.forecastiolib.enums.FIODataBlockEnum;
+import dme.forecastiolib.enums.FIODataBlocksEnum;
 import dme.forecastiolib.enums.FIOLangEnum;
 import dme.forecastiolib.enums.FIOUnitsEnum;
 import dme.forecastiolib.exceptions.JSONSlotNotFoundException;
@@ -158,7 +158,7 @@ public class ForecastIO implements ForecastIOInterface {
             //
             // empty non valid data blocks
             for (int i = 0; i < excludeList.length; i++)
-                if (!FIODataBlockEnum.isElement(excludeList[i]))
+                if (!FIODataBlocksEnum.isElement(excludeList[i]))
                     excludeList[i] = "";            
             
             // remove duplicates data block declaration
@@ -195,7 +195,7 @@ public class ForecastIO implements ForecastIOInterface {
         
         // check if the data block is valid
         if (dataBlock != null) {
-            if (FIODataBlockEnum.isElement(dataBlock)) {
+            if (FIODataBlocksEnum.isElement(dataBlock)) {
                 
                 // case where the data block is valid; check if not already included
                 if (!exclude.contains(dataBlock)) {

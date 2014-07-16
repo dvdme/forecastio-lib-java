@@ -2,6 +2,8 @@ package dme.forecastiolib.enums;
 
 /**
  * Class defining the units supported by the API.
+ * 
+ * @author Theo FIDRY <theo.fidry@gmail.com>
  */
 public final class FIOUnitsEnum {
 

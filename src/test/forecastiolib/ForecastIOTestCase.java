@@ -9,7 +9,7 @@ import java.util.Random;
 import org.apache.commons.lang.RandomStringUtils;
 
 import dme.forecastiolib.ForecastIO;
-import dme.forecastiolib.enums.FIODataBlockEnum;
+import dme.forecastiolib.enums.FIODataBlocksEnum;
 import dme.forecastiolib.enums.FIOLangEnum;
 import dme.forecastiolib.enums.FIOUnitsEnum;
 import junit.framework.TestCase;
@@ -177,14 +177,14 @@ public class ForecastIOTestCase extends TestCase {
         
         
         // test if data blocks are properly added
-        forecast.addToExcludeList(FIODataBlockEnum.ALERTS);
-        assertEquals(FIODataBlockEnum.ALERTS, forecast.getExcludeList());
+        forecast.addToExcludeList(FIODataBlocksEnum.ALERTS);
+        assertEquals(FIODataBlocksEnum.ALERTS, forecast.getExcludeList());
         
-        forecast.addToExcludeList(FIODataBlockEnum.CURRENTLY);
-        assertEquals(FIODataBlockEnum.ALERTS + "," + FIODataBlockEnum.CURRENTLY, forecast.getExcludeList());
+        forecast.addToExcludeList(FIODataBlocksEnum.CURRENTLY);
+        assertEquals(FIODataBlocksEnum.ALERTS + "," + FIODataBlocksEnum.CURRENTLY, forecast.getExcludeList());
         
-        forecast.addToExcludeList(FIODataBlockEnum.MINUTELY);
-        assertEquals(FIODataBlockEnum.ALERTS + "," + FIODataBlockEnum.CURRENTLY + "," + FIODataBlockEnum.MINUTELY, forecast.getExcludeList());
+        forecast.addToExcludeList(FIODataBlocksEnum.MINUTELY);
+        assertEquals(FIODataBlocksEnum.ALERTS + "," + FIODataBlocksEnum.CURRENTLY + "," + FIODataBlocksEnum.MINUTELY, forecast.getExcludeList());
         
         
         // test if non valid data blocks are properly ignored
@@ -192,18 +192,18 @@ public class ForecastIOTestCase extends TestCase {
         String randomString;
         while (true) {
             randomString = RandomStringUtils.random(15);
-            if (!FIODataBlockEnum.isElement(randomString))
+            if (!FIODataBlocksEnum.isElement(randomString))
                 break;
         }
         forecast.addToExcludeList(randomString);
-        assertEquals(FIODataBlockEnum.ALERTS + "," + FIODataBlockEnum.CURRENTLY + "," + FIODataBlockEnum.MINUTELY, forecast.getExcludeList());
+        assertEquals(FIODataBlocksEnum.ALERTS + "," + FIODataBlocksEnum.CURRENTLY + "," + FIODataBlocksEnum.MINUTELY, forecast.getExcludeList());
         
 
         // test if redondant data block are not added.
-        forecast.addToExcludeList(FIODataBlockEnum.ALERTS);
-        forecast.addToExcludeList(FIODataBlockEnum.CURRENTLY);
-        forecast.addToExcludeList(FIODataBlockEnum.MINUTELY);
-        assertEquals(FIODataBlockEnum.ALERTS + "," + FIODataBlockEnum.CURRENTLY + "," + FIODataBlockEnum.MINUTELY, forecast.getExcludeList());
+        forecast.addToExcludeList(FIODataBlocksEnum.ALERTS);
+        forecast.addToExcludeList(FIODataBlocksEnum.CURRENTLY);
+        forecast.addToExcludeList(FIODataBlocksEnum.MINUTELY);
+        assertEquals(FIODataBlocksEnum.ALERTS + "," + FIODataBlocksEnum.CURRENTLY + "," + FIODataBlocksEnum.MINUTELY, forecast.getExcludeList());
         
         
         // test if exclude reset works properly
@@ -213,14 +213,14 @@ public class ForecastIOTestCase extends TestCase {
         
         // test the set exclude method
         // test correct entry
-        String[] excludeList = new String[]{FIODataBlockEnum.ALERTS, FIODataBlockEnum.CURRENTLY};
+        String[] excludeList = new String[]{FIODataBlocksEnum.ALERTS, FIODataBlocksEnum.CURRENTLY};
         forecast.setExcludeList(excludeList);
-        assertEquals(FIODataBlockEnum.ALERTS + "," + FIODataBlockEnum.CURRENTLY, forecast.getExcludeList());
+        assertEquals(FIODataBlocksEnum.ALERTS + "," + FIODataBlocksEnum.CURRENTLY, forecast.getExcludeList());
         
         // test duplicate value
-        excludeList = new String[]{FIODataBlockEnum.ALERTS, FIODataBlockEnum.CURRENTLY, FIODataBlockEnum.ALERTS, FIODataBlockEnum.CURRENTLY};
+        excludeList = new String[]{FIODataBlocksEnum.ALERTS, FIODataBlocksEnum.CURRENTLY, FIODataBlocksEnum.ALERTS, FIODataBlocksEnum.CURRENTLY};
         forecast.setExcludeList(excludeList);
-        assertEquals(FIODataBlockEnum.ALERTS + "," + FIODataBlockEnum.CURRENTLY, forecast.getExcludeList());
+        assertEquals(FIODataBlocksEnum.ALERTS + "," + FIODataBlocksEnum.CURRENTLY, forecast.getExcludeList());
         
         // test null entry
         excludeList = null;
@@ -238,14 +238,14 @@ public class ForecastIOTestCase extends TestCase {
         assertTrue(forecast.getExcludeList().length() == 0);
         
         // test wrong values with good values
-        excludeList = new String[]{FIODataBlockEnum.ALERTS, "azerty", FIODataBlockEnum.CURRENTLY, "qwerty"};
+        excludeList = new String[]{FIODataBlocksEnum.ALERTS, "azerty", FIODataBlocksEnum.CURRENTLY, "qwerty"};
         forecast.setExcludeList(excludeList);
-        assertEquals(FIODataBlockEnum.ALERTS + "," + FIODataBlockEnum.CURRENTLY, forecast.getExcludeList());
+        assertEquals(FIODataBlocksEnum.ALERTS + "," + FIODataBlocksEnum.CURRENTLY, forecast.getExcludeList());
         
         // test wrong values with good values with duplicates
-        excludeList = new String[]{FIODataBlockEnum.ALERTS, "azerty", FIODataBlockEnum.CURRENTLY, "qwerty", FIODataBlockEnum.CURRENTLY, FIODataBlockEnum.CURRENTLY};
+        excludeList = new String[]{FIODataBlocksEnum.ALERTS, "azerty", FIODataBlocksEnum.CURRENTLY, "qwerty", FIODataBlocksEnum.CURRENTLY, FIODataBlocksEnum.CURRENTLY};
         forecast.setExcludeList(excludeList);
-        assertEquals(FIODataBlockEnum.ALERTS + "," + FIODataBlockEnum.CURRENTLY, forecast.getExcludeList());
+        assertEquals(FIODataBlocksEnum.ALERTS + "," + FIODataBlocksEnum.CURRENTLY, forecast.getExcludeList());
     }
 
 
