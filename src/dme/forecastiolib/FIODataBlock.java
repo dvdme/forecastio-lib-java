@@ -16,7 +16,7 @@ public class FIODataBlock {
     //
     private String         summary = "",
                            icon    = "";
-    private FIODataPoint[] data    = null;
+    private FIODataPoint[] data    = new FIODataPoint[] {};
     
     
     //
@@ -56,19 +56,14 @@ public class FIODataBlock {
      * 
      * @return
      */
-    public final int getNbrOfDataPoints() {
-        
-        return (data == null)?
-                   0:
-                   data.length;    
-    }
+    public final int getNbrOfDataPoints() { return data.length; }
     
     
     //
     // PUBLIC METHODS
     //
     /**
-     * Updates the data block with the given JSON file.
+     * Updates this instance with the given JSON file.
      * 
      * @param dataBlock
      */
@@ -89,7 +84,7 @@ public class FIODataBlock {
         try {
             data  = toFIODataPointsArray(dataBlock.getJSONArray("data"));
         } catch (NullPointerException mpe) {
-            data = null;
+            data = new FIODataPoint[] {};
         }
     }
     

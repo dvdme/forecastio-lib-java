@@ -30,7 +30,11 @@ public class ForecastIO {
     //
 
     // API call parameters
-	private static final String APIURL = "https://api.forecast.io/forecast";  // base URL used for the API call
+	private static final String APIURL     = "https://api.forecast.io/forecast";  // base URL used for the API call
+	private static final int LATITUDE_MAX  = 90,
+	                         LATITUDE_MIN  = 0,
+	                         LONGITUDE_MAX = 180,
+	                         LONGITUDE_MIN = -180;
 	
 	private String apiKey,                 // API key
 	               exclude  = "",          // used to exclude uneeded reports to reduce latency and saving cache space
@@ -117,24 +121,36 @@ public class ForecastIO {
 	
     // coordinates: latitude and longitude fields
     /**
-     * @return The latitude in decimal degrees.
+     * Get the latitude in decimal degrees.
+     * 
+     * @return
      */
     public final double getLatitude() { return latitude; }
 
     /**
-     * @param latitude The latitude to set in decimal degrees.
+     * Set the latitude in decimal degrees.<br />
+     * <br />
+     * The latitude ranges from 0° to 90° (borders included). If the value is out of range, the nearest value in the range is took.
+     * 
+     * @param latitude
      */
-    public final void setLatitude(double latitude) { this.latitude = latitude; }
+    public final void setLatitude(double latitude) { this.latitude = getInRangeValue(latitude, LATITUDE_MIN, LATITUDE_MAX); }
    
     /**
-     * @return The longitude in decimal degrees.
+     * Get the longitude in decimal degrees.
+     * 
+     * @return
      */
     public final double getLongitude() { return longitude; }
 
     /**
-     * @param longitude The longitude to set in decimal degrees.
+     * Set the longitude in decimal degrees.<br />
+     * <br />
+     * The longitude ranges from -180° to +180° (borders included). If the value is out of range, the nearest value in the range is took.
+     * 
+     * @param longitude
      */
-    public final void setLongitude(double longitude) { this.longitude = longitude;}
+    public final void setLongitude(double longitude) { this.longitude = getInRangeValue(longitude, LONGITUDE_MIN, LONGITUDE_MAX);}
     
 	// exclude field
 	 /**
@@ -329,7 +345,7 @@ public class ForecastIO {
     }
     
     /**
-     * Returns the currently data points
+     * Returns the currently data points which contains the current weather conditions at the requested location.
      * 
      * @return
      * @throws JSONNotFoundException Occurs when no response has been received yet or when this report has been excluded of the API response.
@@ -343,7 +359,7 @@ public class ForecastIO {
     }
 
     /**
-     * Returns the minutely data block.
+     * Returns the minutely data block which contains the weather conditions minute-by-minute for the next hour.
      * 
      * @return
      * @throws JSONNotFoundException Occurs when no response has been received yet or when this report has been excluded of the API response.
@@ -357,7 +373,7 @@ public class ForecastIO {
     }
 
     /**
-     * Returns the hourly data block.
+     * Returns the hourly data block which contains the weather conditions hour-by-hour for the next two days.
      * 
      * @return
      * @throws JSONNotFoundException Occurs when no response has been received yet or when this report has been excluded of the API response.
@@ -371,7 +387,7 @@ public class ForecastIO {
     }
 
     /**
-     * Returns the flags data.
+     * Returns the flags data which contains miscellaneous metadata such as the sources concerning this request.
      * 
      * @return
      * @throws JSONNotFoundException Occurs when no response has been received yet or when this report has been excluded of the API response.
@@ -385,14 +401,17 @@ public class ForecastIO {
     }
     
     /**
-     * Returns the alerts data.
+     * Returns the alerts data which, if present, contains any severe weather alerts, issued by a governmental weather authority, pertinent to the
+     * requested location.
      * 
      * @return
      */
     public final JSONObject getAlerts() { return alerts; }
 
     /**
-     * Returns the daily data block.
+     * Returns the daily data block which contains the weather conditions day-by-day for the next week.<br />
+     * <br />
+     * The first block contains the weather conditions of the day before the current day.
      * 
      * @return
      * @throws JSONNotFoundException Occurs when no response has been received yet or when this report has been excluded of the API response.
@@ -617,9 +636,7 @@ public class ForecastIO {
         
         // default URL for Forecast call
         String url = APIURL + "/" + apiKey + "/" + Double.toString(latitude) + "," + Double.toString(longitude);
-        
-        System.out.println("getRequestURL base URL: " + url);
-        
+                
         // add optional parameters
         if (time != null)
             url += "," + time;
@@ -632,9 +649,7 @@ public class ForecastIO {
         
         if (extend)
             url += "&extend=hourly";
-        
-        System.out.println("getRequestURL URL: " + url);
-        
+                
         return url;
     }
 
@@ -736,7 +751,7 @@ public class ForecastIO {
         // NullPointerException are ignored since some data block may be excluded from the report.
         try {
             alerts = forecast.getJSONObject("alerts");
-        } catch (NullPointerException e) {}
+        } catch (Exception e) {}//TODO
         
         try {
             currently = new FIODataPoint(forecast.getJSONObject(FIODataBlocksEnum.CURRENTLY));
@@ -781,5 +796,23 @@ public class ForecastIO {
         
         if (forecast.isEmpty())
             throw new JSONNotFoundException();
+    }
+    
+    /**
+     * Return the nearest value in the given range.
+     * 
+     * @param value
+     * @param min
+     * @param max
+     * @return
+     */
+    private double getInRangeValue(double value, double min, double max) {
+        
+        if (value < min)
+            value = min;
+        else if (value > max)
+            value = max;
+        
+        return value;
     }
 }

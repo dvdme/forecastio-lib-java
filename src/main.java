@@ -1,3 +1,9 @@
+import java.awt.List;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Random;
+
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
@@ -19,35 +25,10 @@ public class main {
      */
     public static void main(String[] args) {
 
-        ForecastIO forecast = new ForecastIO("757dcc57f4bb5b1c23adf950e20d64c7", 48.72273, 2.27115, FIOLangEnum.FRENCH, FIOUnitsEnum.SI, null, false);
-        forecast.requestForecast();
-        System.out.println("API response: " + forecast.getAPIResponse().toString());
+        JSONObject json = new JSONObject();
         
-        System.out.println("Currently: " + forecast.getCurrently().toString());
-        System.out.println("Create data point with currently...");
-        FIODataPoint currently = forecast.getCurrently();
-        System.out.println("done");
-        System.out.println("currently data: " + currently.getKeys().length);
-        System.out.println("time: " + currently.getTime());
-        
-//        currently.getNearestStormBearing();
-//        
-        System.out.println("Hourly: " + forecast.getHourly().toString());
-        System.out.println("Create data point with currently...");
-        FIODataBlock hourly = new FIODataBlock(forecast.getAPIResponse().getJSONObject(FIODataBlocksEnum.HOURLY));
-        System.out.println("done");
-        System.out.println("hourly summary: " + hourly.getSummary());
-        System.out.println("hourly icon: " + hourly.getIcon());
-        System.out.println("nbr of data points: " + hourly.getNbrOfDataPoints());
-        
-        System.out.println("test: " + hourly.getDataPoint(0).getTime());
-        
-        FIOFlags flags = forecast.getFlags();
-        
-        for (int i = 0; i < flags.getAvailableFlags().length; i++)
-            System.out.println("flag #" + i + ": " + flags.getAvailableFlags()[i]);
-        
-        System.out.println("test.");
+        if (json.get("test") == null)
+            System.out.println("ISNULL");;
     }
 
 }

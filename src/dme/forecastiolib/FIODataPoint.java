@@ -393,9 +393,9 @@ public class FIODataPoint {
     // PUBLIC HELPERS
     //
     /**
-     * Updates the data point with the given JSON file.<br />
+     * Updates this instance with the given JSON file.<br />
      * <br />
-     * If the data passed is null, this instance will not be updated.
+     * If the JSON passed is null, this instance will be reset.
      * 
      * @param data
      */
@@ -404,6 +404,8 @@ public class FIODataPoint {
         if (data != null)
             for (int i = 0; i < data.names().size(); i++)
                 this.data.put(data.names().get(i), data.get(data.names().get(i)));
+        else
+            this.data.clear();
     }
 
     /**
