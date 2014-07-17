@@ -3,6 +3,7 @@ import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import dme.forecastiolib.FIODataBlock;
 import dme.forecastiolib.FIODataPoint;
+import dme.forecastiolib.FIOFlags;
 import dme.forecastiolib.ForecastIO;
 import dme.forecastiolib.enums.FIODataBlocksEnum;
 import dme.forecastiolib.enums.FIOLangEnum;
@@ -26,18 +27,27 @@ public class main {
         System.out.println("Create data point with currently...");
         FIODataPoint currently = forecast.getCurrently();
         System.out.println("done");
-        System.out.println("currently data: " + currently.getFieldsArray().length);
+        System.out.println("currently data: " + currently.getKeys().length);
         System.out.println("time: " + currently.getTime());
         
 //        currently.getNearestStormBearing();
 //        
-//        System.out.println("Hourly: " + forecast.getHourly().toString());
-//        System.out.println("Create data point with currently...");
-//        FIODataBlock hourly = new FIODataBlock(forecast.getAPIResponse().getJSONObject(FIODataBlocksEnum.HOURLY));
-//        System.out.println("done");
-//        System.out.println("hourly summary: " + hourly.getSummary());
-//        System.out.println("hourly icon: " + hourly.getIcon());
-//        System.out.println("nbr of data points: " + hourly.getNbrOfDataPoints());
+        System.out.println("Hourly: " + forecast.getHourly().toString());
+        System.out.println("Create data point with currently...");
+        FIODataBlock hourly = new FIODataBlock(forecast.getAPIResponse().getJSONObject(FIODataBlocksEnum.HOURLY));
+        System.out.println("done");
+        System.out.println("hourly summary: " + hourly.getSummary());
+        System.out.println("hourly icon: " + hourly.getIcon());
+        System.out.println("nbr of data points: " + hourly.getNbrOfDataPoints());
+        
+        System.out.println("test: " + hourly.getDataPoint(0).getTime());
+        
+        FIOFlags flags = forecast.getFlags();
+        
+        for (int i = 0; i < flags.getAvailableFlags().length; i++)
+            System.out.println("flag #" + i + ": " + flags.getAvailableFlags()[i]);
+        
+        System.out.println("test.");
     }
 
 }

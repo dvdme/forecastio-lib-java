@@ -22,7 +22,7 @@ import dme.forecastiolib.exceptions.JSONNotFoundException;
 /**
  * Wrapper for handling forecast calls.
  */
-public class ForecastIO implements ForecastIOInterface {
+public class ForecastIO {
 
     
     //
@@ -44,15 +44,18 @@ public class ForecastIO implements ForecastIOInterface {
 	private boolean extend = false;        // request hourly data for the next seven days rather than the next two when set to true
 
 	
-	// Data points
+	// Data blocks
 	private FIODataPoint currently;    // contains the current weather conditions at the requested location
 	
-	private JSONObject    
-	                   daily     = new JSONObject(),   // contains the weather conditions day-by-day for the next week
-	                   flags     = new JSONObject(),   // contains miscellaneous metadata concerning this request
+	private FIODataBlock daily,   // contains the weather conditions day-by-day for the next week
+	                     hourly,   // contains the weather conditions hour-by-hour for the next two days
+	                     minutely;   // contains the weather conditions minute-by-minute for the next hour
+	
+	private FIOFlags flags;    // contains miscellaneous metadata concerning this request
+	
+	private JSONObject  
 	                   forecast  = null,               // contains all the data
-	                   hourly    = new JSONObject(),   // contains the weather conditions hour-by-hour for the next two days
-	                   minutely  = new JSONObject(),   // contains the weather conditions minute-by-minute for the next hour
+	                   
 	                   alerts    = new JSONObject();   // array of alert objects, which, if present, contains any severe weather alerts, issued by a
 	                                                   // governmental weather authority, pertinent to the requested location
 
@@ -331,7 +334,7 @@ public class ForecastIO implements ForecastIOInterface {
      * @return
      * @throws JSONNotFoundException Occurs when no response has been received yet or when this report has been excluded of the API response.
      */
-    public final FIODataPoint getCurrently() {
+    public final FIODataPoint getCurrently() throws JSONNotFoundException {
         
         if (currently == null)
             throw new JSONNotFoundException("Report found.");
@@ -343,22 +346,43 @@ public class ForecastIO implements ForecastIOInterface {
      * Returns the minutely data block.
      * 
      * @return
+     * @throws JSONNotFoundException Occurs when no response has been received yet or when this report has been excluded of the API response.
      */
-    public final JSONObject getMinutely() { return minutely; }
+    public final FIODataBlock getMinutely() throws JSONNotFoundException {
+        
+        if (minutely == null)
+            throw new JSONNotFoundException("Report found.");
+        
+        return minutely;
+    }
 
     /**
      * Returns the hourly data block.
      * 
      * @return
+     * @throws JSONNotFoundException Occurs when no response has been received yet or when this report has been excluded of the API response.
      */
-    public final JSONObject getHourly() { return hourly; }
+    public final FIODataBlock getHourly() throws JSONNotFoundException {
+        
+        if (hourly == null)
+            throw new JSONNotFoundException("Report found.");
+        
+        return hourly;
+    }
 
     /**
      * Returns the flags data.
      * 
      * @return
+     * @throws JSONNotFoundException Occurs when no response has been received yet or when this report has been excluded of the API response.
      */
-    public final JSONObject getFlags() { return flags; }
+    public final FIOFlags getFlags() throws JSONNotFoundException {
+        
+        if (flags == null)
+            throw new JSONNotFoundException("Report found.");
+        
+        return flags;
+    }
     
     /**
      * Returns the alerts data.
@@ -371,8 +395,15 @@ public class ForecastIO implements ForecastIOInterface {
      * Returns the daily data block.
      * 
      * @return
+     * @throws JSONNotFoundException Occurs when no response has been received yet or when this report has been excluded of the API response.
      */
-    public final JSONObject getDaily() { return daily; }
+    public final FIODataBlock getDaily() throws JSONNotFoundException {
+        
+        if (daily == null)
+            throw new JSONNotFoundException("Report found.");
+        
+        return daily;
+    }
     
     /**
      * Returns the UNIX time of the API response.
@@ -505,28 +536,48 @@ public class ForecastIO implements ForecastIOInterface {
      * 
      * @return
      */
-    public final boolean hasMinutely() { return this.minutely.isEmpty(); }
+    public final boolean hasMinutely() {
+        
+        return (minutely == null)?
+                   false:
+                   true;
+    }
 
     /**
      * Checks if there is any hourly data available.
      * 
      * @return
      */
-    public final boolean hasHourly() { return this.hourly.isEmpty(); }
+    public final boolean hasHourly() {
+        
+        return (hourly == null)?
+                   false:
+                   true;
+    }
 
     /**
      * Checks if there is any daily data available.
      * 
      * @return
      */
-    public final boolean hasDaily() { return this.daily.isEmpty(); }
+    public final boolean hasDaily() {
+        
+        return (daily == null)?
+                   false:
+                   true;
+    }
 
     /**
      * Checks if there is any flags data available.
      * 
      * @return
      */
-    //public final boolean hasFlags() { return this.currently.isEmpty(); }
+    public final boolean hasFlags() {
+        
+        return (flags == null)?
+                   false:
+                   true;
+    }
     
     /**
      * Checks if there is any flags data available.
@@ -689,25 +740,33 @@ public class ForecastIO implements ForecastIOInterface {
         
         try {
             currently = new FIODataPoint(forecast.getJSONObject(FIODataBlocksEnum.CURRENTLY));
-        } catch (NullPointerException e) {
+        } catch (JSONException e) {
             currently = null;
         }
         
         try {
-            daily = forecast.getJSONObject("daily");
-        } catch (NullPointerException e) {}
+            daily = new FIODataBlock(forecast.getJSONObject(FIODataBlocksEnum.DAILY));
+        } catch (JSONException e) {
+            daily = null;
+        }
         
         try {
-            flags = forecast.getJSONObject("flags");
-        } catch (NullPointerException e) {}
+            flags = new FIOFlags(forecast.getJSONObject(FIODataBlocksEnum.FLAGS));
+        } catch (JSONException e) {
+            flags = null;
+        }
         
         try {
-            hourly = forecast.getJSONObject("hourly");
-        } catch (NullPointerException e) {}
+            hourly = new FIODataBlock(forecast.getJSONObject(FIODataBlocksEnum.HOURLY));
+        } catch (JSONException e) {
+            hourly = null;
+        }
         
         try {
-            minutely = forecast.getJSONObject("minutely");
-        } catch (NullPointerException e) {}
+            minutely = new FIODataBlock(forecast.getJSONObject(FIODataBlocksEnum.MINUTELY));
+        } catch (JSONException e) {
+            minutely = null;
+        }
 
         return true;
     }

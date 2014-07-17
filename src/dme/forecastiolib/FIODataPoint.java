@@ -393,18 +393,17 @@ public class FIODataPoint {
     // PUBLIC HELPERS
     //
     /**
-     * Updates the data point with the given JSON file.
+     * Updates the data point with the given JSON file.<br />
+     * <br />
+     * If the data passed is null, this instance will not be updated.
      * 
      * @param data
      */
     void update(JSONObject data) {
 
         if (data != null)
-            for (int i = 0; i < data.names().size(); i++) {
+            for (int i = 0; i < data.names().size(); i++)
                 this.data.put(data.names().get(i), data.get(data.names().get(i)));
-
-                System.out.println("data[i] = [" + data.names().get(i) + ", " + data.get(data.names().get(i)) + "]");
-            }
     }
 
     /**
@@ -416,17 +415,16 @@ public class FIODataPoint {
     public String getFields() { return data.keySet().toString(); }
 
     /**
-     * Returns a String array with all the Forecast.io fields available in this data point. It can be usefull to iterate over all available fields in
-     * a data point.
+     * Returns an array of strings with all the keys available.
      * 
      * @return the String array with the field's names.
      */
-    public String [] getFieldsArray() {
+    public String [] getKeys() {
 
         Object [] obj = data.keySet().toArray();
         String [] out = new String[obj.length];
 
-        for(int i=0; i<obj.length; i++)
+        for(int i = 0; i < obj.length; i++)
             out[i] = String.valueOf(obj[i]);
 
         return out;

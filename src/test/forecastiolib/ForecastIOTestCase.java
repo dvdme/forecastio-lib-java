@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.w3c.dom.ranges.RangeException;
 
 import dme.forecastiolib.ForecastIO;
 import dme.forecastiolib.enums.FIODataBlocksEnum;
@@ -37,18 +38,6 @@ public class ForecastIOTestCase extends TestCase {
             this.key       = key;
             this.latitude  = latitude;
             this.longitude = longitude;
-        }
-        
-        public ConstructorParametersContainer(String key, double latitude, double longitude, String lang, Date time, String units, String[] exclude, boolean extand) {
-
-            this.key       = key;
-            this.latitude  = latitude;
-            this.longitude = longitude;
-            this.lang      = lang;
-            this.time      = time;
-            this.units     = units;
-            this.exclude   = exclude;
-            this.extand    = extand;
         }
     }
 
@@ -249,6 +238,47 @@ public class ForecastIOTestCase extends TestCase {
         excludeList = new String[]{FIODataBlocksEnum.ALERTS, "azerty", FIODataBlocksEnum.CURRENTLY, "qwerty", FIODataBlocksEnum.CURRENTLY, FIODataBlocksEnum.CURRENTLY};
         forecast.setExcludeList(excludeList);
         assertEquals(FIODataBlocksEnum.ALERTS + "," + FIODataBlocksEnum.CURRENTLY, forecast.getExcludeList());
+        
+        
+        // the the exclude effect
+        // test with no exclude
+        forecast.resetExcludeList();
+        forecast.update();
+        assertTrue(forecast.hasCurrently());
+        assertTrue(forecast.hasDaily());
+        assertTrue(forecast.hasHourly());
+        //assertTrue(forecast.hasMinutely());
+        assertTrue(forecast.hasFlags());
+        
+        // test with excluding currently report
+        forecast.resetExcludeList();
+        forecast.addToExcludeList(FIODataBlocksEnum.CURRENTLY);
+        forecast.update();
+        assertFalse(forecast.hasCurrently());
+
+        // test with excluding daily report
+        forecast.resetExcludeList();
+        forecast.addToExcludeList(FIODataBlocksEnum.DAILY);
+        forecast.update();
+        assertFalse(forecast.hasDaily());
+
+        // test with excluding flags report
+        forecast.resetExcludeList();
+        forecast.addToExcludeList(FIODataBlocksEnum.FLAGS);
+        forecast.update();
+        assertFalse(forecast.hasFlags());
+
+        // test with excluding hourly report
+        forecast.resetExcludeList();
+        forecast.addToExcludeList(FIODataBlocksEnum.HOURLY);
+        forecast.update();
+        assertFalse(forecast.hasHourly());
+
+        // test with excluding minutely report
+        forecast.resetExcludeList();
+        forecast.addToExcludeList(FIODataBlocksEnum.MINUTELY);
+        forecast.update();
+        assertFalse(forecast.hasMinutely());
     }
 
 
@@ -339,18 +369,21 @@ public class ForecastIOTestCase extends TestCase {
         container = getRandomConstructorParametersContainer();
         forecast  = new ForecastIO(container.key, container.latitude, container.longitude);
                 
+        // test the access to the API response when no call has been made yet
         try {
             forecast.getAPIResponse();
         } catch (JSONNotFoundException exception) {
+            // is the result expected
         } catch (Exception exception) {
             fail("Wrong type of exception thrown.");
         }
         
         forecast.requestForecast();
         
+        // test the access to the API response once a call has been made
         try {
             forecast.getAPIResponse();
-            assertFalse(forecast.getAPIResponse().isNullObject());
+            assertNotNull(forecast.getAPIResponse());
         } catch (Exception exception) {
             fail("Expected a non null API response.");
         }
@@ -361,13 +394,163 @@ public class ForecastIOTestCase extends TestCase {
         container = getRandomConstructorParametersContainer();
         forecast  = new ForecastIO(container.key, container.latitude, container.longitude);
         
+        // test if the hasReport method when no call has been made yet
+        // expect not to find the report
         assertFalse(forecast.hasCurrently());
-       
-        forecast.requestForecast();
-        assertTrue(forecast.hasCurrently());
-        System.out.println("TEST " + forecast.getCurrently().getTime());
+        
+        // test the access to the report when no call has been made yet
+        // expect JSONNotFoundException thrown
+        try {
+            forecast.getCurrently();
+        } catch (JSONNotFoundException exception) {
+            // is the result expected
+        } catch (Exception exception) {
+            fail("Wrong type of exception thrown.");
+        }
+        
+        // test the access to data of the report when no call has been made yet
+        // expect JSONNotFoundException thrown
         try {
             forecast.getCurrently().getTime();
+        } catch (JSONNotFoundException exception) {
+            // is the result expected
+        } catch (Exception exception) {
+            fail("Wrong type of exception thrown.");
+        }
+       
+        forecast.requestForecast();
+        
+        // test if the hasReport method once a call has been made
+        // expect to find the report
+        assertTrue(forecast.hasCurrently());
+        
+        // test the access of the data once a call has been made
+        // expect proper access to the data
+        try {
+            forecast.getCurrently().getTime();
+        } catch (JSONSlotNotFoundException exception) {
+            fail("Invalid data point.");
+        } catch (Exception exception) {
+            fail("Wrong type of exception thrown.");
+        }
+    }
+    
+    // Since minutely, hourly and daily have the same patterns, just one of them is tested.
+    public void testDataBlock() {
+        
+        container = getRandomConstructorParametersContainer();
+        forecast  = new ForecastIO(container.key, container.latitude, container.longitude);
+        
+        // test if the hasReport method when no call has been made yet
+        // expect not to find the report
+        assertFalse(forecast.hasHourly());
+
+        // test the access to the report when no call has been made yet
+        // expect JSONNotFoundException thrown
+        try {
+            forecast.getHourly();
+        } catch (JSONNotFoundException exception) {
+            // is the result expected
+        } catch (Exception exception) {
+            fail("Wrong type of exception thrown.");
+        }
+
+        // test the access to data of the report when no call has been made yet
+        // expect JSONNotFoundException thrown
+        try {
+            assertTrue(forecast.getHourly().getNbrOfDataPoints() == 0);
+        } catch (JSONNotFoundException exception) {
+            // is the result expected
+        } catch (Exception exception) {
+            fail("Wrong type of exception thrown.");
+        }
+        try {
+            forecast.getHourly().getDataPoint(0);
+        } catch (JSONNotFoundException exception) {
+            // is the result expected
+        } catch (Exception exception) {
+            fail("Wrong type of exception thrown.");
+        }
+        try {
+            forecast.getHourly().getDataPoint(0).getTime();
+        } catch (JSONNotFoundException exception) {
+            // is the result expected
+        } catch (Exception exception) {
+            fail("Wrong type of exception thrown.");
+        }
+
+        forecast.requestForecast();
+
+        // test if the hasReport method once a call has been made
+        // expect to find the report with at least a data point
+        assertTrue(forecast.hasHourly());
+        assertTrue(forecast.getHourly().getNbrOfDataPoints() != 0);
+
+        // test the access of the data once a call has been made
+        // expect proper access to the data
+        try {
+            forecast.getHourly().getDataPoint(0).getTime();
+        } catch (JSONSlotNotFoundException exception) {
+            fail("Invalid data point.");
+        } catch (Exception exception) {
+            fail("Wrong type of exception thrown.");
+        }
+    }
+
+    public void testFlags() {
+        
+        container = getRandomConstructorParametersContainer();
+        forecast  = new ForecastIO(container.key, container.latitude, container.longitude);
+        
+        // test if the hasReport method when no call has been made yet
+        // expect not to find the report
+        assertFalse(forecast.hasFlags());
+
+        // test the access to the report when no call has been made yet
+        // expect JSONNotFoundException thrown
+        try {
+            forecast.getFlags();
+        } catch (JSONNotFoundException exception) {
+            // is the result expected
+        } catch (Exception exception) {
+            fail("Wrong type of exception thrown.");
+        }
+
+        // test the access to data of the report when no call has been made yet
+        // expect JSONNotFoundException thrown
+        try {
+            assertTrue(forecast.getFlags().getNbrOfFlags() == 0);
+        } catch (JSONNotFoundException exception) {
+            // is the result expected
+        } catch (Exception exception) {
+            fail("Wrong type of exception thrown.");
+        }
+        try {
+            forecast.getHourly().getDataPoint(0);
+        } catch (JSONNotFoundException exception) {
+            // is the result expected
+        } catch (Exception exception) {
+            fail("Wrong type of exception thrown.");
+        }
+        try {
+            forecast.getHourly().getDataPoint(0).getTime();
+        } catch (JSONNotFoundException exception) {
+            // is the result expected
+        } catch (Exception exception) {
+            fail("Wrong type of exception thrown.");
+        }
+
+        forecast.requestForecast();
+
+        // test if the hasReport method once a call has been made
+        // expect to find the report with at least a data point
+        assertTrue(forecast.hasFlags());
+        assertTrue(forecast.getFlags().getNbrOfFlags() != 0);
+
+        // test the access of the data once a call has been made
+        // expect proper access to the data
+        try {
+            forecast.getFlags().getUnits();
         } catch (JSONSlotNotFoundException exception) {
             fail("Invalid data point.");
         } catch (Exception exception) {
