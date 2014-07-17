@@ -1,6 +1,7 @@
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
+import dme.forecastiolib.FIODataBlock;
 import dme.forecastiolib.FIODataPoint;
 import dme.forecastiolib.ForecastIO;
 import dme.forecastiolib.enums.FIODataBlocksEnum;
@@ -18,24 +19,25 @@ public class main {
     public static void main(String[] args) {
 
         ForecastIO forecast = new ForecastIO("757dcc57f4bb5b1c23adf950e20d64c7", 48.72273, 2.27115, FIOLangEnum.FRENCH, FIOUnitsEnum.SI, null, false);
-        
         forecast.requestForecast();
+        System.out.println("API response: " + forecast.getAPIResponse().toString());
         
-        JSONObject currently = (JSONObject)forecast.forecast.get("currently");
+        System.out.println("Currently: " + forecast.getCurrently().toString());
+        System.out.println("Create data point with currently...");
+        FIODataPoint currently = forecast.getCurrently();
+        System.out.println("done");
+        System.out.println("currently data: " + currently.getFieldsArray().length);
+        System.out.println("time: " + currently.getTime());
         
-        System.out.println(currently.toString());
-        System.out.println(forecast.forecast.get("currently").toString());
-        
-        FIODataPoint currentlyData = new FIODataPoint(forecast.getCurrently());
-        //FIODataPoint currentlyData = new FIODataPoint(forecast.getCurrently());
-        
-        currentlyData.getNearestStormBearing();
-        
-        System.out.println(currentlyData.getSummary());
-        
-        System.out.println("fine.");
-        
-        
+//        currently.getNearestStormBearing();
+//        
+//        System.out.println("Hourly: " + forecast.getHourly().toString());
+//        System.out.println("Create data point with currently...");
+//        FIODataBlock hourly = new FIODataBlock(forecast.getAPIResponse().getJSONObject(FIODataBlocksEnum.HOURLY));
+//        System.out.println("done");
+//        System.out.println("hourly summary: " + hourly.getSummary());
+//        System.out.println("hourly icon: " + hourly.getIcon());
+//        System.out.println("nbr of data points: " + hourly.getNbrOfDataPoints());
     }
 
 }

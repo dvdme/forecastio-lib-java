@@ -1,8 +1,8 @@
 package dme.forecastiolib;
 
-import java.util.Date;
 import java.util.HashMap;
 
+import dme.forecastiolib.enums.FIODataPointPropertiesEnum;
 import dme.forecastiolib.exceptions.JSONSlotNotFoundException;
 import net.sf.json.JSONObject;
 
@@ -42,12 +42,9 @@ public class FIODataPoint {
      * @return
      * @throws JSONSlotNotFoundException
      */
-    public final long getTime() throws JSONSlotNotFoundException {
+    public final int getTime() throws JSONSlotNotFoundException {
         
-        if (data.containsKey("time"))
-            return ((Long)data.get("time")).longValue();
-
-        throw new JSONSlotNotFoundException();
+        return returnIntProperty(FIODataPointPropertiesEnum.TIME);
     }
     
     /**
@@ -58,18 +55,337 @@ public class FIODataPoint {
      */
     public final String getSummary() throws JSONSlotNotFoundException {
         
-        if (data.containsKey("summary"))
-            return (String)data.get("summary");
-        
-        throw new JSONSlotNotFoundException();
+        return returnStringProperty(FIODataPointPropertiesEnum.SUMMARY);
     }
     
+    /**
+     * Get a machine-readable text summary of this data point, suitable for selecting an icon for display.
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final String getIcon() throws JSONSlotNotFoundException {
+        
+        return returnStringProperty(FIODataPointPropertiesEnum.ICON);
+    }
+    
+    /**
+     * Get the UNIX time of the last sunrise before and first sunset after the solar noon closest to local noon on the given day.
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final int getSunriseTime() throws JSONSlotNotFoundException {
+        
+        return returnIntProperty(FIODataPointPropertiesEnum.SUNRISE_TIME);
+    }
+    
+    /**
+     * Get the UNIX time of the last sunset before and first sunset after the solar noon closest to local noon on the given day.
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final int getSunsetTime() throws JSONSlotNotFoundException {
+        
+        return returnIntProperty(FIODataPointPropertiesEnum.SUNSET_TIME);
+    }
+    
+    /**
+     * Get a number representing the fractional part of the lunation number of the given day. This can be thought of as the “percentage complete” of
+     * the current lunar month: a value of 0 represents a new moon, a value of 0.25 represents a first quarter moon, a value of 0.5 represents a full
+     * moon, and a value of 0.75 represents a last quarter moon
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final long getMoonPhase() throws JSONSlotNotFoundException {
+        
+        return returnLongProperty(FIODataPointPropertiesEnum.MOONPHASE);
+    }
+    
+    /**
+     * Get numerical value representing the distance to the nearest storm in miles. (This value is very approximate and should not be used in
+     * scenarios requiring accurate results. In particular, a storm distance of zero doesn’t necessarily refer to a storm at the requested location,
+     * but rather a storm in the vicinity of that location.)
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final long getNearestStormDistance () throws JSONSlotNotFoundException {
+        
+        return returnLongProperty(FIODataPointPropertiesEnum.NEAREST_STORM_DISTANCE);
+    }
+    
+    /**
+     * Get a numerical value representing the direction of the nearest storm in degrees, with true north at 0° and progressing clockwise.
+     * (If nearestStormDistance is zero, then this value will not be defined. The caveats that apply to nearestStormDistance also apply to this
+     * value.)
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
     public final long getNearestStormBearing() throws JSONSlotNotFoundException {
         
-        if (data.containsKey("nearestStormBearing"))
-            return ((Long)data.get("nearestStormBearing")).longValue();
+        return returnLongProperty(FIODataPointPropertiesEnum.NEAREST_STORM_BEARING);
+    }
+    
+    /**
+     * Get a numerical value representing the average expected intensity (in inches of liquid water per hour) of precipitation occurring at the given
+     * time conditional on probability (that is, assuming any precipitation occurs at all). A very rough guide is that a value of 0 in./hr.
+     * corresponds to no precipitation, 0.002 in./hr. corresponds to very light precipitation, 0.017 in./hr. corresponds to light precipitation,
+     * 0.1 in./hr. corresponds to moderate precipitation, and 0.4 in./hr. corresponds to heavy precipitation.
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final long getPrecipitationIntensity() throws JSONSlotNotFoundException {
         
-        throw new JSONSlotNotFoundException();
+        return returnLongProperty(FIODataPointPropertiesEnum.PRECIPITATION_INTENSITY);
+    }
+    
+    /**
+     * Get the numerical value representing the maximum expected intensity of precipitation on the given day in inches of liquid water per hour.
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final long getPrecipitationIntensityMax() throws JSONSlotNotFoundException {
+        
+        return returnLongProperty(FIODataPointPropertiesEnum.PRECIPITATION_INTENSITY_MAX);
+    }
+
+    /**
+     * Get the UNIX time at which the maximum expected intensity of precipitation on the given day occurs.
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final int getPrecipitationIntensityMaxTime() throws JSONSlotNotFoundException {
+        
+        return returnIntProperty(FIODataPointPropertiesEnum.PRECIPITATION_INTENSITY_MAX_TIME);
+    }
+    
+    /**
+     * Get a numerical value between 0 and 1 (inclusive) representing the probability of precipitation occuring at the given time.
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final long getPrecipitationProbability() throws JSONSlotNotFoundException {
+        
+        return returnLongProperty(FIODataPointPropertiesEnum.PRECIPITATION_PROBABILITY);
+    }
+    
+    /**
+     * Get the amount of snowfall accumulation expected to occur on the given day. (If no accumulation is expected, this property will not be defined.)
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final long getPrecipitationAccumulation() throws JSONSlotNotFoundException {
+        
+        return returnLongProperty(FIODataPointPropertiesEnum.PRECIPITATION_ACCUMULATION);
+    }
+    
+    /**
+     * Get a numerical value representing the temperature at the given time in degrees Fahrenheit.
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final long getTemperature() throws JSONSlotNotFoundException {
+        
+        return returnLongProperty(FIODataPointPropertiesEnum.TEMPERATURE);
+    }
+    
+    /**
+     * Get a numerical values representing maximum temperature on the given day in degrees Fahrenheit.
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final long getTemperatureMax() throws JSONSlotNotFoundException {
+        
+        return returnLongProperty(FIODataPointPropertiesEnum.TEMPERATURE_MAX);
+    }
+    
+    /**
+     * Get the UNIX time at wich the maximum temperature on the given day occurs.
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final int getTemperatureMaxTime() throws JSONSlotNotFoundException {
+        
+        return returnIntProperty(FIODataPointPropertiesEnum.TEMPERATURE_MAX_TIME);
+    }
+    
+    /**
+     * Get a numerical values representing maximum temperature on the given day in degrees Fahrenheit.
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final long getTemperatureMin() throws JSONSlotNotFoundException {
+        
+        return returnLongProperty(FIODataPointPropertiesEnum.TEMPERATURE_MIN);
+    }
+    
+    /**
+     * Get the UNIX time at wich the maximum temperature on the given day occurs.
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final int getTemperatureMinTime() throws JSONSlotNotFoundException {
+        
+        return returnIntProperty(FIODataPointPropertiesEnum.TEMPERATURE_MIN_TIME);
+    }
+    
+    /**
+     * Get a numerical value representing the apparent temperature ("feels like") at the given time in degrees Fahrenheit.
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final long getApparentTemperature() throws JSONSlotNotFoundException {
+        
+        return returnLongProperty(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE);
+    }
+    
+    /**
+     * Get a numerical values representing maximum apparent temperature on the given day in degrees Fahrenheit.
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final long getApparentTemperatureMax() throws JSONSlotNotFoundException {
+        
+        return returnLongProperty(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE_MAX);
+    }
+    
+    /**
+     * Get the UNIX time at wich the maximum apparent temperature on the given day occurs.
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final int getApparentTemperatureMaxTime() throws JSONSlotNotFoundException {
+        
+        return returnIntProperty(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE_MAX_TIME);
+    }
+    
+    /**
+     * Get a numerical values representing maximum apparent temperature on the given day in degrees Fahrenheit.
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final long getApparentTemperatureMin() throws JSONSlotNotFoundException {
+        
+        return returnLongProperty(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE_MIN);
+    }
+    
+    /**
+     * Get the UNIX time at wich the maximum apparent temperature on the given day occurs.
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final int getApparentTemperatureMinTime() throws JSONSlotNotFoundException {
+        
+        return returnIntProperty(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE_MIN_TIME);
+    }
+    
+    /**
+     * Get a numerical value representing the dew point at the given time in degrees Fahrenheit.
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final long getDewPoint() throws JSONSlotNotFoundException {
+        
+        return returnLongProperty(FIODataPointPropertiesEnum.DEW_POINT);
+    }
+    
+    /**
+     * Get a numerical value representing the wind speed in miles per hour.
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final long getWindSpeed() throws JSONSlotNotFoundException {
+        
+        return returnLongProperty(FIODataPointPropertiesEnum.WIND_SPEED);
+    }
+    
+    /**
+     * Get a numerical value representing the direction that the wind is coming from in degrees, with true north at 0° and progressing clockwise.
+     * (If windSpeed is zero, then this value will not be defined.)
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final long getWindBearing() throws JSONSlotNotFoundException {
+        
+        return returnLongProperty(FIODataPointPropertiesEnum.WIND_BEARING);
+    }
+    
+    /**
+     * Get a numerical value between 0 and 1 (inclusive) representing the percentage of sky occluded by clouds. A value of 0 corresponds to clear sky,
+     * 0.4 to scattered clouds, 0.75 to broken cloud cover, and 1 to completely overcast skies.
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final long getCloudCover() throws JSONSlotNotFoundException {
+        
+        return returnLongProperty(FIODataPointPropertiesEnum.CLOUD_COVER);
+    }
+    
+    /**
+     * Get a numerical value between 0 and 1 (inclusive) representing the relative humidity.
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final long getHumidity() throws JSONSlotNotFoundException {
+        
+        return returnLongProperty(FIODataPointPropertiesEnum.HUMIDITY);
+    }
+    
+    /**
+     * Get a numerical value representing the sea-level air pressure in millibars.
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final long getPressure() throws JSONSlotNotFoundException {
+        
+        return returnLongProperty(FIODataPointPropertiesEnum.PRESSURE);
+    }
+    
+    /**
+     * Get a numerical value representing the average visibility in miles, capped at 10 miles.
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final long getVisibility() throws JSONSlotNotFoundException {
+        
+        return returnLongProperty(FIODataPointPropertiesEnum.VISIBILITY);
+    }
+    
+    /**
+     * Get a numerical value representing the columnar density of total atmospheric ozone at the given time in Dobson units.
+     * 
+     * @return
+     * @throws JSONSlotNotFoundException
+     */
+    public final long getOzone() throws JSONSlotNotFoundException {
+        
+        return returnLongProperty(FIODataPointPropertiesEnum.OZONE);
     }
     
     
@@ -79,687 +395,68 @@ public class FIODataPoint {
     /**
      * Updates the data point with the given JSON file.
      * 
-     * @param
+     * @param data
      */
     void update(JSONObject data) {
-        
+
         if (data != null)
             for (int i = 0; i < data.names().size(); i++) {
                 this.data.put(data.names().get(i), data.get(data.names().get(i)));
-                
+
                 System.out.println("data[i] = [" + data.names().get(i) + ", " + data.get(data.names().get(i)) + "]");
             }
+    }
+
+    /**
+     * Returns a String with all the Forecast.io field's available in this data point.
+     * 
+     * @return
+     * @see
+     */
+    public String getFields() { return data.keySet().toString(); }
+
+    /**
+     * Returns a String array with all the Forecast.io fields available in this data point. It can be usefull to iterate over all available fields in
+     * a data point.
+     * 
+     * @return the String array with the field's names.
+     */
+    public String [] getFieldsArray() {
+
+        Object [] obj = data.keySet().toArray();
+        String [] out = new String[obj.length];
+
+        for(int i=0; i<obj.length; i++)
+            out[i] = String.valueOf(obj[i]);
+
+        return out;
     }
     
     
     //
     // PRIVATE HELPERS
     //
+    private String returnStringProperty(String property) throws JSONSlotNotFoundException {
+        
+        if (data.containsKey(property))
+            return (String)data.get(property);
+        
+        throw new JSONSlotNotFoundException();
+    }
     
+    private long returnLongProperty(String property) throws JSONSlotNotFoundException {
+        
+        if (data.containsKey(property))
+            return ((Long)data.get(property)).longValue();
+        
+        throw new JSONSlotNotFoundException();
+    }
     
-//    
-//    
-//    
-//
-//    /**
-//     * Returns a String with all the Forecast.io field's available
-//     * in this data point.
-//     * 
-//     * @return the String with the field's names.
-//     * @see String
-//     */
-//    public String getFields(){
-//        return datapoint.keySet().toString();
-//    }
-//
-//    /**
-//     * Returns a String array with all the Forecast.io fields available
-//     * in this data point. It can be usefull to iterate over all
-//     * available fields in a data point.
-//     * 
-//     * @return the String array with the field's names.
-//     */
-//    public String [] getFieldsArray(){
-//        Object [] obj = datapoint.keySet().toArray();
-//        String [] out = new String[obj.length];
-//        for(int i=0; i<obj.length; i++)
-//            out[i] = String.valueOf(obj[i]);
-//        return out;
-//    }
-//
-//    /**
-//     * Allows to set the timezone.
-//     * If none is set, default is GMT.
-//     * @param tz String with the timezone such as "GMT"
-//     */
-//    public void setTimezone(String tz){
-//        this.timezone = tz;
-//    }
-//
-//    /**
-//     * Allows to get the timezone in use
-//     * @return String with the timezone
-//     */
-//    public String getTimezone(){
-//        return this.timezone;
-//    }
-//
-//    /* Gets  */
-//    /**
-//     * Return the data point field with the corresponding key
-//     * 
-//     * @param key name of the field in the data point
-//     * @return the field value
-//     */
-//    public String getByKey(String key){
-//        String out = "";
-//        if(key.equals("time"))
-//            return time();
-//        if(key.contains("Time")){
-//            DateFormat dfm = new SimpleDateFormat("HH:mm:ss");
-//            dfm.setTimeZone(TimeZone.getTimeZone(timezone));
-//            out = dfm.format( Long.parseLong(String.valueOf(this.datapoint.get(key))) * 1000 );
-//        }
-//        else 
-//            out = String.valueOf( datapoint.get(key) );
-//        return out;
-//    }
-//
-//    /**
-//     * Returns the time at which this data point occurs.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return An human-readable time string formated as [dd-MM-yyyy HH:mm:ss].  Returns "no data" if the field is not defined.
-//     */
-//    public String time(){   
-//        DateFormat dfm = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-//        dfm.setTimeZone(TimeZone.getTimeZone(timezone));
-//        Long t = Long.parseLong( String.valueOf(this.datapoint.get("time")) );
-//        String time = dfm.format( t * 1000 );
-//        return time;
-//    }
-//
-//    /**
-//     * Returns a human-readable text summary of the data point.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return String with the summary text. Returns "no data" if the field is not defined.
-//     */
-//    public String summary(){
-//        if(this.datapoint.containsKey("summary"))
-//            return asString(this.datapoint.get("summary"));
-//        else
-//            return "no data";
-//    }
-//
-//    /**
-//     * Returns a machine-readable text summary of the data point, 
-//     * suitable for selecting an icon for display.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return String with the icon text.  Returns "no data" if the field is not defined.
-//     */
-//    public String icon(){
-//        if(this.datapoint.containsKey("icon"))
-//            return asString(this.datapoint.get("icon"));
-//        else
-//            return "no data";
-//    }
-//
-//    /**
-//     * Returns the sunset time for the given day.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return An human-readable time string formated as [HH:mm:ss].  Returns "no data" if the field is not defined.
-//     */
-//    public String sunriseTime(){
-//        if(this.datapoint.containsKey("sunriseTime")){
-//            DateFormat dfm = new SimpleDateFormat("HH:mm:ss");
-//            dfm.setTimeZone(TimeZone.getTimeZone(timezone));
-//            String time = dfm.format( Long.parseLong(String.valueOf(this.datapoint.get("sunriseTime"))) * 1000 );
-//            return time;
-//        }
-//        else
-//            return "no data";
-//    }
-//
-//    /**
-//     * Returns the sunrise time for the given day.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return An human-readable time string formated as [HH:mm:ss]. Returns "no data" if the field is not defined.
-//     */
-//    public String sunsetTime(){
-//        if(this.datapoint.containsKey("sunsetTime")){
-//            DateFormat dfm = new SimpleDateFormat("HH:mm:ss");
-//            dfm.setTimeZone(TimeZone.getTimeZone(timezone));
-//            String time = dfm.format( Long.parseLong(String.valueOf(this.datapoint.get("sunsetTime"))) * 1000 );
-//            return time;
-//        }
-//        else
-//            return "no data";
-//    }
-//
-//    /**
-//     * A numerical value representing the average expected intensity.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the precipitation intensity. Returns -1 if the field is not defined.
-//     */
-//    public Double precipIntensity(){
-//        if(this.datapoint.containsKey("precipIntensity"))
-//            return asDouble(this.datapoint.get("precipIntensity"));
-//        else
-//            return -1d;
-//    }
-//
-//    /**
-//     * A numerical values representing the maximum 
-//     * expected intensity of precipitation.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the maximum precipitation intensity.  Returns -1 if the field is not defined.
-//     */
-//    public Double precipIntensityMax(){
-//        if(this.datapoint.containsKey("precipIntensityMax"))
-//            return asDouble(this.datapoint.get("precipIntensityMax"));
-//        else
-//            return -1d;
-//    }
-//    /**
-//     * A numerical values representing the time at which the maximum 
-//     * expected intensity of precipitation occurs.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return An human-readable time string formated as [HH:mm:ss]  Returns "no data" if the field is not defined.
-//     */
-//    public String precipIntensityMaxTime(){
-//        if(this.datapoint.containsKey("precipIntensityMaxTime")){
-//            DateFormat dfm = new SimpleDateFormat("HH:mm:ss");
-//            dfm.setTimeZone(TimeZone.getTimeZone(timezone));
-//            String time = dfm.format( Long.parseLong(String.valueOf(this.datapoint.get("precipIntensityMaxTime"))) * 1000 );
-//            return time;
-//        }
-//        else
-//            return "no data";
-//    }
-//
-//    /**
-//     * A numerical value between 0 and 1 (inclusive) representing 
-//     * the probability of precipitation occuring at the given time.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the probabily. Returns -1 if the field is not defined.
-//     */
-//    public Double precipProbability(){
-//        if(this.datapoint.containsKey("precipProbability"))
-//            return asDouble(this.datapoint.get("precipProbability"));
-//        else
-//            return -1d;
-//    }
-//
-//    /**
-//     * A string representing the type of precipitation occurring at the given time. 
-//     * If defined, this property will have one of the following values: rain, snow, 
-//     * sleet or hail.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A string with the type of precipitation Returns "no data" if the field is not defined.
-//     */
-//    public String precipType(){
-//        if(this.datapoint.containsKey("precipType"))
-//            return asString(this.datapoint.get("precipType"));
-//        else
-//            return "no data";
-//    } 
-//
-//    /**
-//     * The amount of snow fall accumulation expected to occur on the given day.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the expected value. Returns -1 if the field is not defined.
-//     */
-//    public Double precipAccumulation(){
-//        if(this.datapoint.containsKey("precipAccumulation"))
-//            return asDouble(this.datapoint.get("precipAccumulation"));
-//        else
-//            return -1d;
-//    }
-//
-//    /**
-//     * The temperature at the given time using the units defined
-//     * in the class ForecastIO.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the temperature. Returns null if the field is not defined.
-//     */
-//    public Double temperature(){
-//        if(this.datapoint.containsKey("temperature"))
-//            return asDouble(this.datapoint.get("temperature"));
-//        else
-//            return null;
-//    }
-//    
-//    /**
-//     * The temperature error at the given time using the units defined
-//     * in the class ForecastIO.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the temperature. Returns null if the field is not defined.
-//     */
-//    public Double temperatureError(){
-//        if(this.datapoint.containsKey("temperatureError"))
-//            return asDouble(this.datapoint.get("temperatureError"));
-//        else
-//            return null;
-//    }
-//
-//    /**
-//     * The minimum temperature expected for a given day the units defined
-//     * in the class ForecastIO.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the minimum temperature. Returns null if the field is not defined.
-//     */
-//    public Double temperatureMin(){
-//        if(this.datapoint.containsKey("temperatureMin"))
-//            return asDouble(this.datapoint.get("temperatureMin"));
-//        else
-//            return null;
-//    }
-//    
-//    /**
-//     * The minimum temperature error expected for a given day the units defined
-//     * in the class ForecastIO.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the minimum temperature. Returns null if the field is not defined.
-//     */
-//    public Double temperatureMinError(){
-//        if(this.datapoint.containsKey("temperatureMinError"))
-//            return asDouble(this.datapoint.get("temperatureMinError"));
-//        else
-//            return null;
-//    }
-//
-//    /**
-//     * The time at with the minimum temperature is expected to occur.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return An human-readable time string formated as [HH:mm:ss]  Returns "no data" if the field is not defined.
-//     */
-//    public String temperatureMinTime(){
-//        if(this.datapoint.containsKey("temperatureMinTime")){
-//            DateFormat dfm = new SimpleDateFormat("HH:mm:ss");
-//            dfm.setTimeZone(TimeZone.getTimeZone(timezone));
-//            String time = dfm.format( Long.parseLong(String.valueOf(this.datapoint.get("temperatureMinTime"))) * 1000 );
-//            return time;
-//        }
-//        else
-//            return "no data";
-//    }
-//
-//    /**
-//     * The maximum temperature expected for a given day the units defined
-//     * in the class ForecastIO.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the maximum temperature. Returns null if the field is not defined.
-//     */
-//    public Double temperatureMax(){
-//        if(this.datapoint.containsKey("temperatureMax"))
-//            return asDouble(this.datapoint.get("temperatureMax"));
-//        else
-//            return null;
-//    }
-//    
-//    /**
-//     * The maximum temperature error expected for a given day the units defined
-//     * in the class ForecastIO.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the maximum temperature. Returns null if the field is not defined.
-//     */
-//    public Double temperatureMaxError(){
-//        if(this.datapoint.containsKey("temperatureMaxError"))
-//            return asDouble(this.datapoint.get("temperatureMaxError"));
-//        else
-//            return null;
-//    }
-//
-//    /**
-//     * The time at which the maximum temperature is expected to occur.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return An human-readable time string formated as [HH:mm:ss]  Returns "no data" if the field is not defined.
-//     */
-//    public String temperatureMaxTime(){
-//        if(this.datapoint.containsKey("temperatureMaxTime")){
-//            DateFormat dfm = new SimpleDateFormat("HH:mm:ss");
-//            dfm.setTimeZone(TimeZone.getTimeZone(timezone));
-//            String time = dfm.format( Long.parseLong(String.valueOf(this.datapoint.get("temperatureMaxTime"))) * 1000 );
-//            return time;
-//        }
-//        else
-//            return "no data";
-//    }
-//    
-//    /**
-//     * The apparent temperature at the given time using the units defined
-//     * in the class ForecastIO.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the apparentTemperature. Returns null if the field is not defined.
-//     */
-//    public Double apparentTemperature(){
-//        if(this.datapoint.containsKey("apparentTemperature"))
-//            return asDouble(this.datapoint.get("apparentTemperature"));
-//        else
-//            return null;
-//    }
-//
-//    /**
-//     * The minimum apparent temperature expected for a given day the units defined
-//     * in the class ForecastIO.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the minimum apparent temperature. Returns null if the field is not defined.
-//     */
-//    public Double apparentTemperatureMin(){
-//        if(this.datapoint.containsKey("apparentTemperatureMin"))
-//            return asDouble(this.datapoint.get("apparentTemperatureMin"));
-//        else
-//            return null;
-//    }
-//
-//    /**
-//     * The time at with the minimum apparent temperature is expected to occur.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return An human-readable time string formated as [HH:mm:ss]  Returns "no data" if the field is not defined.
-//     */
-//    public String apparentTemperatureMinTime(){
-//        if(this.datapoint.containsKey("temperatureMinTime")){
-//            DateFormat dfm = new SimpleDateFormat("HH:mm:ss");
-//            dfm.setTimeZone(TimeZone.getTimeZone(timezone));
-//            String time = dfm.format( Long.parseLong(String.valueOf(this.datapoint.get("apparentTemperatureMinTime"))) * 1000 );
-//            return time;
-//        }
-//        else
-//            return "no data";
-//    }
-//
-//    /**
-//     * The maximum apparent temperature expected for a given day the units defined
-//     * in the class ForecastIO.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the apparent maximum temperature. Returns null if the field is not defined.
-//     */
-//    public Double apparentTemperatureMax(){
-//        if(this.datapoint.containsKey("apparentTemperatureMax"))
-//            return asDouble(this.datapoint.get("apparentTemperatureMax"));
-//        else
-//            return null;
-//    }
-//
-//    /**
-//     * The time at which the apparent maximum temperature is expected to occur.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return An human-readable time string formated as [HH:mm:ss]  Returns "no data" if the field is not defined.
-//     */
-//    public String apparentTemperatureMaxTime(){
-//        if(this.datapoint.containsKey("apparentTemperatureMaxTime")){
-//            DateFormat dfm = new SimpleDateFormat("HH:mm:ss");
-//            dfm.setTimeZone(TimeZone.getTimeZone(timezone));
-//            String time = dfm.format( Long.parseLong(String.valueOf(this.datapoint.get("apparentTemperatureMaxTime"))) * 1000 );
-//            return time;
-//        }
-//        else
-//            return "no data";
-//    }
-//
-//    /**
-//     * The dew point for a given time with the units defined
-//     * in the class ForecastIO.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the dew point. Returns -1 if the field is not defined.
-//     */
-//    public Double dewPoint(){
-//        if(this.datapoint.containsKey("dewPoint"))
-//            return asDouble(this.datapoint.get("dewPoint"));
-//        else
-//            return -1d;
-//    }
-//    
-//    /**
-//     * The dew point error for a given time with the units defined
-//     * in the class ForecastIO.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the dew point. Returns -1 if the field is not defined.
-//     */
-//    public Double dewPointError(){
-//        if(this.datapoint.containsKey("dewPointError"))
-//            return asDouble(this.datapoint.get("dewPointError"));
-//        else
-//            return -1d;
-//    }
-//
-//    /**
-//     * The wind speed for a given time with the units defined
-//     * in the class ForecastIO.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the wind speed. Returns -1 if the field is not defined.
-//     */
-//    public Double windSpeed(){
-//        if(this.datapoint.containsKey("windSpeed"))
-//            return asDouble(this.datapoint.get("windSpeed"));
-//        else
-//            return -1d;
-//    }
-//    
-//    /**
-//     * The wind speed error for a given time with the units defined
-//     * in the class ForecastIO.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the wind speed. Returns -1 if the field is not defined.
-//     */
-//    public Double windSpeedError(){
-//        if(this.datapoint.containsKey("windSpeedError"))
-//            return asDouble(this.datapoint.get("windSpeedError"));
-//        else
-//            return -1d;
-//    }
-//
-//    /**
-//     * The wind direction for a given time in degrees.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the wind direction. Returns -1 if the field is not defined.
-//     */
-//    public Double windBearing(){
-//        if(this.datapoint.containsKey("windBearing"))
-//            return asDouble(this.datapoint.get("windBearing"));
-//        else
-//            return -1d;
-//    }
-//    
-//    /**
-//     * The wind direction error for a given time in degrees.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the wind direction. Returns -1 if the field is not defined.
-//     */
-//    public Double windBearingError(){
-//        if(this.datapoint.containsKey("windBearingError"))
-//            return asDouble(this.datapoint.get("windBearingError"));
-//        else
-//            return -1d;
-//    }
-//
-//    /**
-//     * A numerical value between 0 and 1 (inclusive) representing 
-//     * the percentage of sky occluded by clouds. 
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the cloud cover. Returns -1 if the field is not defined.
-//     */
-//    public Double cloudCover(){
-//        if(this.datapoint.containsKey("cloudCover"))
-//            return asDouble(this.datapoint.get("cloudCover"));
-//        else
-//            return -1d;
-//    }
-//    
-//    /**
-//     * A numerical the percentage of sky occluded by clouds error. 
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the cloud cover. Returns -1 if the field is not defined.
-//     */
-//    public Double cloudCoverError(){
-//        if(this.datapoint.containsKey("cloudCoverError"))
-//            return asDouble(this.datapoint.get("cloudCoverError"));
-//        else
-//            return -1d;
-//    }
-//
-//    /**
-//     * A numerical value representing the relative humidity error.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the humidity. Returns -1 if the field is not defined.
-//     */
-//    public Double humidity(){
-//        if(this.datapoint.containsKey("humidity"))
-//            return asDouble(this.datapoint.get("humidity"));
-//        else
-//            return -1d;
-//    }
-//    
-//    /**
-//     * A numerical value between 0 and 1 (inclusive) 
-//     * representing the relative humidity.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the humidity. Returns -1 if the field is not defined.
-//     */
-//    public Double humidityError(){
-//        if(this.datapoint.containsKey("humidityError"))
-//            return asDouble(this.datapoint.get("humidityError"));
-//        else
-//            return -1d;
-//    }
-//
-//    /**
-//     * A numerical value with the sea level pressure with the units defined
-//     * in the class ForecastIO.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the pressure. Returns -1 if the field is not defined.
-//     */
-//    public Double pressure(){
-//        if(this.datapoint.containsKey("pressure"))
-//            return asDouble(this.datapoint.get("pressure"));
-//        else
-//            return -1d;
-//    }
-//    
-//    /**
-//     * A numerical value with the sea level pressure error with the units defined
-//     * in the class ForecastIO.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the pressure. Returns -1 if the field is not defined.
-//     */
-//    public Double pressureError(){
-//        if(this.datapoint.containsKey("pressureError"))
-//            return asDouble(this.datapoint.get("pressureError"));
-//        else
-//            return -1d;
-//    }
-//
-//    /**
-//     * A numerical value with the average visibility with the units defined
-//     * in the class ForecastIO.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the visibility. Returns null if the field is not defined.
-//     */
-//    public Double visibility(){
-//        if(this.datapoint.containsKey("visibility"))
-//            return asDouble(this.datapoint.get("visibility"));
-//        else
-//            return null;
-//    }
-//    
-//    /**
-//     * A numerical value with the visibility error with the units defined
-//     * in the class ForecastIO.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the visibility. Returns null if the field is not defined.
-//     */
-//    public Double visibilityError(){
-//        if(this.datapoint.containsKey("visibilityError"))
-//            return asDouble(this.datapoint.get("visibilityError"));
-//        else
-//            return null;
-//    }
-//
-//    /**
-//     * A numerical value  representing the columnar density of total atmospheric
-//     * ozone at the given time in Dobson units.
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the ozone. Returns -1 if the field is not defined.
-//     */
-//    public Double ozone(){
-//
-//        if(this.datapoint.containsKey("ozone"))
-//            return asDouble(this.datapoint.get("ozone"));
-//        else
-//            return -1d;
-//    }
-//    
-//    /**
-//     * Nesrest Storm Bearing
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the ozone. Returns -1 if the field is not defined.
-//     */
-//    public Double nearestStormBearing(){
-//
-//        if(this.datapoint.containsKey("nearestStormBearing"))
-//            return asDouble(this.datapoint.get("nearestStormBearing"));
-//        else
-//            return -1d;
-//    }
-//    
-//    /**
-//     * Nesrest Storm Distance
-//     * For more information refer to the API Docs:
-//     * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-//     * @return A Double number with the ozone. Returns -1 if the field is not defined.
-//     */
-//    public Double nearestStormDistance(){
-//
-//        if(this.datapoint.containsKey("nearestStormDistance"))
-//            return asDouble(this.datapoint.get("nearestStormDistance"));
-//        else
-//            return -1d;
-//    }
-//
-//    private Double asDouble(Object obj){
-//        return Double.parseDouble( String.valueOf(obj) );
-//    }
-//
-//    private String asString(Object obj){
-//        return String.valueOf(obj);
-//    }
+    private int returnIntProperty(String property) throws JSONSlotNotFoundException {
+        
+        if (data.containsKey(property))
+            return ((Integer)data.get(property)).intValue();
+        
+        throw new JSONSlotNotFoundException();
+    }
 }

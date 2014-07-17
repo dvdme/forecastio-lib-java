@@ -17,7 +17,7 @@ import dme.forecastiolib.enums.FIODataBlocksEnum;
 import dme.forecastiolib.enums.FIOLangEnum;
 import dme.forecastiolib.enums.FIOUnitsEnum;
 import dme.forecastiolib.exceptions.JSONSlotNotFoundException;
-import dme.forecastiolib.exceptions.ResponseJSONNotFoundException;
+import dme.forecastiolib.exceptions.JSONNotFoundException;
 
 /**
  * Wrapper for handling forecast calls.
@@ -45,10 +45,12 @@ public class ForecastIO implements ForecastIOInterface {
 
 	
 	// Data points
-	public JSONObject currently = new JSONObject(),   // contains the current weather conditions at the requested location
+	private FIODataPoint currently;    // contains the current weather conditions at the requested location
+	
+	private JSONObject    
 	                   daily     = new JSONObject(),   // contains the weather conditions day-by-day for the next week
 	                   flags     = new JSONObject(),   // contains miscellaneous metadata concerning this request
-	                   forecast  = new JSONObject(),   // contains all the data
+	                   forecast  = null,               // contains all the data
 	                   hourly    = new JSONObject(),   // contains the weather conditions hour-by-hour for the next two days
 	                   minutely  = new JSONObject(),   // contains the weather conditions minute-by-minute for the next hour
 	                   alerts    = new JSONObject();   // array of alert objects, which, if present, contains any severe weather alerts, issued by a
@@ -310,11 +312,32 @@ public class ForecastIO implements ForecastIOInterface {
     
     // JSON data
     /**
+     * Get the API response.<br />
+     * 
+     * @return
+     * @throws JSONNotFoundException Occurs when no response has been received yet.
+     */
+    public final JSONObject getAPIResponse() throws JSONNotFoundException {
+        
+        if (forecast == null)
+            throw new JSONNotFoundException();
+        
+        return forecast;
+    }
+    
+    /**
      * Returns the currently data points
      * 
      * @return
+     * @throws JSONNotFoundException Occurs when no response has been received yet or when this report has been excluded of the API response.
      */
-    public final JSONObject getCurrently() { return currently; }
+    public final FIODataPoint getCurrently() {
+        
+        if (currently == null)
+            throw new JSONNotFoundException("Report found.");
+        
+        return currently;
+    }
 
     /**
      * Returns the minutely data block.
@@ -355,10 +378,10 @@ public class ForecastIO implements ForecastIOInterface {
      * Returns the UNIX time of the API response.
      * 
      * @return
-     * @throws ResponseJSONNotFoundException
+     * @throws JSONNotFoundException
      * @throws JSONSlotNotFoundException
      */
-    public final String getResponseTime() throws ResponseJSONNotFoundException, JSONSlotNotFoundException {
+    public final String getResponseTime() throws JSONNotFoundException, JSONSlotNotFoundException {
         
         checkResponseJSON();
         
@@ -374,10 +397,10 @@ public class ForecastIO implements ForecastIOInterface {
      * Returns the IANA timezone name of the requested location of the API response.
      * 
      * @return
-     * @throws ResponseJSONNotFoundException
+     * @throws JSONNotFoundException
      * @throws JSONSlotNotFoundException
      */
-    public final String getResponseTimezone() throws ResponseJSONNotFoundException, JSONSlotNotFoundException { 
+    public final String getResponseTimezone() throws JSONNotFoundException, JSONSlotNotFoundException { 
         
         checkResponseJSON();
         
@@ -392,10 +415,10 @@ public class ForecastIO implements ForecastIOInterface {
      * Returns the timezone offset of the API reponse in hours from GMT.
      * 
      * @return
-     * @throws ResponseJSONNotFoundException
+     * @throws JSONNotFoundException
      * @throws JSONSlotNotFoundException
      */
-    public final int getResponseOffset() throws ResponseJSONNotFoundException, JSONSlotNotFoundException {
+    public final int getResponseOffset() throws JSONNotFoundException, JSONSlotNotFoundException {
         
         checkResponseJSON();
         
@@ -410,10 +433,10 @@ public class ForecastIO implements ForecastIOInterface {
      * Returns the timezone offset of the API reponse in hours from GMT.
      * 
      * @return
-     * @throws ResponseJSONNotFoundException
+     * @throws JSONNotFoundException
      * @throws JSONSlotNotFoundException
      */
-    public final String getResponseOffsetString() throws ResponseJSONNotFoundException, JSONSlotNotFoundException {
+    public final String getResponseOffsetString() throws JSONNotFoundException, JSONSlotNotFoundException {
         
         String string = "";
         
@@ -470,7 +493,12 @@ public class ForecastIO implements ForecastIOInterface {
      * 
      * @return
      */
-    public final boolean hasCurrently() { return this.currently.isEmpty(); }
+    public final boolean hasCurrently() {
+        
+        return (currently == null)?
+                   false:
+                   true;
+    }
 
     /**
      * Checks if there is any minutely data available.
@@ -498,7 +526,7 @@ public class ForecastIO implements ForecastIOInterface {
      * 
      * @return
      */
-    public final boolean hasFlags() { return this.currently.isEmpty(); }
+    //public final boolean hasFlags() { return this.currently.isEmpty(); }
     
     /**
      * Checks if there is any flags data available.
@@ -660,8 +688,10 @@ public class ForecastIO implements ForecastIOInterface {
         } catch (NullPointerException e) {}
         
         try {
-            currently = forecast.getJSONObject("currently");
-        } catch (NullPointerException e) {}
+            currently = new FIODataPoint(forecast.getJSONObject(FIODataBlocksEnum.CURRENTLY));
+        } catch (NullPointerException e) {
+            currently = null;
+        }
         
         try {
             daily = forecast.getJSONObject("daily");
@@ -686,11 +716,11 @@ public class ForecastIO implements ForecastIOInterface {
      * Convenience helper for checking if there is a JSON file from the API response.
      * 
      * @param json
-     * @throws ResponseJSONNotFoundException
+     * @throws JSONNotFoundException
      */
-    private void checkResponseJSON() throws ResponseJSONNotFoundException {
+    private void checkResponseJSON() throws JSONNotFoundException {
         
         if (forecast.isEmpty())
-            throw new ResponseJSONNotFoundException();
+            throw new JSONNotFoundException();
     }
 }

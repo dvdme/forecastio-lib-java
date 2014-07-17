@@ -12,6 +12,9 @@ import dme.forecastiolib.ForecastIO;
 import dme.forecastiolib.enums.FIODataBlocksEnum;
 import dme.forecastiolib.enums.FIOLangEnum;
 import dme.forecastiolib.enums.FIOUnitsEnum;
+import dme.forecastiolib.exceptions.JSONNotFoundException;
+import dme.forecastiolib.exceptions.JSONSlotNotFoundException;
+import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
 
@@ -325,5 +328,50 @@ public class ForecastIOTestCase extends TestCase {
         
         forecast.resetExtend();
         assertTrue(forecast.isExtended() == false);
+    }
+    
+    
+    //
+    // Test API response
+    //
+    public void testRequestForecast() {
+        
+        container = getRandomConstructorParametersContainer();
+        forecast  = new ForecastIO(container.key, container.latitude, container.longitude);
+                
+        try {
+            forecast.getAPIResponse();
+        } catch (JSONNotFoundException exception) {
+        } catch (Exception exception) {
+            fail("Wrong type of exception thrown.");
+        }
+        
+        forecast.requestForecast();
+        
+        try {
+            forecast.getAPIResponse();
+            assertFalse(forecast.getAPIResponse().isNullObject());
+        } catch (Exception exception) {
+            fail("Expected a non null API response.");
+        }
+    }
+    
+    public void testCurrentlyDataBlock() {
+        
+        container = getRandomConstructorParametersContainer();
+        forecast  = new ForecastIO(container.key, container.latitude, container.longitude);
+        
+        assertFalse(forecast.hasCurrently());
+       
+        forecast.requestForecast();
+        assertTrue(forecast.hasCurrently());
+        System.out.println("TEST " + forecast.getCurrently().getTime());
+        try {
+            forecast.getCurrently().getTime();
+        } catch (JSONSlotNotFoundException exception) {
+            fail("Invalid data point.");
+        } catch (Exception exception) {
+            fail("Wrong type of exception thrown.");
+        }
     }
 }
