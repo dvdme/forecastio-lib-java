@@ -16,8 +16,8 @@ import net.sf.json.JSONObject;
 import dme.forecastiolib.enums.FIODataBlocksEnum;
 import dme.forecastiolib.enums.FIOLangEnum;
 import dme.forecastiolib.enums.FIOUnitsEnum;
-import dme.forecastiolib.exceptions.JSONSlotNotFoundException;
-import dme.forecastiolib.exceptions.JSONNotFoundException;
+import dme.forecastiolib.json.JSONNotFoundException;
+import dme.forecastiolib.json.JSONSlotNotFoundException;
 
 /**
  * Wrapper for handling forecast calls.

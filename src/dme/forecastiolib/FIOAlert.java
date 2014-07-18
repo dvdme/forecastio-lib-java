@@ -1,15 +1,16 @@
 package dme.forecastiolib;
 
 import dme.forecastiolib.enums.FIOAlertPropertiesEnum;
+import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 
 /**
- * Representation of an Alert.
+ * Representation of an Alert.<br />
+ * <br />
+ * Helper used for handling Alerts objects. More information available <a href="https://developer.forecast.io/docs/v2">here</a>.
  *
- * @author   Theo FIDRY <theo.fidry@gmail.com>
- * @creation 17 juil. 2014
+ * @author   Theo FIDRY (theo.fidry@gmail.com)
  * @version  1.0.0
- *
  */
 public class FIOAlert {
 
@@ -17,137 +18,187 @@ public class FIOAlert {
     //
     // FIELDS
     //
+    // JSON containing this instance data.
     private JSONObject data = new JSONObject();
-    private String title       = "";    // short text summary of the alert
-    private int    time        = -1;    // UNIX time at which the alert will cease to be valid
-    private String description = "",    // detailed text description of the alert from the appropriate weather service
-                   uri         = "";    // HTTP(S) URI that contains detailed information about the alert
     
     
     //
     // CONSTRUCTORS
-    //    
-    /**
-     * Instanciate an alert with the given JSON.
-     * 
-     * @param data
-     */
-    public FIOAlert(JSONObject data) {
-        
-        if (data != null)
-            this.data = data;
-        else
-            this.data.clear();
-        setTitle(data.get(FIOAlertPropertiesEnum.TITLE).toString());
-        setTime(Integer.parseInt(data.get(FIOAlertPropertiesEnum.EXPIRES).toString()));
-        setDescription(data.get(FIOAlertPropertiesEnum.DESCRIPTION).toString());
-        setUri(data.get(FIOAlertPropertiesEnum.URI).toString());
-    }
-
-
-    //
-    // GETTERS & SETTERS
     //
     /**
-     * Get the alert's title which is short text summary of the alert.
-     * 
-     * @return
+     * Instantiate an empty alert (which contains no data).<br />
      */
-    public final String getTitle() { return title; }
+    public FIOAlert() {}
     
     /**
-     * Set the alert's title which is short text summary of the alert.
+     * Instantiate this instance with the given JSON.<br />
+     * <br />
+     * The JSON must be valid or this will be an empty alert.
      * 
-     * @param title the title to set
+     * @param data JSON source
      */
-    public final void setTitle(String title) {
-        
-        if (title == null)
-            this.title = "";
-        else
-            this.title = title;
-        }
-    
-    /**
-     * Get the UNIX time at which the alert will cease to be valid.
-     * 
-     * @return 
-     */
-    public final int getTime() { return time; }
-    
-    /**
-     * Set the UNIX time at which the alert will cease to be valid.
-     * 
-     * @param time the time to set
-     */
-    public final void setTime(int time) { this.time = time; }
-    
-    /**
-     * Get the detailed text description of the alert from the appropriate weather service.
-     * 
-     * @return the description
-     */
-    public final String getDescription() { return description; }
-    
-    /**
-     * Set the detailed text description of the alert from the appropriate weather service.
-     * 
-     * @param description the description to set
-     */
-    public final void setDescription(String description) {
-        
-        if (description == null)
-            this.description = "";
-        else
-            this.description = description;
-    }
-    
-    /**
-     * Get the HTTP(S) URI that contains detailed information about the alert.
-     * 
-     * @return the uri
-     */
-    public final String getUri() { return uri; }
-    
-    /**
-     * Set the HTTP(S) URI that contains detailed information about the alert.
-     * 
-     * @param uri the uri to set
-     */
-    public final void setUri(String uri) {
-        
-        if (uri == null)
-            this.uri = "";
-        else
-            this.uri = uri;
-    }
-    
-    
+    public FIOAlert(JSONObject data) { update(data); }
+
+
     //
     // PUBLIC HELPERS
     //
+    /**
+     * Get the short text summary of this alert.<br />
+     * <br />
+     * An alert may have an empty title.<br />
+     * If this alert is empty, the value returned is null.
+     * 
+     * @return short text summary | empty | null
+     */
+    public final String getTitle() {
+     
+        if (data.isEmpty())
+            return null;
+
+        return data.getString((FIOAlertPropertiesEnum.TITLE));
+    }
+    
+    /**
+     * Get this UNIX time at which this alert will cease to be valid.<br />
+     * <br />
+     * If this alert is empty, the value returned is -1.
+     *         
+     * @return UNIX time | -1
+     */
+    public final long getExpires() {
+        
+        if (data.isEmpty())
+            return -1;
+        
+        return Long.parseLong(data.getString(FIOAlertPropertiesEnum.EXPIRES));
+    }
+    
+    /**
+     * Get the detailed text description of this alert from the appropriate weather service.<br />
+     * <br />
+     * An alert may have an empty description.<br />
+     * If this alert is empty, the value returned is null.
+     * 
+     * @return detailed text description | empty | null
+     */
+    public final String getDescription() {
+        
+        try {
+            return data.getString(FIOAlertPropertiesEnum.DESCRIPTION);
+        } catch (Exception exception) {
+            
+            if (!data.isEmpty())
+                return "";
+            return null;
+        }
+    }
+    
+    /**
+     * Get the HTTP(S) URI that contains detailed information about this alert.<br />
+     * <br />
+     * An alert may have an empty URI.<br />
+     * If this alert is empty, the value returned is null.
+     * 
+     * @return HTTP(S) URI | empty | null
+     */
+    public final String getURI() {
+        
+        if (data.isEmpty())
+            return null;
+        
+        return data.getString(FIOAlertPropertiesEnum.URI);
+    }
+    
     /**
      * Check if the JSON given has the required information for being processed as an alert.<br />
      * <br />
      * Data entries checked:
      * <ul>
-     *  <li>title</li>
-     *  <li>expires</li>
-     *  <li>URI</li>
+     *  <li>title: short text summary of this alert</li>
+     *  <li>expires: UNIX time at which this alert will cease to be valid</li>
+     *  <li>description: detailed text description of this alert (optional)</li>
+     *  <li>URI: HTTP(S) URI that contains detailed information about this alert</li>
      * </ul>
-     * Non optional data are required or the JSON is considered as invalid.
+     * Non optional data are required or the JSON is considered as invalid.<br />
+     * Check if the entries are convertible to strings.
      * 
-     * @param data
+     * @param  data JSON checked
      * @return
      */
-    public boolean isValid(JSONObject data) {
+    public static boolean isValid(JSONObject data) {
         
-        if (data.get(FIOAlertPropertiesEnum.TITLE) != null
-            && data.get(FIOAlertPropertiesEnum.EXPIRES) != null
-            && data.get(FIOAlertPropertiesEnum.URI) != null) {
+        try {
+            data.getString(FIOAlertPropertiesEnum.TITLE);
+            data.getString(FIOAlertPropertiesEnum.EXPIRES);
+            data.getString(FIOAlertPropertiesEnum.URI);
             
+            return true;
+        } catch (JSONException exception) {
+            return false;
+        }
+    }
+    
+    /**
+     * Updates this instance with the given JSON.<br />
+     * <br />
+     * The JSON must be valid or this instance will not be updated.
+     * 
+     * @param  data data JSON source
+     * @return      true on success, false otherwise
+     */
+    public boolean update(JSONObject data) {
+        
+        if (isValid(data)) {
+
+            // create a JSON with minimal values
+            JSONObject optimizedJSON = new JSONObject();
+
+            optimizedJSON.put(FIOAlertPropertiesEnum.TITLE, data.get(FIOAlertPropertiesEnum.TITLE));
+            optimizedJSON.put(FIOAlertPropertiesEnum.EXPIRES, data.get(FIOAlertPropertiesEnum.EXPIRES));
+            try {
+                optimizedJSON.put(FIOAlertPropertiesEnum.DESCRIPTION, data.get(FIOAlertPropertiesEnum.DESCRIPTION));
+            } catch (JSONException exception) {
+                // ignore this exception since it's an optional field
+            }
+            optimizedJSON.put(FIOAlertPropertiesEnum.URI, data.get(FIOAlertPropertiesEnum.URI));
+
+            this.data = data;
             return true;
         } else
             return false;
+    }
+    
+    /**
+     * Check whether this alert is empty or not.<br />
+     * <br />
+     * An alert is considered empty when it contains no data.
+     * 
+     * @return true if not empty, false otherwise
+     */
+    public boolean isEmpty() { return data.isEmpty(); }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(Object alert) {
+
+        if (!alert.getClass().equals(FIOAlert.class))
+            return false;
+        else {
+            
+            FIOAlert comparedAlert = (FIOAlert)alert;
+            
+            if (!getTitle().equals(comparedAlert.getTitle()))
+                return false;
+            if (getExpires() != comparedAlert.getExpires())
+                return false;
+            if (!getDescription().equals(comparedAlert.getDescription()))
+                return false;
+            if (!getURI().equals(comparedAlert.getURI()))
+                return false;
+            
+            return true;
+        }
     }
 }
