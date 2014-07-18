@@ -1,4 +1,4 @@
-package dme.forecastiolib;
+package dme.forecastiolib.alerts;
 
 import dme.forecastiolib.enums.FIOAlertPropertiesEnum;
 import net.sf.json.JSONException;
@@ -26,7 +26,7 @@ public class FIOAlert {
     // CONSTRUCTORS
     //
     /**
-     * Instantiate an empty alert (which contains no data).<br />
+     * Instantiate an empty alert (which contains no data).
      */
     public FIOAlert() {}
     
@@ -35,7 +35,7 @@ public class FIOAlert {
      * <br />
      * The JSON must be valid or this will be an empty alert.
      * 
-     * @param data JSON source
+     * @param data JSON source | null
      */
     public FIOAlert(JSONObject data) { update(data); }
 
@@ -123,10 +123,13 @@ public class FIOAlert {
      * Non optional data are required or the JSON is considered as invalid.<br />
      * Check if the entries are convertible to strings.
      * 
-     * @param  data JSON checked
-     * @return
+     * @param  data JSON checked | null
+     * @return true on success, false otherwise
      */
     public static boolean isValid(JSONObject data) {
+        
+        if (data == null)
+            return false;
         
         try {
             data.getString(FIOAlertPropertiesEnum.TITLE);
@@ -142,9 +145,9 @@ public class FIOAlert {
     /**
      * Updates this instance with the given JSON.<br />
      * <br />
-     * The JSON must be valid or this instance will not be updated.
+     * The JSON must be valid or this instance will be emptied.
      * 
-     * @param  data data JSON source
+     * @param  data data JSON source | null
      * @return      true on success, false otherwise
      */
     public boolean update(JSONObject data) {
@@ -165,9 +168,17 @@ public class FIOAlert {
 
             this.data = data;
             return true;
-        } else
+        } else {
+            
+            clear();
             return false;
+        }
     }
+    
+    /**
+     * Empties this instance.
+     */
+    public void clear() { data.clear(); }
     
     /**
      * Check whether this alert is empty or not.<br />
@@ -178,24 +189,31 @@ public class FIOAlert {
      */
     public boolean isEmpty() { return data.isEmpty(); }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
+    /**
+     * Compares this instance to another alert to determine if they are equals.<br />
+     * <br />
+     * Two alerts are considered as equals if they contains the same informations. String are case sensitive and an empty string is not equal
+     * to a space.
+     * 
+     * @param  alert alert to which compare this instance | null
+     * @return true if equal, false otherwise
      */
-    public boolean equals(Object alert) {
+    public boolean equals(FIOAlert alert) {
 
-        if (!alert.getClass().equals(FIOAlert.class))
+        if (alert == null)
             return false;
+        
+        if (isEmpty() && alert.isEmpty())
+            return true;
         else {
             
-            FIOAlert comparedAlert = (FIOAlert)alert;
-            
-            if (!getTitle().equals(comparedAlert.getTitle()))
+            if (!getTitle().equals(alert.getTitle()))
                 return false;
-            if (getExpires() != comparedAlert.getExpires())
+            if (getExpires() != alert.getExpires())
                 return false;
-            if (!getDescription().equals(comparedAlert.getDescription()))
+            if (!getDescription().equals(alert.getDescription()))
                 return false;
-            if (!getURI().equals(comparedAlert.getURI()))
+            if (!getURI().equals(alert.getURI()))
                 return false;
             
             return true;
