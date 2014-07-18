@@ -3,7 +3,7 @@ package dme.forecastiolib;
 import java.util.HashMap;
 
 import dme.forecastiolib.enums.FIODataPointPropertiesEnum;
-import dme.forecastiolib.exceptions.JSONSlotNotFoundException;
+import dme.forecastiolib.json.JSONSlotNotFoundException;
 import net.sf.json.JSONObject;
 
 /**

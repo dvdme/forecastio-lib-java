@@ -5,7 +5,7 @@ import java.util.HashMap;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import dme.forecastiolib.enums.FIOFlagsObjectsEnum;
-import dme.forecastiolib.exceptions.JSONSlotNotFoundException;
+import dme.forecastiolib.json.JSONSlotNotFoundException;
 
 
 public class FIOFlags {

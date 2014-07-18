@@ -1,4 +1,4 @@
-package dme.forecastiolib.exceptions;
+package dme.forecastiolib.json;
 
 import net.sf.json.JSONException;
 

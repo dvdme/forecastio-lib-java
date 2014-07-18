@@ -13,8 +13,8 @@ import dme.forecastiolib.ForecastIO;
 import dme.forecastiolib.enums.FIODataBlocksEnum;
 import dme.forecastiolib.enums.FIOLangEnum;
 import dme.forecastiolib.enums.FIOUnitsEnum;
-import dme.forecastiolib.exceptions.JSONNotFoundException;
-import dme.forecastiolib.exceptions.JSONSlotNotFoundException;
+import dme.forecastiolib.json.JSONNotFoundException;
+import dme.forecastiolib.json.JSONSlotNotFoundException;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
