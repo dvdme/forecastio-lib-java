@@ -15,11 +15,14 @@ public final class FIOFlagsObjectsEnum {
                                DATAPOINT_STATIONS  = "datapoint-stations",
                                ISD_STATIONS        = "isd-stations",
                                LAMP_STATIONS       = "lamp-stations",
+                               MADIS_STATIONS      = "madis-stations",
                                METAR_STATIONS      = "metar-stations",
                                METNO_LICENCE       = "metno-license",
                                SOURCES             = "sources",
                                UNITS               = "units";
 
+    private final static String[] enums = {DARKSKY_UNAVAILABLE, DARKSKY_STATIONS, DATAPOINT_STATIONS, ISD_STATIONS, LAMP_STATIONS, MADIS_STATIONS, METAR_STATIONS, METNO_LICENCE, SOURCES, UNITS};
+    
     /**
      * Test if the parameter passed is a valid 'enum'.
      * 
@@ -31,7 +34,7 @@ public final class FIOFlagsObjectsEnum {
         if (flagObject == null)
             return false;
         
-        String[] iconsList = {DARKSKY_UNAVAILABLE, DARKSKY_STATIONS, DATAPOINT_STATIONS, ISD_STATIONS, LAMP_STATIONS, METAR_STATIONS, METNO_LICENCE, SOURCES, UNITS};
+        String[] iconsList = {DARKSKY_UNAVAILABLE, DARKSKY_STATIONS, DATAPOINT_STATIONS, ISD_STATIONS, LAMP_STATIONS, MADIS_STATIONS, METAR_STATIONS, METNO_LICENCE, SOURCES, UNITS};
         
         for (int i = 0; i < iconsList.length; i++) {
             
@@ -41,4 +44,13 @@ public final class FIOFlagsObjectsEnum {
         
         return false;
     }
+    
+    private FIOUnitsEnum() {}
+    
+    /**
+     * Get the list of enums.
+     * 
+     * @return list of enums
+     */
+    public static String[] getEnums() { return enums; }
 }

@@ -519,7 +519,7 @@ public class ForecastIOTestCase extends TestCase {
         // test the access to data of the report when no call has been made yet
         // expect JSONNotFoundException thrown
         try {
-            assertTrue(forecast.getFlags().getNbrOfFlags() == 0);
+            assertTrue(forecast.getFlags().size() == 0);
         } catch (JSONNotFoundException exception) {
             // is the result expected
         } catch (Exception exception) {
@@ -545,7 +545,7 @@ public class ForecastIOTestCase extends TestCase {
         // test if the hasReport method once a call has been made
         // expect to find the report with at least a data point
         assertTrue(forecast.hasFlags());
-        assertTrue(forecast.getFlags().getNbrOfFlags() != 0);
+        assertTrue(forecast.getFlags().size() != 0);
 
         // test the access of the data once a call has been made
         // expect proper access to the data

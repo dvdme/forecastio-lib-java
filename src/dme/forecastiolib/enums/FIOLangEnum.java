@@ -18,6 +18,8 @@ public final class FIOLangEnum {
                                SPANISH = "es",
                                TETUM   = "test";
 
+    private final static String[] enums = {ENGLISH, FRENCH, GERMAN, DUTCH, SPANISH, TETUM};
+    
     /**
      * Test if the parameter passed is a valid 'enum'.
      * 
@@ -42,4 +44,11 @@ public final class FIOLangEnum {
     }
     
     private FIOLangEnum() {}
+    
+    /**
+     * Get the list of enums.
+     * 
+     * @return list of enums
+     */
+    public static String[] getEnums() { return enums; }
 }

@@ -9,7 +9,6 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang.RandomStringUtils;
 
 import dme.forecastiolib.alerts.FIOAlert;
-import dme.forecastiolib.alerts.FIOAlerts;
 import dme.forecastiolib.enums.FIOAlertPropertiesEnum;
 
 
