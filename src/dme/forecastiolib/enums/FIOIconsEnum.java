@@ -45,7 +45,7 @@ public final class FIOIconsEnum {
         return false;
     }
     
-    private FIOUnitsEnum() {}
+    private FIOIconsEnum() {}
     
     /**
      * Get the list of enums.

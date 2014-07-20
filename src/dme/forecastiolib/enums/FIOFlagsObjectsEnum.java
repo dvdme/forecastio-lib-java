@@ -45,7 +45,7 @@ public final class FIOFlagsObjectsEnum {
         return false;
     }
     
-    private FIOUnitsEnum() {}
+    private FIOFlagsObjectsEnum() {}
     
     /**
      * Get the list of enums.

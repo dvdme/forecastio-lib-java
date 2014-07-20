@@ -67,7 +67,7 @@ public final class FIODataPointPropertiesEnum {
         return false;
     }
     
-    private FIOUnitsEnum() {}
+    private FIODataPointPropertiesEnum() {}
     
     /**
      * Get the list of enums.
