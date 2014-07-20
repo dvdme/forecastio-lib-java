@@ -18,6 +18,8 @@ public final class FIODataBlocksEnum {
                                HOURLY    = "hourly",
                                MINUTELY  = "minutely";
 
+    private final static String[] enums = {ALERTS, CURRENTLY, DAILY, FLAGS, HOURLY, MINUTELY};
+    
     /**
      * Test if the parameter passed is a valid 'enum'.
      * 
@@ -41,4 +43,11 @@ public final class FIODataBlocksEnum {
     }
     
     private FIODataBlocksEnum() {}
+    
+    /**
+     * Get the list of enums.
+     * 
+     * @return list of enums
+     */
+    public static String[] getEnums() { return enums; }
 }

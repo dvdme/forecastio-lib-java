@@ -26,6 +26,8 @@ public final class FIOUnitsEnum {
                                UK   = "uk",
                                AUTO = "auto";
 
+    private final static String[] enums = {US, SI, CA, UK, AUTO};
+    
     /**
      * Test if the parameter passed is a valid 'enum'.
      * 
@@ -50,4 +52,11 @@ public final class FIOUnitsEnum {
     }
     
     private FIOUnitsEnum() {}
+    
+    /**
+     * Get the list of enums.
+     * 
+     * @return list of enums
+     */
+    public static String[] getEnums() { return enums; }
 }

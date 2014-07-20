@@ -30,11 +30,11 @@ public class ForecastIO {
     //
 
     // API call parameters
-	private static final String APIURL     = "https://api.forecast.io/forecast";  // base URL used for the API call
-	private static final int LATITUDE_MAX  = 90,
-	                         LATITUDE_MIN  = 0,
-	                         LONGITUDE_MAX = 180,
-	                         LONGITUDE_MIN = -180;
+	private static final String APIURL        = "https://api.forecast.io/forecast";  // base URL used for the API call
+	private static final int    LATITUDE_MAX  = 90,
+	                            LATITUDE_MIN  = 0,
+	                            LONGITUDE_MAX = 180,
+	                            LONGITUDE_MIN = -180;
 	
 	private String apiKey,                 // API key
 	               exclude  = "",          // used to exclude uneeded reports to reduce latency and saving cache space

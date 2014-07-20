@@ -12,6 +12,8 @@ public class FIOAlertPropertiesEnum {
                                DESCRIPTION = "description",
                                URI         = "uri";
 
+    private final static String[] enums = {TITLE, EXPIRES, DESCRIPTION, URI};
+    
     /**
      * Test if the parameter passed is a valid 'enum'.
      * 
@@ -35,4 +37,11 @@ public class FIOAlertPropertiesEnum {
     }
     
     private FIOAlertPropertiesEnum() {}
+    
+    /**
+     * Get the list of enums.
+     * 
+     * @return list of enums
+     */
+    public static String[] getEnums() { return enums; }
 }

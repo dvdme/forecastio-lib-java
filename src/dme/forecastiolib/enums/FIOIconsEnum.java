@@ -21,6 +21,8 @@ public final class FIOIconsEnum {
                                PARTLY_CLOUDY_DAY   = "partly-cloudy-day",
                                PARTLY_CLOUDY_NIGHT = "partly-cloudy-night";
 
+    private final static String[] enums = {CLEAR_DAY, CLEAR_NIGHT, RAIN, SNOW, SLEET, WIND, FOG, CLOUDY, PARTLY_CLOUDY_DAY, PARTLY_CLOUDY_NIGHT};
+    
     /**
      * Test if the parameter passed is a valid 'enum'.
      * 
@@ -42,4 +44,13 @@ public final class FIOIconsEnum {
         
         return false;
     }
+    
+    private FIOUnitsEnum() {}
+    
+    /**
+     * Get the list of enums.
+     * 
+     * @return list of enums
+     */
+    public static String[] getEnums() { return enums; }
 }
