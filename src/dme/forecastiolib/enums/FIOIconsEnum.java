@@ -34,11 +34,9 @@ public final class FIOIconsEnum {
         if (iconName == null)
             return false;
         
-        String[] iconsList = {CLEAR_DAY, CLEAR_NIGHT, RAIN, SNOW, SLEET, WIND, FOG, CLOUDY, PARTLY_CLOUDY_DAY, PARTLY_CLOUDY_NIGHT};
-        
-        for (int i = 0; i < iconsList.length; i++) {
+        for (int i = 0; i < enums.length; i++) {
             
-            if (iconName.equals(iconsList[i]))
+            if (iconName.equals(enums))
                 return true;
         }
         

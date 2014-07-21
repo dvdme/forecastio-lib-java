@@ -9,8 +9,10 @@ import java.net.URL;
 import java.util.Date;
 import java.util.zip.GZIPInputStream;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
+import dme.forecastiolib.alerts.FIOAlerts;
 import dme.forecastiolib.enums.FIODataBlocksEnum;
 import dme.forecastiolib.enums.FIOLangEnum;
 import dme.forecastiolib.enums.FIOUnitsEnum;
@@ -35,11 +37,12 @@ public class ForecastIO {
 	                            LONGITUDE_MIN = -180;
 	
 	private String apiKey,                 // API key
-	               exclude  = "",          // used to exclude uneeded reports to reduce latency and saving cache space
-	               lang,                   // defines the language in which text summaries are returned
-            	   time,                   // optional, used for requesting a arbitrary point in time
-            	   units    = "auto";      // defines the units of the API response
+	               exclude = "",          // used to exclude uneeded reports to reduce latency and saving cache space
+	               lang = FIOLangEnum.DEFAULT,                   // defines the language in which text summaries are returned
+            	   units   = FIOUnitsEnum.DEFAULT;      // defines the units of the API response
 	             
+	private int time = -1; // optional, used for requesting a arbitrary point in time
+	
 	private double latitude,               // geographic latitude coordinate of a location in decimal degrees
                    longitude;              // geographic longitude coordinate of a location in decimal degrees
 	
@@ -49,16 +52,15 @@ public class ForecastIO {
 	// Data blocks
 	private FIODataPoint currently;    // contains the current weather conditions at the requested location
 	
-	private FIODataBlock daily,   // contains the weather conditions day-by-day for the next week
-	                     hourly,   // contains the weather conditions hour-by-hour for the next two days
-	                     minutely;   // contains the weather conditions minute-by-minute for the next hour
+	private FIODataBlock daily,        // contains the weather conditions day-by-day for the next week
+	                     hourly,       // contains the weather conditions hour-by-hour for the next two days
+	                     minutely;     // contains the weather conditions minute-by-minute for the next hour
 	
-	private FIOFlags flags;    // contains miscellaneous metadata concerning this request
+	private FIOFlags flags;            // contains miscellaneous metadata concerning this request
 	
 	private JSONObject  
-	                   forecast  = null,               // contains all the data
-	                   
-	                   alerts    = new JSONObject();   // array of alert objects, which, if present, contains any severe weather alerts, issued by a
+	                   forecast  = null;   // array of alert objects, which, if present, contains any severe weather alerts, issued by a
+    FIOAlerts alerts;
 	                                                   // governmental weather authority, pertinent to the requested location
 
 	
@@ -66,22 +68,22 @@ public class ForecastIO {
     // CONSTRUCTORS
     //
     /**
-     * Instanciate a ForecastIO wrapper with default options.
+     * Instantiate a ForecastIO wrapper with default options.
      */
     public ForecastIO(String key, double latitude, double longitude) throws IllegalArgumentException { this(key, latitude, longitude, null, null, null, false); }
     
     /**
      * Convenience for the full constructor with the current time.
      * 
-     * @throws IllegalArgumentException Thrown when passed a non valid API key.
+     * @throws IllegalArgumentException
      */
     public ForecastIO(String key, double latitude, double longitude, String lang, String units, String[] exclude, boolean extend) throws IllegalArgumentException {
 
-        this(key, latitude, longitude, lang, null, units, exclude, extend);
+        this(key, latitude, longitude, lang, -1, units, exclude, extend);
     }
     
     /**
-     * Instanciate a ForecastIO wrapper.<br />
+     * Instantiate a ForecastIO wrapper.<br />
      * <br />
      * Invalid parameters are disregarded for default values.
      * 
@@ -89,18 +91,26 @@ public class ForecastIO {
      * @param latitude  Geographic latitude coordinate of a location in decimal degrees.
      * @param longitude Geographic longitude coordinate of a location in decimal degrees.
      * @param lang      Defines the language in which text summaries are returned.
-     * @param time      Define the time for requesting a arbitrary point.
+     * @param time      Define the time for requesting a arbitrary point. (UNIX time)
      * @param units     Defines the units of the API response.
-     * @param exclude   Used to exclude uneeded reports to reduce latency and saving cache space.
+     * @param exclude   Used to exclude unneeded reports to reduce latency and saving cache space.
      * @param extend    Request hourly data for the next seven days rather than the next two when set to true.
      * 
      * @throws IllegalArgumentException Thrown when passed a non valid API key.
      */
-    public ForecastIO(String key, double latitude, double longitude, String lang, Date time, String units, String[] exclude, boolean extend) throws IllegalArgumentException {
+    public ForecastIO(String key, double latitude, double longitude, String lang, int time, String units, String[] exclude, boolean extend) throws IllegalArgumentException {
 
         // check the API key
-        if (!isKeyValid(key))
-            throw new IllegalArgumentException("Invalid API key.");
+        if (!isKeyValid(key)) {
+            
+            String message = "Invalid API key.";
+            
+            if (key != null)
+                if (key.length() != 32)
+                    message += " Was expecting a key 32 characters long, found " + key.length() + " instead";
+            
+            throw new IllegalArgumentException(message);
+        }
         apiKey = key;
 
         setLatitude(latitude);
@@ -121,7 +131,7 @@ public class ForecastIO {
     /**
      * Get the latitude in decimal degrees.
      * 
-     * @return
+     * @return latitude
      */
     public final double getLatitude() { return latitude; }
 
@@ -130,14 +140,14 @@ public class ForecastIO {
      * <br />
      * The latitude ranges from 0° to 90° (borders included). If the value is out of range, the nearest value in the range is took.
      * 
-     * @param latitude
+     * @param latitude latitude
      */
     public final void setLatitude(double latitude) { this.latitude = getInRangeValue(latitude, LATITUDE_MIN, LATITUDE_MAX); }
    
     /**
      * Get the longitude in decimal degrees.
      * 
-     * @return
+     * @return longitude
      */
     public final double getLongitude() { return longitude; }
 
@@ -146,27 +156,27 @@ public class ForecastIO {
      * <br />
      * The longitude ranges from -180° to +180° (borders included). If the value is out of range, the nearest value in the range is took.
      * 
-     * @param longitude
+     * @param longitude longitude
      */
     public final void setLongitude(double longitude) { this.longitude = getInRangeValue(longitude, LONGITUDE_MIN, LONGITUDE_MAX);}
     
 	// exclude field
 	 /**
-	  * Return the exclude string that will be used for the Forecast call.<br />
+	  * Get the exclude string that will be used for the Forecast call.<br />
 	  * <br />
-	  * Empty string means that no report is excluded.
+	  * If the string returned is empty, it means that no data block will be excluded.
 	  * 
-	  * @return
+	  * @return exclude string | empty
 	  */
 	public final String getExcludeList() { return exclude; }
    
     /**
-     * Used to exclude uneeded reports to reduce latency and saving cache space.<br />
+     * Used to exclude unneeded reports to reduce latency and saving cache space.<br />
      * <br />
      * Invalid data blocks are not considered. A valid data block is a FIODataBlockEnum 'enum'.<br />
-     * If there is not at least one valid data block or if the parameter is null, it will be the same as specifying to not exclude reports at all.
+     * If there is not at least one valid data block or if the parameter is null, it will achieve the same effect as resetting this option.
      * 
-     * @param Array of data blocks.
+     * @param array of data blocks | null
      */
     public final void setExcludeList(String[] excludeList) {
                 
@@ -208,7 +218,7 @@ public class ForecastIO {
     /**
      * Add a data block to the exclude list if is valid or not already included.
      * 
-     * @param dataBlock
+     * @param dataBlock data block | null
      */
     public final void addToExcludeList(String dataBlock) {
         
@@ -227,7 +237,6 @@ public class ForecastIO {
                     
             }
         }
-        
     }
     
     /**
@@ -237,88 +246,100 @@ public class ForecastIO {
     
     // lang field
     /**
-     * @return The lang in which the text summaries are returned.
+     * Get the language in which the text summaries are returned.
+     * 
+     * @return language
      */
     public final String getLang() { return lang; }
 
     /**
-     * Set the lang in which the text summaries are returned.<br />
+     * Set the language in which the text summaries are returned.<br />
      * <br />
-     * If the lang passed is invalid or null, the lang will be set to its default value.
+     * If the language passed is invalid or null, the language will be set to its default value.<br />
+     * The default language is the default language used by the API.
      * 
-     * @param lang Valid FIOLangEnum 'enum'.
+     * @param lang valid FIOLangEnum 'enum'
      */
     public final void setLang(String lang) {
     
-        this.lang = (FIOLangEnum.isElement(lang))?
-                        lang:
-                        null;
+        if (FIOLangEnum.isElement(lang))
+            this.lang = lang;
+        else
+            resetLang();
     }
+    
+    /**
+     * Rest the language to its default value.
+     */
+    public final void resetLang() { lang = FIOLangEnum.DEFAULT; }
     
     // time field
     /**
-     * Returns the time is used to request a forecast for an arbitrary point in time. Since it's an optional value, null value may be returned.
+     * Get the UNIX time is used to request a forecast for an arbitrary point in time.<br />
+     * <br />
+     * If this option is not set, -1 is returned.
      * 
-     * @return
+     * @return UNIX time | -1
      */
-    public final String getTime() { return time; }
+    public final int getTime() { return time; }
 
     /**
-     * Set the time to request forecast for an arbitrary point in time.<br />
-     * <br />
-     * If the time specified is null or invalid, the current value will remain unchanged.
+     * Set the time to request forecast for an arbitrary point in time.
      * 
-     * @param
+     * @param time UNIX time
      */
-    public final void setTime(Date time) { 
+    // TODO check time value
+    public final void setTime(int time) { 
         
-        if (time != null)
-            this.time = Long.toString(time.getTime());
+        this.time = time;
     }
     
     /**
-     * Reset the time to its default value (null).
+     * Reset the time to its default value (-1).
      */
-    public final void resetTime() { time = null; }
+    public final void resetTime() { time = -1; }
     
     // units field
     /**
-     * Returns the units of the API response.
+     * Get the units in which the values returned are.
      * 
-     * @return
+     * @return units
      */
     public final String getUnits() { return this.units; }
 
     /**
      * Sets the units of the API response.<br />
      * <br />
-     * If the units specified is invalid or unkown, the current value will remain unchanged.
+     * If the units specified is invalid or unknown, it will fall back to its default value.<br />
+     * The default value is the SI units.
      * 
-     * @param units Valid FIOUnitsEnum 'enum'.
+     * @param units valid FIOUnitsEnum 'enum'
      */
     public final void setUnits(String units){
         
         if (FIOUnitsEnum.isElement(units))
             this.units = units;
+        else
+            resetUnits();
     }
     
     /**
      * Reset the units to their default value (AUTO).
      */
-    public final void resetUnits() { units = FIOUnitsEnum.AUTO; }
+    public final void resetUnits() { units = FIOUnitsEnum.DEFAULT; }
     
     // extend field
     /**
-     * Returns if the hourly report should be extended in the request.
+     * Returns true if the hourly report is extended or not.
      * 
-     * @return
+     * @return true if extented, false otherwise
      */
     public final boolean isExtended() { return extend; }
 
     /**
-     * Sets if the hourly report should be extended in the request.
+     * Defines if the hourly report should be extended or not.
      *
-     * @param extend
+     * @param extend true for extending, false otherwise
      */
     public final void setExtend(boolean extend) { this.extend = extend; }
     
@@ -330,102 +351,125 @@ public class ForecastIO {
     // JSON data
     /**
      * Get the API response.<br />
+     * <br />
+     * If a response has yet to be requested or received, throws an exception.
      * 
-     * @return
-     * @throws JSONNotFoundException Occurs when no response has been received yet.
+     * @return API response
+     * @throws JSONNotFoundException
      */
-    public final JSONObject getAPIResponse() throws JSONNotFoundException {
+    public final String getAPIResponse() throws JSONNotFoundException {
         
         if (forecast == null)
             throw new JSONNotFoundException();
         
-        return forecast;
+        return forecast.toString();
     }
     
     /**
-     * Returns the currently data points which contains the current weather conditions at the requested location.
+     * Get the currently data point which contains the current weather conditions at the requested location.<br />
+     * <br />
+     * If there is not such report, an exception is thrown.
      * 
-     * @return
-     * @throws JSONNotFoundException Occurs when no response has been received yet or when this report has been excluded of the API response.
+     * @return currently data point
+     * @throws JSONNotFoundException
      */
     public final FIODataPoint getCurrently() throws JSONNotFoundException {
         
         if (currently == null)
-            throw new JSONNotFoundException("Report found.");
+            throw new JSONNotFoundException("Report not found.");
         
         return currently;
     }
 
     /**
-     * Returns the minutely data block which contains the weather conditions minute-by-minute for the next hour.
+     * Get the minutely data block which contains the weather conditions minute-by-minute for the next hour.<br />
+     * <br />
+     * If there is not such report, an exception is thrown.
      * 
-     * @return
-     * @throws JSONNotFoundException Occurs when no response has been received yet or when this report has been excluded of the API response.
+     * @return minutely data block
+     * @throws JSONNotFoundException
      */
     public final FIODataBlock getMinutely() throws JSONNotFoundException {
         
         if (minutely == null)
-            throw new JSONNotFoundException("Report found.");
+            throw new JSONNotFoundException("Report not found.");
         
         return minutely;
     }
 
     /**
-     * Returns the hourly data block which contains the weather conditions hour-by-hour for the next two days.
+     * Get the hourly data block which contains the weather conditions hour-by-hour for the next two days.<br />
+     * <br />
+     * If there is not such report, an exception is thrown.
      * 
-     * @return
-     * @throws JSONNotFoundException Occurs when no response has been received yet or when this report has been excluded of the API response.
+     * @return hourly data block
+     * @throws JSONNotFoundException
      */
     public final FIODataBlock getHourly() throws JSONNotFoundException {
         
         if (hourly == null)
-            throw new JSONNotFoundException("Report found.");
+            throw new JSONNotFoundException("Report not found.");
         
         return hourly;
     }
 
     /**
-     * Returns the flags data which contains miscellaneous metadata such as the sources concerning this request.
+     * Get the flags data which contains miscellaneous metadata such as the sources concerning this request.<br />
+     * <br />
+     * If there is not such report, an exception is thrown.
      * 
-     * @return
-     * @throws JSONNotFoundException Occurs when no response has been received yet or when this report has been excluded of the API response.
+     * @return flags handler
+     * @throws JSONNotFoundException
      */
     public final FIOFlags getFlags() throws JSONNotFoundException {
         
         if (flags == null)
-            throw new JSONNotFoundException("Report found.");
+            throw new JSONNotFoundException("Report not found.");
         
         return flags;
     }
     
     /**
-     * Returns the alerts data which, if present, contains any severe weather alerts, issued by a governmental weather authority, pertinent to the
-     * requested location.
+     * Get the alerts data which, if present, contains any severe weather alerts, issued by a governmental weather authority, pertinent to the
+     * requested location.<br />
+     * <br />
+     * If there is not such report, an exception is thrown.
      * 
-     * @return
+     * @return alerts handler
+     * @throws JSONNotFoundException
      */
-    public final JSONObject getAlerts() { return alerts; }
+    public final FIOAlerts getAlerts() { 
+    
+        if (alerts == null)
+            throw new JSONNotFoundException("Report not found.");
+
+        return alerts;
+    }
 
     /**
      * Returns the daily data block which contains the weather conditions day-by-day for the next week.<br />
      * <br />
-     * The first block contains the weather conditions of the day before the current day.
+     * The first block contains the weather conditions of the day before the current day.<br />
+     * If there is not such report, an exception is thrown.
      * 
-     * @return
-     * @throws JSONNotFoundException Occurs when no response has been received yet or when this report has been excluded of the API response.
+     * @return daily data block
+     * @throws JSONNotFoundException
      */
     public final FIODataBlock getDaily() throws JSONNotFoundException {
         
         if (daily == null)
-            throw new JSONNotFoundException("Report found.");
+            throw new JSONNotFoundException("Report not found.");
         
         return daily;
     }
     
     /**
-     * Returns the UNIX time of the API response.
+     * Get the UNIX time of the last API response.<br />
+     * <br />
+     * If no request has been made yet or response received, an exception is thrown.<br />
+     * If there is no such slot in the report, an exception is thrown.
      * 
-     * @return
+     * @return UNIX time
      * @throws JSONNotFoundException
      * @throws JSONSlotNotFoundException
      */
@@ -442,9 +486,12 @@ public class ForecastIO {
     }
     
     /**
-     * Returns the IANA timezone name of the requested location of the API response.
+     * Get the IANA timezone name of the requested location of the API response.<br />
+     * <br />
+     * If no request has been made yet or response received, an exception is thrown.<br />
+     * If there is no such slot in the report, an exception is thrown.
      * 
-     * @return
+     * @return timezone
      * @throws JSONNotFoundException
      * @throws JSONSlotNotFoundException
      */
@@ -460,9 +507,12 @@ public class ForecastIO {
     }
 
     /**
-     * Returns the timezone offset of the API reponse in hours from GMT.
+     * Get the timezone offset of the API reponse in hours from GMT.<br />
+     * <br />
+     * If no request has been made yet or response received, an exception is thrown.<br />
+     * If there is no such slot in the report, an exception is thrown.
      * 
-     * @return
+     * @return response offset
      * @throws JSONNotFoundException
      * @throws JSONSlotNotFoundException
      */
@@ -478,9 +528,12 @@ public class ForecastIO {
     }
 
     /**
-     * Returns the timezone offset of the API reponse in hours from GMT.
+     * Get the timezone offset of the API reponse in hours from GMT.<br />
+     * <br />
+     * If no request has been made yet or response received, an exception is thrown.<br />
+     * If there is no such slot in the report, an exception is thrown.
      * 
-     * @return
+     * @return response offset
      * @throws JSONNotFoundException
      * @throws JSONSlotNotFoundException
      */
@@ -506,9 +559,9 @@ public class ForecastIO {
     // METHODS
     //
     /**
-     * Make the Forecast call to retrive the data.
+     * Make the Forecast call to retrieve the data.
      * 
-     * @return
+     * @return true if the call succeed, false otherwise
      */
     public boolean requestForecast() {
 
@@ -527,19 +580,18 @@ public class ForecastIO {
      * <br />
      * WARNING: reset the time set !
      * 
-     * @return
+     * @return true if successful, false otherwise
      */
     public boolean update() {
         
-        setTime(null);
-        
+        setTime(-1);
         return requestForecast();
     }
     
     /**
      * Checks if there is any currently data available.
      * 
-     * @return
+     * @return true if report present, false otherwise
      */
     public final boolean hasCurrently() {
         
@@ -551,7 +603,7 @@ public class ForecastIO {
     /**
      * Checks if there is any minutely data available.
      * 
-     * @return
+     * @return true if report present, false otherwise
      */
     public final boolean hasMinutely() {
         
@@ -563,7 +615,7 @@ public class ForecastIO {
     /**
      * Checks if there is any hourly data available.
      * 
-     * @return
+     * @return true if report present, false otherwise
      */
     public final boolean hasHourly() {
         
@@ -575,7 +627,7 @@ public class ForecastIO {
     /**
      * Checks if there is any daily data available.
      * 
-     * @return
+     * @return true if report present, false otherwise
      */
     public final boolean hasDaily() {
         
@@ -587,7 +639,7 @@ public class ForecastIO {
     /**
      * Checks if there is any flags data available.
      * 
-     * @return
+     * @return true if report present, false otherwise
      */
     public final boolean hasFlags() {
         
@@ -599,7 +651,7 @@ public class ForecastIO {
     /**
      * Checks if there is any flags data available.
      * 
-     * @return
+     * @return true if report present, false otherwise
      */
     public final boolean hasAlerts() { return this.alerts.isEmpty(); }
     
@@ -636,7 +688,7 @@ public class ForecastIO {
         String url = APIURL + "/" + apiKey + "/" + Double.toString(latitude) + "," + Double.toString(longitude);
                 
         // add optional parameters
-        if (time != null)
+        if (time != -1)
             url += "," + time;
         
         if (units != null)
@@ -647,7 +699,10 @@ public class ForecastIO {
         
         if (extend)
             url += "&extend=hourly";
-                
+          
+        if (!lang.equals(FIOLangEnum.DEFAULT))
+            url += "&lang=" + lang;
+        
         return url;
     }
 
@@ -748,35 +803,73 @@ public class ForecastIO {
         
         // NullPointerException are ignored since some data block may be excluded from the report.
         try {
-            alerts = forecast.getJSONObject("alerts");
-        } catch (Exception e) {}//TODO
+            
+            Object json = forecast.get(FIODataBlocksEnum.ALERTS);
+            
+            if (json != null)
+                alerts = new FIOAlerts(JSONArray.fromObject(json));
+            else
+                alerts = null;
+        } catch (Exception e) {
+            alerts = null;
+        }
         
         try {
-            currently = new FIODataPoint(forecast.getJSONObject(FIODataBlocksEnum.CURRENTLY));
+            
+            Object json = forecast.get(FIODataBlocksEnum.CURRENTLY);
+            
+            if (json != null)
+                currently = new FIODataPoint(JSONObject.fromObject(json));
+            else
+                currently = null;
         } catch (JSONException e) {
             currently = null;
         }
         
         try {
-            daily = new FIODataBlock(forecast.getJSONObject(FIODataBlocksEnum.DAILY));
+            
+            Object json = forecast.get(FIODataBlocksEnum.DAILY);
+            
+            if (json != null)
+                daily = new FIODataBlock(JSONObject.fromObject(json));
+            else
+                daily = null;
         } catch (JSONException e) {
             daily = null;
         }
         
         try {
-            flags = new FIOFlags(forecast.getJSONObject(FIODataBlocksEnum.FLAGS));
+            
+            Object json = forecast.get(FIODataBlocksEnum.FLAGS);
+            
+            if (json != null)
+                flags = new FIOFlags(JSONObject.fromObject(json));
+            else
+                flags = null;
         } catch (JSONException e) {
             flags = null;
         }
         
         try {
-            hourly = new FIODataBlock(forecast.getJSONObject(FIODataBlocksEnum.HOURLY));
+
+            Object json = forecast.get(FIODataBlocksEnum.HOURLY);
+            
+            if (json != null)
+                hourly = new FIODataBlock(JSONObject.fromObject(json));
+            else
+                hourly = null;
         } catch (JSONException e) {
             hourly = null;
         }
         
         try {
-            minutely = new FIODataBlock(forecast.getJSONObject(FIODataBlocksEnum.MINUTELY));
+            
+            Object json = forecast.get(FIODataBlocksEnum.MINUTELY);
+            
+            if (json != null)
+                minutely = new FIODataBlock(JSONObject.fromObject(json));
+            else
+                minutely = null;
         } catch (JSONException e) {
             minutely = null;
         }

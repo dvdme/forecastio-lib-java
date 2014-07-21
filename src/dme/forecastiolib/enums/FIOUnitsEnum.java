@@ -20,13 +20,14 @@ public final class FIOUnitsEnum {
      * <br />
      * Full documentation here {@link https://developer.forecast.io/docs/v2}.
      */
-    public static final String US   = "us",
-                               SI   = "si",
-                               CA   = "ca",
-                               UK   = "uk",
-                               AUTO = "auto";
+    public static final String US      = "us",
+                               SI      = "si",
+                               CA      = "ca",
+                               UK      = "uk",
+                               AUTO    = "auto",
+                               DEFAULT = FIOUnitsEnum.AUTO;
 
-    private final static String[] enums = {US, SI, CA, UK, AUTO};
+    private final static String[] enums = {US, SI, CA, UK, AUTO, DEFAULT};
     
     /**
      * Test if the parameter passed is a valid 'enum'.
@@ -39,11 +40,9 @@ public final class FIOUnitsEnum {
         if (units == null)
             return false;
         
-        String[] unitsEnums = {US, SI, CA, UK, AUTO};
-        
-        for (int i = 0; i < unitsEnums.length; i++) {
+        for (int i = 0; i < enums.length; i++) {
             
-            if (units.equals(unitsEnums[i]))
+            if (units.equals(enums[i]))
                 return true;
         }
         

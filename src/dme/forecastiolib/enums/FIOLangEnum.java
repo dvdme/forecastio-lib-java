@@ -16,9 +16,10 @@ public final class FIOLangEnum {
                                GERMAN  = "ge",
                                DUTCH   = "nl",
                                SPANISH = "es",
-                               TETUM   = "test";
+                               TETUM   = "tet",
+                               DEFAULT = "default";
 
-    private final static String[] enums = {ENGLISH, FRENCH, GERMAN, DUTCH, SPANISH, TETUM};
+    private final static String[] enums = {ENGLISH, FRENCH, GERMAN, DUTCH, SPANISH, TETUM, DEFAULT};
     
     /**
      * Test if the parameter passed is a valid 'enum'.
@@ -31,11 +32,9 @@ public final class FIOLangEnum {
         if (lang == null)
             return false;
         
-        String[] langs = {ENGLISH, FRENCH, GERMAN, DUTCH, SPANISH, TETUM};
-        
-        for (int i = 0; i < langs.length; i++) {
+        for (int i = 0; i < enums.length; i++) {
             
-            if (lang.equals(langs[i]))
+            if (lang.equals(enums[i]))
                 return true;
         }
         

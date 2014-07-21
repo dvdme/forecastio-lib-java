@@ -34,11 +34,9 @@ public final class FIOFlagsObjectsEnum {
         if (flagObject == null)
             return false;
         
-        String[] iconsList = {DARKSKY_UNAVAILABLE, DARKSKY_STATIONS, DATAPOINT_STATIONS, ISD_STATIONS, LAMP_STATIONS, MADIS_STATIONS, METAR_STATIONS, METNO_LICENCE, SOURCES, UNITS};
-        
-        for (int i = 0; i < iconsList.length; i++) {
+        for (int i = 0; i < enums.length; i++) {
             
-            if (flagObject.equals(iconsList[i]))
+            if (flagObject.equals(enums[i]))
                 return true;
         }
         
