@@ -6,11 +6,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import net.sf.json.JSONObject;
+
 import org.apache.commons.lang.RandomStringUtils;
 import org.w3c.dom.ranges.RangeException;
 
+import dme.forecastiolib.FIODataPoint;
 import dme.forecastiolib.ForecastIO;
 import dme.forecastiolib.enums.FIODataBlocksEnum;
+import dme.forecastiolib.enums.FIODataPointPropertiesEnum;
 import dme.forecastiolib.enums.FIOLangEnum;
 import dme.forecastiolib.enums.FIOUnitsEnum;
 import dme.forecastiolib.json.JSONNotFoundException;
@@ -19,156 +23,325 @@ import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
 
+/**
+ * Test case for the ForecastIO class.
+ *
+ * @author Theo FIDRY (theo.fidry@gmail.com)
+ */
 public class ForecastIOTestCase extends TestCase {
 
-    // Convenience class to ease the storing of ForecastIO constructor's parameters.
-    private class ConstructorParametersContainer {
-        
-        public String   key;
-        public double   latitude,
-                        longitude;
-        public String   lang;
-        public Date     time;
-        public String   units;
-        public String[] exclude;
-        public boolean  extand;
-        
-        public ConstructorParametersContainer(String key, double latitude, double longitude) {
+    
+    private final static String API_KEY = "757dcc57f4bb5b1c23adf950e20d64c7";      // valid API key
+    
+    
+    
+    //
+    // DATA PROVIDERS
+    //
+    public static ForecastIOParamSet provideStandardInput() {
 
-            this.key       = key;
-            this.latitude  = latitude;
-            this.longitude = longitude;
+        return new ForecastIOParamSet(API_KEY, 13.0366, 101.4925);
+    }
+    
+    public static ForecastIOParamSet[] provideValidInputs() {
+        
+        ForecastIOParamSet[] returnList;
+        ArrayList            list       = new ArrayList();
+        ForecastIOParamSet   paramSet   = provideStandardInput();
+        
+        // add values
+        list.add(paramSet);
+
+        // Lisbon
+        paramSet = provideStandardInput();
+        paramSet.latitude  = 38.7252993;
+        paramSet.longitude = -9.1500364;
+        list.add(paramSet);
+
+        // Madrid
+        paramSet = provideStandardInput();
+        paramSet.latitude  = 40.41678;
+        paramSet.longitude = -3.70379;
+        list.add(paramSet);
+
+        // Ceuta
+        paramSet = provideStandardInput();
+        paramSet.latitude  = 35.88838;
+        paramSet.longitude = -5.32464;
+        list.add(paramSet);
+
+        // Paris
+        paramSet = provideStandardInput();
+        paramSet.latitude  = 48.85661;
+        paramSet.longitude = 2.35222;
+        list.add(paramSet);
+
+        // Berlin
+        paramSet = provideStandardInput();
+        paramSet.latitude  = 52.51917;
+        paramSet.longitude = 13.40609;
+        list.add(paramSet);
+
+        // Brasilia
+        paramSet = provideStandardInput();
+        paramSet.latitude  = -15.83454;
+        paramSet.longitude = -47.98828;
+        list.add(paramSet);
+
+        // London
+        paramSet = provideStandardInput();
+        paramSet.latitude  = 51.51121;
+        paramSet.longitude = -0.11982;
+        list.add(paramSet);
+
+        // Alcatraz
+        paramSet = provideStandardInput();
+        paramSet.latitude  = 37.8267;
+        paramSet.longitude = -122.423;
+        list.add(paramSet);
+        
+        paramSet = provideStandardInput();
+        paramSet.latitude  = -1;
+        list.add(paramSet);
+
+        paramSet = provideStandardInput();
+        paramSet.latitude  = 91;
+        list.add(paramSet);
+
+        paramSet = provideStandardInput();
+        paramSet.longitude = -181;
+        list.add(paramSet);
+
+        paramSet = provideStandardInput();
+        paramSet.longitude = 181;
+        list.add(paramSet);
+        
+        returnList = new ForecastIOParamSet[list.size()];
+        
+        for (int i = 0; i < returnList.length; i++)
+            returnList[i] = (ForecastIOParamSet)list.get(i);
+        
+        return returnList;
+    }
+
+    public static ForecastIOParamSet[] provideInvalidInputs() {
+
+        ForecastIOParamSet[] returnList;
+        ArrayList            list       = new ArrayList();
+        ForecastIOParamSet   paramSet;
+        
+        paramSet = provideStandardInput();
+        paramSet.key = "";
+        list.add(paramSet);
+
+        paramSet = provideStandardInput();
+        paramSet.key = RandomStringUtils.randomAlphabetic(31);
+        list.add(paramSet);
+
+        String key;
+        while (true) {
+            
+            key = RandomStringUtils.randomAlphabetic(64);
+            
+            if (key.length() > 32)
+                break;
+        }
+        paramSet = provideStandardInput();
+        paramSet.key = key;
+        list.add(paramSet);
+
+        paramSet = provideStandardInput();
+        paramSet.key = null;
+        list.add(paramSet);
+        
+        returnList = new ForecastIOParamSet[list.size()];
+        
+        for (int i = 0; i < returnList.length; i++)
+            returnList[i] = (ForecastIOParamSet)list.get(i);
+        
+        return returnList;
+    } 
+
+    public static ForecastIOParamSet[] provideInputs() {
+
+        ForecastIOParamSet[] source1 = provideValidInputs(),
+                             source2 = provideInvalidInputs();
+
+        ForecastIOParamSet[] inputs = new ForecastIOParamSet[source1.length + source2.length];
+
+        for (int i = 0; i < source1.length; i++)
+            inputs[i] = source1[i];
+
+        for (int i = 0; i < source2.length; i++)
+            inputs[source1.length + i] = source2[i];
+
+        return inputs;
+    }
+    
+    
+    //
+    // INHERITED METHODS
+    //
+    public String getName() { return "Test of the ForecastIO class."; }
+  
+    
+    //
+    // TEST METHODS
+    //
+    
+    // constructor tests
+    public void testConstructor_withValidInput_expectedSuccess() {
+        
+        ForecastIOParamSet[] inputs   = provideValidInputs();
+        ForecastIO           forecast;
+        
+        for (int i = 0; i < inputs.length; i++) {
+            
+            forecast = new ForecastIO(inputs[i].key, inputs[i].latitude, inputs[i].longitude);
+            assertNotNull(forecast);
+        }
+    }
+    
+    public void testConstructor_withInvalidInputJSON_expectedEmptyInstance() {
+        
+        ForecastIOParamSet[] inputs   = provideInvalidInputs();
+        ForecastIO           forecast;
+        
+        for (int i = 0; i < inputs.length; i++) {
+            
+            forecast = null;
+            
+            try {
+                forecast = new ForecastIO(inputs[i].key, inputs[i].latitude, inputs[i].longitude);
+                fail("Was expecting an exception.");
+            } catch (IllegalArgumentException exception) {
+                // expected result if wrong key passed
+            }
+            
+            assertNull(forecast);
         }
     }
 
-    private final String                         API_KEY = "757dcc57f4bb5b1c23adf950e20d64c7";      // valid API key
-    private       List                           constructorParameters = new ArrayList();           // constructor data provider
-    private       ConstructorParametersContainer container;
-    private       ForecastIO                     forecast;
-    private final int                            MAX_ITERATION = 100;                               // constant for maximal iterations
-    private final Random                         randomGenerator = new Random();
     
-    
-    protected void setUp() throws Exception {
-
-        constructorParameters.add(new ConstructorParametersContainer(API_KEY, 38.7252993, -9.1500364));     // Lisbon
-        constructorParameters.add(new ConstructorParametersContainer(API_KEY, 40.41678, -3.70379));         // Madrid
-        constructorParameters.add(new ConstructorParametersContainer(API_KEY, 35.88838, -5.32464));         // Ceuta
-        constructorParameters.add(new ConstructorParametersContainer(API_KEY, 48.85661, 2.35222));          // Paris
-        constructorParameters.add(new ConstructorParametersContainer(API_KEY, 52.51917, 13.40609));         // Berlin
-        constructorParameters.add(new ConstructorParametersContainer(API_KEY, -15.83454, -47.98828));       // Brasilia
-        constructorParameters.add(new ConstructorParametersContainer(API_KEY, 51.51121, -0.11982));         // London
-        constructorParameters.add(new ConstructorParametersContainer(API_KEY, 37.8267, -122.423));          // Alcatraz
-
-        super.setUp();
-    }
-
-    protected ConstructorParametersContainer getRandomConstructorParametersContainer() {
+    // Test the manipulation of the lang field
+    public void testLangOption_withNoInput_expectDefaultValue() {
         
-        return (ConstructorParametersContainer)constructorParameters.get(randomGenerator.nextInt(constructorParameters.size()));
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+        assertTrue(forecast.getLang().equals(FIOLangEnum.DEFAULT));
     }
     
-    //
-    // Test the constructor with minimal parameters.
-    //
-    public void testMinimalConstructor() {
-             
-      // test with real valid values
-      for (int i = 0; i < constructorParameters.size(); i++) {
-          
-          forecast  = null;
-          container = (ConstructorParametersContainer)constructorParameters.get(i);
-          
-          forecast = new ForecastIO(container.key, container.latitude, container.longitude);
-          assertNotNull(forecast);
-          assertNull(forecast.getLang());
-          assertTrue(forecast.getExcludeList().length() == 0);
-          assertNull(forecast.getTime());
-          assertEquals(FIOUnitsEnum.AUTO, forecast.getUnits());
-          assertTrue(forecast.isExtended() == false);
-      }
-      
-      // test with random locations
-      for (int i = 0; i < MAX_ITERATION; i++) {
-          
-          forecast  = null;          
-          forecast  = new ForecastIO(API_KEY, randomGenerator.nextLong(), randomGenerator.nextLong());
-          assertNotNull(forecast);
-          assertNull(forecast.getLang());
-          assertTrue(forecast.getExcludeList().length() == 0);
-          assertNull(forecast.getTime());
-          assertEquals(FIOUnitsEnum.AUTO, forecast.getUnits());
-          assertTrue(forecast.isExtended() == false);
-      }
-      
-      // test the API key: expected to work with a string 32 characters long      
-      for (int i = 0; i < MAX_ITERATION; i++) {
-          
-          forecast  = null;
-          container = getRandomConstructorParametersContainer();
-          
-          forecast = new ForecastIO(RandomStringUtils.random(32), container.latitude, container.longitude);
-          assertNotNull(forecast);
-          assertNull(forecast.getLang());
-          assertTrue(forecast.getExcludeList().length() == 0);
-          assertNull(forecast.getTime());
-          assertEquals(FIOUnitsEnum.AUTO, forecast.getUnits());
-          assertTrue(forecast.isExtended() == false);
-      }
-      
-      // test with real valid values for coordinates but wrong string length for the API key
-      for (int i = 0; i < constructorParameters.size(); i++) {
-          
-          forecast  = null;
-          container = (ConstructorParametersContainer)constructorParameters.get(i);
-          
-          try {
-              forecast = new ForecastIO(RandomStringUtils.random(randomGenerator.nextInt(32)), container.latitude, container.longitude);
-          } catch (IllegalArgumentException exception) {
-              assertNull(forecast);
-          }
-          
-          try {
-              forecast = new ForecastIO(RandomStringUtils.random(randomGenerator.nextInt(32) + 33), container.latitude, container.longitude);
-          } catch (IllegalArgumentException exception) {
-              assertNull(forecast);
-          }
-      }
-      
-      // same test with random values
-      for (int i = 0; i < MAX_ITERATION; i++) {
-          
-          forecast  = null;
-          container = getRandomConstructorParametersContainer();
-          
-          try {
-              forecast = new ForecastIO(RandomStringUtils.random(randomGenerator.nextInt(32)), randomGenerator.nextLong(), randomGenerator.nextLong());
-          } catch (IllegalArgumentException exception) {
-              assertNull(forecast);
-          }
-          
-          try {
-              forecast = new ForecastIO(RandomStringUtils.random(randomGenerator.nextInt(32) + 33), randomGenerator.nextLong(), randomGenerator.nextLong());
-          } catch (IllegalArgumentException exception) {
-              assertNull(forecast);
-          }
-      }
+    public void testLangOption_withValidInput_expectSuccess() {
+        
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+
+        for (int i = 0; i < FIOLangEnum.getEnums().length; i++) {
+            
+            forecast.setLang(FIOLangEnum.getEnums()[i]);
+            assertTrue(forecast.getLang().equals(FIOLangEnum.getEnums()[i]));
+        }
+    }
+    
+    public void testLangOption_withInvalidInput_expectDefaultValue() {
+        
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+
+        for (int i = 0; i < 100; i++) {
+            
+            forecast.setLang(RandomStringUtils.randomAlphabetic(5));
+            assertTrue(forecast.getLang().equals(FIOLangEnum.DEFAULT));
+        }
+    }
+    
+    public void testResetLangOption_withRandomInput_expectDefaultValue() {
+        
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+
+        for (int i = 0; i < FIOLangEnum.getEnums().length; i++) {
+            
+            forecast.setLang(FIOLangEnum.getEnums()[i]);
+            forecast.resetLang();
+            assertTrue(forecast.getLang().equals(FIOLangEnum.DEFAULT));
+        }
+    }
+    
+    
+    // test time
+    public void testTimeOption_withNoInput_expectDefaultValue() {
+        
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+        assertTrue(forecast.getTime() == -1);
+    }
+    
+    public void testTimeOption_withValidInput_expectDefaultValue() {
+
+        //TODO
     }
 
+    public void testTimeOption_withInvalidInput_expectDefaultValue() {
+
+        //TODO
+    }
+
+    public void testRestTimeOption_expectDefaultValue() {
+
+        //TODO
+    }
     
-    //
+    // TODO : test limits in time, point for old data and forecast
+    
+    
+    // Test the manipulation of the units field
+    public void testUnitsOption_withNoInput_expectDefaultValue() {
+        
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+        assertTrue(forecast.getUnits().equals(FIOUnitsEnum.DEFAULT));
+    }
+    
+    public void testUnitsOption_withValidInput_expectSuccess() {
+        
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+
+        for (int i = 0; i < FIOUnitsEnum.getEnums().length; i++) {
+            
+            forecast.setUnits(FIOUnitsEnum.getEnums()[i]);
+            assertTrue(forecast.getUnits().equals(FIOUnitsEnum.getEnums()[i]));
+        }
+    }
+    
+    public void testUnitsOption_withInvalidInput_expectDefaultValue() {
+        
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+
+        for (int i = 0; i < 100; i++) {
+            
+            forecast.setLang(RandomStringUtils.randomAlphabetic(5));
+            assertTrue(forecast.getUnits().equals(FIOUnitsEnum.DEFAULT));
+        }
+    }
+    
+    public void testResetUnitsOption_withRandomInput_expectDefaultValue() {
+        
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+
+        for (int i = 0; i < FIOUnitsEnum.getEnums().length; i++) {
+            
+            forecast.setUnits(FIOUnitsEnum.getEnums()[i]);
+            forecast.resetUnits();
+            assertTrue(forecast.getUnits().equals(FIOUnitsEnum.DEFAULT));
+        }
+    }
+    
     // Test the manipulation of the exclude field
-    //
-    public void testExcludeField() {
-        
-        container = getRandomConstructorParametersContainer();
-        forecast  = new ForecastIO(container.key, container.latitude, container.longitude);
-        
-        // test if the default value is correct
+    public void testExcludeOption_withNoInput_expectDefaultValue() {
+
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
         assertTrue(forecast.getExcludeList().length() == 0);
-        
-        
-        // test if data blocks are properly added
+    }
+
+    public void testExcludeOption_withValidInput_expectSuccess() {
+
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+
         forecast.addToExcludeList(FIODataBlocksEnum.ALERTS);
         assertEquals(FIODataBlocksEnum.ALERTS, forecast.getExcludeList());
         
@@ -178,44 +351,78 @@ public class ForecastIOTestCase extends TestCase {
         forecast.addToExcludeList(FIODataBlocksEnum.MINUTELY);
         assertEquals(FIODataBlocksEnum.ALERTS + "," + FIODataBlocksEnum.CURRENTLY + "," + FIODataBlocksEnum.MINUTELY, forecast.getExcludeList());
         
-        
-        // test if non valid data blocks are properly ignored
-        // get random string which is not a data block
+        for (int i = 0; i < FIODataBlocksEnum.getEnums().length; i++) {
+            
+            forecast.setExcludeList(new String[] {FIODataBlocksEnum.getEnums()[i]});
+            assertTrue(forecast.getExcludeList().equals(FIODataBlocksEnum.getEnums()[i]));
+        }
+    }
+
+    public void testExcludeOption_withInvalidInput_expectDefaultValue() {
+
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+
         String randomString;
         while (true) {
-            randomString = RandomStringUtils.random(15);
+            randomString = RandomStringUtils.randomAlphabetic(15);
             if (!FIODataBlocksEnum.isElement(randomString))
                 break;
         }
-        forecast.addToExcludeList(randomString);
-        assertEquals(FIODataBlocksEnum.ALERTS + "," + FIODataBlocksEnum.CURRENTLY + "," + FIODataBlocksEnum.MINUTELY, forecast.getExcludeList());
         
+        forecast.addToExcludeList(randomString);
+        assertTrue(forecast.getExcludeList().length() == 0);
+    }
 
-        // test if redondant data block are not added.
+    public void testExcludeOption_withValidRedondantInput_expectNoRedondancy() {
+
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+
         forecast.addToExcludeList(FIODataBlocksEnum.ALERTS);
         forecast.addToExcludeList(FIODataBlocksEnum.CURRENTLY);
         forecast.addToExcludeList(FIODataBlocksEnum.MINUTELY);
+        
+        forecast.addToExcludeList(FIODataBlocksEnum.ALERTS);
+        forecast.addToExcludeList(FIODataBlocksEnum.CURRENTLY);
+        forecast.addToExcludeList(FIODataBlocksEnum.MINUTELY);
+        
         assertEquals(FIODataBlocksEnum.ALERTS + "," + FIODataBlocksEnum.CURRENTLY + "," + FIODataBlocksEnum.MINUTELY, forecast.getExcludeList());
-        
-        
-        // test if exclude reset works properly
-        forecast.resetExcludeList();
-        assertTrue(forecast.getExcludeList().length() == 0);
-        
-        
-        // test the set exclude method
-        // test correct entry
+    }
+
+    public void testResetExcludeOption_expectDefaultValue() {
+
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+
+        for (int i = 0; i < FIODataBlocksEnum.getEnums().length; i++) {
+            
+            forecast.setExcludeList(new String[] {FIODataBlocksEnum.getEnums()[i]});
+            forecast.resetExcludeList();
+            assertTrue(forecast.getExcludeList().length() == 0);
+        }
+    }
+    
+    public void testsetExcludeOption_withValidInput_expectSuccess() {
+
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+
         String[] excludeList = new String[]{FIODataBlocksEnum.ALERTS, FIODataBlocksEnum.CURRENTLY};
         forecast.setExcludeList(excludeList);
         assertEquals(FIODataBlocksEnum.ALERTS + "," + FIODataBlocksEnum.CURRENTLY, forecast.getExcludeList());
-        
-        // test duplicate value
-        excludeList = new String[]{FIODataBlocksEnum.ALERTS, FIODataBlocksEnum.CURRENTLY, FIODataBlocksEnum.ALERTS, FIODataBlocksEnum.CURRENTLY};
+    }
+    
+    public void testsetExcludeOption_withValidRedondantInput_expectNoDuplicates() {
+
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+
+        String[] excludeList = new String[]{FIODataBlocksEnum.ALERTS, FIODataBlocksEnum.CURRENTLY, FIODataBlocksEnum.ALERTS, FIODataBlocksEnum.CURRENTLY};
         forecast.setExcludeList(excludeList);
         assertEquals(FIODataBlocksEnum.ALERTS + "," + FIODataBlocksEnum.CURRENTLY, forecast.getExcludeList());
-        
-        // test null entry
-        excludeList = null;
+    }
+    
+    public void testsetExcludeOption_withRandomInput_expectSuccess() {
+
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+
+        String[] excludeList = null;
         forecast.setExcludeList(excludeList);
         assertTrue(forecast.getExcludeList().length() == 0);
         
@@ -238,10 +445,13 @@ public class ForecastIOTestCase extends TestCase {
         excludeList = new String[]{FIODataBlocksEnum.ALERTS, "azerty", FIODataBlocksEnum.CURRENTLY, "qwerty", FIODataBlocksEnum.CURRENTLY, FIODataBlocksEnum.CURRENTLY};
         forecast.setExcludeList(excludeList);
         assertEquals(FIODataBlocksEnum.ALERTS + "," + FIODataBlocksEnum.CURRENTLY, forecast.getExcludeList());
-        
-        
-        // the the exclude effect
-        // test with no exclude
+    }
+    
+    public void testExcludeOptionEffectiveness_expectSuccess() {
+
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+
+     // test with no exclude
         forecast.resetExcludeList();
         forecast.update();
         assertTrue(forecast.hasCurrently());
@@ -280,105 +490,53 @@ public class ForecastIOTestCase extends TestCase {
         forecast.update();
         assertFalse(forecast.hasMinutely());
     }
-
-
-    //
-    // Test the manipulation of the lang field
-    //
-    public void testLangField() {
-        
-        container = getRandomConstructorParametersContainer();
-        forecast  = new ForecastIO(container.key, container.latitude, container.longitude);
-        
-        assertNull(forecast.getLang());
-        
-        forecast.setLang(FIOLangEnum.DUTCH);
-        assertEquals(FIOLangEnum.DUTCH, forecast.getLang());
-    }
     
     
-    //
-    // Test the manipulation of the time field
-    //
-    public void testTimeField() {
-        
-        container = getRandomConstructorParametersContainer();
-        forecast  = new ForecastIO(container.key, container.latitude, container.longitude);
-        
-        assertNull(forecast.getTime());
-        
-        Date time = new Date();
-        forecast.setTime(time);
-        assertEquals(Long.toString(time.getTime()), forecast.getTime());
-        
-        forecast.setTime(null);
-        assertEquals(Long.toString(time.getTime()), forecast.getTime());
-        
-        forecast.resetTime();
-        assertNull(forecast.getTime());
-    }
-    
-    
-    //
-    // Test the manipulation of the units field
-    //
-    public void testUnitsField() {
-        
-        container = getRandomConstructorParametersContainer();
-        forecast  = new ForecastIO(container.key, container.latitude, container.longitude);
-        
-        assertEquals(FIOUnitsEnum.AUTO, forecast.getUnits());
-        
-        forecast.setUnits(FIOUnitsEnum.SI);
-        assertEquals(FIOUnitsEnum.SI, forecast.getUnits());
-        
-        forecast.setUnits("incorrectString");
-        assertEquals(FIOUnitsEnum.SI, forecast.getUnits());
-        
-        forecast.setUnits(null);
-        assertEquals(FIOUnitsEnum.SI, forecast.getUnits());
-        
-        forecast.resetUnits();
-        assertEquals(FIOUnitsEnum.AUTO, forecast.getUnits());
-    }
-    
-    
-    //
     // Test the manipulation of the extend field
-    //
-    public void testExtendField() {
-        
-        container = getRandomConstructorParametersContainer();
-        forecast  = new ForecastIO(container.key, container.latitude, container.longitude);
-        
-        assertTrue(forecast.isExtended() == false);
-        
+    public void testExtendField_withNoInput_expectDefaultValue() {
+
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+        assertFalse(forecast.isExtended());
+    }
+
+    public void testExtendField_withValidInput_expectSuccess() {
+
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+
         forecast.setExtend(true);
-        assertTrue(forecast.isExtended() == true);
-        
+        assertTrue(forecast.isExtended());
+
+        forecast.setExtend(false);
+        assertFalse(forecast.isExtended());
+
+    }
+
+    public void testResetExtendField_expectSuccess() {
+
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+
+        forecast.setExtend(true);
         forecast.resetExtend();
-        assertTrue(forecast.isExtended() == false);
+        assertFalse(forecast.isExtended());
     }
     
     
-    //
     // Test API response
-    //
-    public void testRequestForecast() {
+    public void testRequestForecast_expectSuccess() {
         
-        container = getRandomConstructorParametersContainer();
-        forecast  = new ForecastIO(container.key, container.latitude, container.longitude);
-                
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+        
         // test the access to the API response when no call has been made yet
         try {
             forecast.getAPIResponse();
+            fail("Excepted exception.");
         } catch (JSONNotFoundException exception) {
             // is the result expected
         } catch (Exception exception) {
-            fail("Wrong type of exception thrown.");
+            fail("Unexcepted exception.");
         }
         
-        forecast.requestForecast();
+        assertTrue(forecast.requestForecast());
         
         // test the access to the API response once a call has been made
         try {
@@ -389,172 +547,114 @@ public class ForecastIOTestCase extends TestCase {
         }
     }
     
-    public void testCurrentlyDataBlock() {
+    
+    
+    // test currently data blocks
+    public void testCurrentlyDataBlock_defaultValue_expectSuccess() {
         
-        container = getRandomConstructorParametersContainer();
-        forecast  = new ForecastIO(container.key, container.latitude, container.longitude);
-        
-        // test if the hasReport method when no call has been made yet
-        // expect not to find the report
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
         assertFalse(forecast.hasCurrently());
-        
-        // test the access to the report when no call has been made yet
-        // expect JSONNotFoundException thrown
+    }
+    
+    public void testCurrentlyDataBlockAccess_withNotUpdatedInstance_expectSuccess() {
+
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+
         try {
             forecast.getCurrently();
+            fail("Excepted exception.");
         } catch (JSONNotFoundException exception) {
             // is the result expected
         } catch (Exception exception) {
-            fail("Wrong type of exception thrown.");
+            fail("Unexcepted exception.");
         }
-        
-        // test the access to data of the report when no call has been made yet
-        // expect JSONNotFoundException thrown
-        try {
-            forecast.getCurrently().getTime();
-        } catch (JSONNotFoundException exception) {
-            // is the result expected
-        } catch (Exception exception) {
-            fail("Wrong type of exception thrown.");
-        }
-       
+    }
+
+    public void testCurrentlyDataBlockAccess_withUpdatedInstance_expectSuccess() {
+
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+
         forecast.requestForecast();
-        
-        // test if the hasReport method once a call has been made
-        // expect to find the report
         assertTrue(forecast.hasCurrently());
-        
-        // test the access of the data once a call has been made
-        // expect proper access to the data
+
         try {
             forecast.getCurrently().getTime();
-        } catch (JSONSlotNotFoundException exception) {
-            fail("Invalid data point.");
         } catch (Exception exception) {
-            fail("Wrong type of exception thrown.");
+            fail("Unexcepted exception.");
         }
     }
     
-    // Since minutely, hourly and daily have the same patterns, just one of them is tested.
-    public void testDataBlock() {
+    
+    // test minutely, hourly and daily data blocks (have the same pattern)
+    public void testDailyDataBlock_defaultValue_expectSuccess() {
         
-        container = getRandomConstructorParametersContainer();
-        forecast  = new ForecastIO(container.key, container.latitude, container.longitude);
-        
-        // test if the hasReport method when no call has been made yet
-        // expect not to find the report
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
         assertFalse(forecast.hasHourly());
+    }
+    
+    public void testDailyDataBlockAccess_withNotUpdatedInstance_expectSuccess() {
 
-        // test the access to the report when no call has been made yet
-        // expect JSONNotFoundException thrown
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+
         try {
             forecast.getHourly();
+            fail("Excepted exception.");
         } catch (JSONNotFoundException exception) {
             // is the result expected
         } catch (Exception exception) {
-            fail("Wrong type of exception thrown.");
-        }
-
-        // test the access to data of the report when no call has been made yet
-        // expect JSONNotFoundException thrown
-        try {
-            assertTrue(forecast.getHourly().size() == 0);
-        } catch (JSONNotFoundException exception) {
-            // is the result expected
-        } catch (Exception exception) {
-            fail("Wrong type of exception thrown.");
-        }
-        try {
-            forecast.getHourly().getDataPoint(0);
-        } catch (JSONNotFoundException exception) {
-            // is the result expected
-        } catch (Exception exception) {
-            fail("Wrong type of exception thrown.");
-        }
-        try {
-            forecast.getHourly().getDataPoint(0).getTime();
-        } catch (JSONNotFoundException exception) {
-            // is the result expected
-        } catch (Exception exception) {
-            fail("Wrong type of exception thrown.");
-        }
-
-        forecast.requestForecast();
-
-        // test if the hasReport method once a call has been made
-        // expect to find the report with at least a data point
-        assertTrue(forecast.hasHourly());
-        assertTrue(forecast.getHourly().size() != 0);
-
-        // test the access of the data once a call has been made
-        // expect proper access to the data
-        try {
-            forecast.getHourly().getDataPoint(0).getTime();
-        } catch (JSONSlotNotFoundException exception) {
-            fail("Invalid data point.");
-        } catch (Exception exception) {
-            fail("Wrong type of exception thrown.");
+            fail("Unexcepted exception.");
         }
     }
 
-    public void testFlags() {
-        
-        container = getRandomConstructorParametersContainer();
-        forecast  = new ForecastIO(container.key, container.latitude, container.longitude);
-        
-        // test if the hasReport method when no call has been made yet
-        // expect not to find the report
-        assertFalse(forecast.hasFlags());
+    public void testDailyDataBlockAccess_withUpdatedInstance_expectSuccess() {
 
-        // test the access to the report when no call has been made yet
-        // expect JSONNotFoundException thrown
-        try {
-            forecast.getFlags();
-        } catch (JSONNotFoundException exception) {
-            // is the result expected
-        } catch (Exception exception) {
-            fail("Wrong type of exception thrown.");
-        }
-
-        // test the access to data of the report when no call has been made yet
-        // expect JSONNotFoundException thrown
-        try {
-            assertTrue(forecast.getFlags().size() == 0);
-        } catch (JSONNotFoundException exception) {
-            // is the result expected
-        } catch (Exception exception) {
-            fail("Wrong type of exception thrown.");
-        }
-        try {
-            forecast.getHourly().getDataPoint(0);
-        } catch (JSONNotFoundException exception) {
-            // is the result expected
-        } catch (Exception exception) {
-            fail("Wrong type of exception thrown.");
-        }
-        try {
-            forecast.getHourly().getDataPoint(0).getTime();
-        } catch (JSONNotFoundException exception) {
-            // is the result expected
-        } catch (Exception exception) {
-            fail("Wrong type of exception thrown.");
-        }
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
 
         forecast.requestForecast();
+        assertTrue(forecast.hasHourly());
 
-        // test if the hasReport method once a call has been made
-        // expect to find the report with at least a data point
-        assertTrue(forecast.hasFlags());
-        assertTrue(forecast.getFlags().size() != 0);
-
-        // test the access of the data once a call has been made
-        // expect proper access to the data
         try {
-            forecast.getFlags().getUnits();
-        } catch (JSONSlotNotFoundException exception) {
-            fail("Invalid data point.");
+            assertFalse(forecast.getHourly().isEmpty());
+            forecast.getHourly().getDataPoint(0).getTime();
         } catch (Exception exception) {
-            fail("Wrong type of exception thrown.");
+            fail("Unexcepted exception.");
+        }
+    }
+    
+    
+    // test flags
+    public void testFlags_defaultValue_expectSuccess() {
+        
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+        assertFalse(forecast.hasFlags());
+    }
+    
+    public void testFlagsAccess_withNotUpdatedInstance_expectSuccess() {
+
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+
+        try {
+            forecast.getFlags();
+            fail("Excepted exception.");
+        } catch (JSONNotFoundException exception) {
+            // is the result expected
+        } catch (Exception exception) {
+            fail("Unexcepted exception.");
+        }
+    }
+
+    public void testFlagsAccess_withUpdatedInstance_expectSuccess() {
+
+        ForecastIO forecast = new ForecastIO(provideStandardInput().key, provideStandardInput().latitude, provideStandardInput().longitude);
+
+        forecast.requestForecast();
+        assertTrue(forecast.hasFlags());
+
+        try {
+            assertFalse(forecast.getFlags().isEmpty());
+            forecast.getFlags().getUnits();
+        } catch (Exception exception) {
+            fail("Unexcepted exception.");
         }
     }
 }

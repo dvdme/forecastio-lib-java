@@ -56,11 +56,9 @@ public final class FIODataPointPropertiesEnum {
         if (property == null)
             return false;
         
-        String[] propertyList = {TIME, SUMMARY, ICON, SUNRISE_TIME, SUNSET_TIME, MOONPHASE, NEAREST_STORM_DISTANCE, NEAREST_STORM_BEARING, PRECIPITATION_INTENSITY, PRECIPITATION_INTENSITY_MAX, PRECIPITATION_INTENSITY_MAX_TIME, PRECIPITATION_PROBABILITY, PRECIPITATION_TYPE, PRECIPITATION_ACCUMULATION, TEMPERATURE, TEMPERATURE_MIN, TEMPERATURE_MIN_TIME, TEMPERATURE_MAX, TEMPERATURE_MAX_TIME, APPARENT_TEMPERATURE, APPARENT_TEMPERATURE_MIN, APPARENT_TEMPERATURE_MIN_TIME, APPARENT_TEMPERATURE_MAX, APPARENT_TEMPERATURE_MAX_TIME, DEW_POINT, WIND_SPEED, WIND_BEARING, CLOUD_COVER, HUMIDITY, PRESSURE, VISIBILITY, OZONE};
-        
-        for (int i = 0; i < propertyList.length; i++) {
+        for (int i = 0; i < enums.length; i++) {
             
-            if (property.equals(propertyList[i]))
+            if (property.equals(enums[i]))
                 return true;
         }
         

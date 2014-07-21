@@ -81,9 +81,6 @@ public class FIOAlerts {
         if (data == null)
             return false;
         
-        if (data.isNullObject())
-            return false;
-        
         if (data.isEmpty())
             return false;
         

@@ -25,11 +25,9 @@ public class FIOAlertPropertiesEnum {
         if (dataBlock == null)
             return false;
         
-        String[] dataBlocks = {TITLE, EXPIRES, DESCRIPTION, URI};
-        
-        for (int i = 0; i < dataBlocks.length; i++) {
+        for (int i = 0; i < enums.length; i++) {
             
-            if (dataBlock.equals(dataBlocks[i]))
+            if (dataBlock.equals(enums[i]))
                 return true;
         }
         

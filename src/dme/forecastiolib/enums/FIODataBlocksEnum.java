@@ -31,11 +31,9 @@ public final class FIODataBlocksEnum {
         if (dataBlock == null)
             return false;
         
-        String[] dataBlocks = {ALERTS, CURRENTLY, DAILY, FLAGS, HOURLY, MINUTELY};
-        
-        for (int i = 0; i < dataBlocks.length; i++) {
+        for (int i = 0; i < enums.length; i++) {
             
-            if (dataBlock.equals(dataBlocks[i]))
+            if (dataBlock.equals(enums[i]))
                 return true;
         }
         
