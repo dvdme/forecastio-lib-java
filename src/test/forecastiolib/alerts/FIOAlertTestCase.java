@@ -22,6 +22,7 @@ public class FIOAlertTestCase extends TestCase {
     
     //
     // FIELDS
+    //
     /**
      * A proper standard FIOAlert instance.
      */

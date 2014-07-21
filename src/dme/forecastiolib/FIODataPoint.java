@@ -500,6 +500,9 @@ public class FIODataPoint {
         if (data == null)
             return false;
         
+        if (data.isNullObject())
+            return false;
+        
         return true;
     }
     

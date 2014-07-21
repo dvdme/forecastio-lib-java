@@ -54,7 +54,7 @@ public class FIOAlerts {
      * <br />
      * If the is no alerts available, an empty array will be returned.
      * 
-     * @return list of available alerts
+     * @return list of available alerts | empty
      */
     public final FIOAlert[] getAlerts() { return alerts; }
     
@@ -81,6 +81,9 @@ public class FIOAlerts {
         if (data == null)
             return false;
         
+        if (data.isNullObject())
+            return false;
+        
         if (data.isEmpty())
             return false;
         
@@ -100,14 +103,6 @@ public class FIOAlerts {
      * @return true on success, false otherwise
      */
     public boolean update(JSONArray data) {
-        
-        if (data != null) {
-            
-            alerts = new FIOAlert[data.size()];
-            for (int i = 0; i < data.size(); i++)
-                alerts[i] = new FIOAlert(data.getJSONObject(i));
-        } else
-            alerts = new FIOAlert[]{};
         
         if (isValid(data)) {
 

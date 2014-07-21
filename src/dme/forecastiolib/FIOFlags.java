@@ -245,6 +245,9 @@ public class FIOFlags {
         if (data == null)
             return false;
         
+        if (data.isNullObject())
+            return false;
+        
         return true;
     }
     

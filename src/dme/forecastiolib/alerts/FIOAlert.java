@@ -132,6 +132,9 @@ public class FIOAlert {
         if (data == null)
             return false;
         
+        if (data.isNullObject())
+            return false;
+        
         try {
             data.getString(FIOAlertPropertiesEnum.TITLE);
             data.getString(FIOAlertPropertiesEnum.EXPIRES);
