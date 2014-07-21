@@ -2,12 +2,9 @@ package dme.forecastiolib;
 
 import java.util.HashMap;
 
-import dme.forecastiolib.alerts.FIOAlert;
-import dme.forecastiolib.enums.FIOAlertPropertiesEnum;
+import net.sf.json.JSONObject;
 import dme.forecastiolib.enums.FIODataPointPropertiesEnum;
 import dme.forecastiolib.json.JSONSlotNotFoundException;
-import net.sf.json.JSONException;
-import net.sf.json.JSONObject;
 
 /**
  * Representation of a Data point.<br />
@@ -36,9 +33,11 @@ public class FIODataPoint {
     public FIODataPoint() {}
     
     /**
-     * Instantiate a data point with the values contained in the JSON passed.
+     * Instantiate a data point with the values contained in the JSON passed.<br />
+     * <br />
+     * The JSON must be valid or this will be an empty alert.
      * 
-     * @param data source JSON
+     * @param data source JSON | null
      */
     public FIODataPoint(JSONObject data) { update(data); }
 
@@ -313,9 +312,9 @@ public class FIODataPoint {
      * @return apparent temperature
      * @throws JSONSlotNotFoundException
      */
-    public final long getApparentTemperature() throws JSONSlotNotFoundException {
+    public final double getApparentTemperature() throws JSONSlotNotFoundException {
         
-        return returnLongProperty(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE);
+        return returnDoubleProperty(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE);
     }
     
     /**
@@ -326,9 +325,9 @@ public class FIODataPoint {
      * @return maximum apparent temperature
      * @throws JSONSlotNotFoundException
      */
-    public final long getApparentTemperatureMax() throws JSONSlotNotFoundException {
+    public final double getApparentTemperatureMax() throws JSONSlotNotFoundException {
         
-        return returnLongProperty(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE_MAX);
+        return returnDoubleProperty(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE_MAX);
     }
     
     /**
@@ -352,9 +351,9 @@ public class FIODataPoint {
      * @return maximum apparent temperature
      * @throws JSONSlotNotFoundException
      */
-    public final long getApparentTemperatureMin() throws JSONSlotNotFoundException {
+    public final double getApparentTemperatureMin() throws JSONSlotNotFoundException {
         
-        return returnLongProperty(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE_MIN);
+        return returnDoubleProperty(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE_MIN);
     }
     
     /**
@@ -378,9 +377,9 @@ public class FIODataPoint {
      * @return dew point
      * @throws JSONSlotNotFoundException
      */
-    public final long getDewPoint() throws JSONSlotNotFoundException {
+    public final double getDewPoint() throws JSONSlotNotFoundException {
         
-        return returnLongProperty(FIODataPointPropertiesEnum.DEW_POINT);
+        return returnDoubleProperty(FIODataPointPropertiesEnum.DEW_POINT);
     }
     
     /**
@@ -391,9 +390,9 @@ public class FIODataPoint {
      * @return wind speed
      * @throws JSONSlotNotFoundException
      */
-    public final long getWindSpeed() throws JSONSlotNotFoundException {
+    public final double getWindSpeed() throws JSONSlotNotFoundException {
         
-        return returnLongProperty(FIODataPointPropertiesEnum.WIND_SPEED);
+        return returnDoubleProperty(FIODataPointPropertiesEnum.WIND_SPEED);
     }
     
     /**
@@ -405,9 +404,9 @@ public class FIODataPoint {
      * @return wind direction
      * @throws JSONSlotNotFoundException
      */
-    public final long getWindBearing() throws JSONSlotNotFoundException {
+    public final int getWindBearing() throws JSONSlotNotFoundException {
         
-        return returnLongProperty(FIODataPointPropertiesEnum.WIND_BEARING);
+        return returnIntProperty(FIODataPointPropertiesEnum.WIND_BEARING);
     }
     
     /**
@@ -419,9 +418,9 @@ public class FIODataPoint {
      * @return [0; 1]
      * @throws JSONSlotNotFoundException
      */
-    public final long getCloudCover() throws JSONSlotNotFoundException {
+    public final double getCloudCover() throws JSONSlotNotFoundException {
         
-        return returnLongProperty(FIODataPointPropertiesEnum.CLOUD_COVER);
+        return returnDoubleProperty(FIODataPointPropertiesEnum.CLOUD_COVER);
     }
     
     /**
@@ -432,9 +431,9 @@ public class FIODataPoint {
      * @return relative humidity level
      * @throws JSONSlotNotFoundException
      */
-    public final long getHumidity() throws JSONSlotNotFoundException {
+    public final double getHumidity() throws JSONSlotNotFoundException {
         
-        return returnLongProperty(FIODataPointPropertiesEnum.HUMIDITY);
+        return returnDoubleProperty(FIODataPointPropertiesEnum.HUMIDITY);
     }
     
     /**
@@ -445,9 +444,9 @@ public class FIODataPoint {
      * @return air pressure level
      * @throws JSONSlotNotFoundException
      */
-    public final long getPressure() throws JSONSlotNotFoundException {
+    public final double getPressure() throws JSONSlotNotFoundException {
         
-        return returnLongProperty(FIODataPointPropertiesEnum.PRESSURE);
+        return returnDoubleProperty(FIODataPointPropertiesEnum.PRESSURE);
     }
     
     /**
@@ -458,9 +457,9 @@ public class FIODataPoint {
      * @return visibility
      * @throws JSONSlotNotFoundException
      */
-    public final long getVisibility() throws JSONSlotNotFoundException {
+    public final double getVisibility() throws JSONSlotNotFoundException {
         
-        return returnLongProperty(FIODataPointPropertiesEnum.VISIBILITY);
+        return returnDoubleProperty(FIODataPointPropertiesEnum.VISIBILITY);
     }
     
     /**
@@ -471,9 +470,9 @@ public class FIODataPoint {
      * @return density in ozone
      * @throws JSONSlotNotFoundException
      */
-    public final long getOzone() throws JSONSlotNotFoundException {
+    public final double getOzone() throws JSONSlotNotFoundException {
         
-        return returnLongProperty(FIODataPointPropertiesEnum.OZONE);
+        return returnDoubleProperty(FIODataPointPropertiesEnum.OZONE);
     }
     
     
@@ -507,7 +506,8 @@ public class FIODataPoint {
     /**
      * Updates this instance with the given JSON.<br />
      * <br />
-     * The JSON must be valid or this instance will be emptied.
+     * The JSON must be valid or this instance will be emptied.<br />
+     * Unrecognized values are disregarded and not stored.
      * 
      * @param  data data JSON source | null
      * @return      true on success, false otherwise
@@ -517,14 +517,14 @@ public class FIODataPoint {
         if (isValid(data)) {
 
             for (int i = 0; i < data.names().size(); i++)
-                this.data.put(data.names().get(i), data.get(data.names().get(i)));
+                if (FIODataPointPropertiesEnum.isElement(data.names().get(i).toString()))
+                    this.data.put(data.names().get(i), data.get(data.names().get(i)));
             
             return true;
-        } else {
-            
-            clear();
-            return false;
         }
+
+        clear();
+        return false;
     }
     
     /**

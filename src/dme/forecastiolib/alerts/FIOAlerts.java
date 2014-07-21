@@ -3,8 +3,6 @@ package dme.forecastiolib.alerts;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import org.w3c.dom.ranges.RangeException;
-
 /**
  * Representation of a list of Alerts.<br />
  * <br />
@@ -149,11 +147,10 @@ public class FIOAlerts {
             }
             
             return true;
-        } else {
-            
-            clear();
-            return false;
         }
+            
+        clear();
+        return false;
     }
     
     /**

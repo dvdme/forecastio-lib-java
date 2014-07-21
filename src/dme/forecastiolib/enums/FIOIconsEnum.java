@@ -3,7 +3,7 @@ package dme.forecastiolib.enums;
 /**
  * Defines the icon names used by the API.
  * 
- * @author Theo FIDRY <theo.fidry@gmail.com>
+ * @author Theo FIDRY (theo.fidry@gmail.com)
  */
 public final class FIOIconsEnum {
 
@@ -26,8 +26,8 @@ public final class FIOIconsEnum {
     /**
      * Test if the parameter passed is a valid 'enum'.
      * 
-     * @param iconName
-     * @return
+     * @param  iconName data element to be tested
+     * @return true on success, false otherwise
      */
     public static boolean isElement(String iconName) {
         

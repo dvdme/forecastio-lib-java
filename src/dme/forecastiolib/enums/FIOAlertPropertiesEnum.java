@@ -3,7 +3,7 @@ package dme.forecastiolib.enums;
 /**
  * Defines the data elements used by the API for an Alert.
  * 
- * @author Theo FIDRY <theo.fidry@gmail.com>
+ * @author Theo FIDRY (theo.fidry@gmail.com)
  */
 public class FIOAlertPropertiesEnum {
 
@@ -17,8 +17,8 @@ public class FIOAlertPropertiesEnum {
     /**
      * Test if the parameter passed is a valid 'enum'.
      * 
-     * @param dataBlock
-     * @return
+     * @param  dataBlock data element to be tested
+     * @return true on success, false otherwise
      */
     public static boolean isElement(String dataBlock) {
         

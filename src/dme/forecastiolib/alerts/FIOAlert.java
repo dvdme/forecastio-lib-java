@@ -146,7 +146,8 @@ public class FIOAlert {
     /**
      * Updates this instance with the given JSON.<br />
      * <br />
-     * The JSON must be valid or this instance will be emptied.
+     * The JSON must be valid or this instance will be emptied.<br />
+     * Unrecognized values are disregarded and not stored.
      * 
      * @param  data data JSON source | null
      * @return      true on success, false otherwise
@@ -169,11 +170,10 @@ public class FIOAlert {
 
             this.data = data;
             return true;
-        } else {
-            
-            clear();
-            return false;
         }
+            
+        clear();
+        return false;
     }
     
     /**

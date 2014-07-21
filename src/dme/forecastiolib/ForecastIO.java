@@ -9,9 +9,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.zip.GZIPInputStream;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
-import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
 import dme.forecastiolib.enums.FIODataBlocksEnum;
 import dme.forecastiolib.enums.FIOLangEnum;

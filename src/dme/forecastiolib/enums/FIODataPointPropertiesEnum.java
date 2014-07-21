@@ -3,7 +3,7 @@ package dme.forecastiolib.enums;
 /**
  * Defines the data points properties used by the API.
  * 
- * @author Theo FIDRY <theo.fidry@gmail.com>
+ * @author Theo FIDRY (theo.fidry@gmail.com)
  */
 public final class FIODataPointPropertiesEnum {
 
@@ -48,8 +48,8 @@ public final class FIODataPointPropertiesEnum {
     /**
      * Test if the parameter passed is a valid 'enum'.
      * 
-     * @param property
-     * @return
+     * @param  property data element to be tested
+     * @return true on success, false otherwise
      */
     public static boolean isElement(String property) {
         

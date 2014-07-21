@@ -231,7 +231,7 @@ public class FIOAlertsTestCase extends TestCase {
 
     // test update method
     //TODO
-    public void testUpdate_withValidInput_expectInstanceUpdated() {
+    public void testUpdate_withValidInput_expectSuccess() {
 
         FIOAlerts   alerts;
         JSONArray[] inputs = provideValidJSON();
@@ -239,12 +239,11 @@ public class FIOAlertsTestCase extends TestCase {
         for (int i = 0; i < inputs.length; i++) {
 
             alerts = new FIOAlerts(provideProperOptimizedJSON());
-            alerts.update(inputs[i]);
-            assertFalse(alerts.isEmpty());
+            assertTrue(alerts.update(inputs[i]));
         }
     }
 
-    public void testUpdate_withInvalidInput_expectInstanceEmpty() {
+    public void testUpdate_withInvalidInput_expectFailure() {
 
         FIOAlerts   alerts;
         JSONArray[] inputs = provideInvalidJSON();
@@ -252,8 +251,7 @@ public class FIOAlertsTestCase extends TestCase {
         for (int i = 0; i < inputs.length; i++) {
 
             alerts = new FIOAlerts(provideProperOptimizedJSON());
-            alerts.update(inputs[i]);
-            assertTrue(alerts.isEmpty());
+            assertFalse(alerts.update(inputs[i]));
         }
     }
 

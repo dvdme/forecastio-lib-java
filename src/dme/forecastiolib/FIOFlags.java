@@ -253,9 +253,10 @@ public class FIOFlags {
      * <br />
      * If the data passed is null, this instance will not be updated.
      * 
-     * @param data
+     * @param data data JSON source | null
+     * @return     true on success, false otherwise
      */
-    public void update(JSONObject data) {
+    public boolean update(JSONObject data) {
         
         if (isValid(data)) {
 
@@ -271,8 +272,12 @@ public class FIOFlags {
                     flags.put(data.names().get(i), data.get(data.names().get(i)));
                 }
             }
-        } else
-            clear();
+            
+            return true;
+        }
+
+        clear();
+        return false;
     }   
     
     /**

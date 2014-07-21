@@ -3,7 +3,7 @@ package dme.forecastiolib.enums;
 /**
  * Defines the flags objects used by the API.
  * 
- * @author Theo FIDRY <theo.fidry@gmail.com>
+ * @author Theo FIDRY (theo.fidry@gmail.com)
  */
 public final class FIOFlagsObjectsEnum {
 
@@ -26,8 +26,8 @@ public final class FIOFlagsObjectsEnum {
     /**
      * Test if the parameter passed is a valid 'enum'.
      * 
-     * @param flagObject
-     * @return
+     * @param  flagObject data element to be tested
+     * @return true on success, false otherwise
      */
     public static boolean isElement(String flagObject) {
         

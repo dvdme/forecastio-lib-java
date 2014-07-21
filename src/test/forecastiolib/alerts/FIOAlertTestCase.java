@@ -42,7 +42,7 @@ public class FIOAlertTestCase extends TestCase {
         
         data.put(FIOAlertPropertiesEnum.TITLE, "Test alert.");
         data.put(FIOAlertPropertiesEnum.EXPIRES, (Object)new Long(new Date().getTime()));
-        data.put(FIOAlertPropertiesEnum.DESCRIPTION, RandomStringUtils.random(120));
+        data.put(FIOAlertPropertiesEnum.DESCRIPTION, RandomStringUtils.randomAlphabetic(120));
         data.put(FIOAlertPropertiesEnum.URI, "http//test-alert.forecast.io");
         
         return data;
@@ -257,7 +257,7 @@ public class FIOAlertTestCase extends TestCase {
     
     
     // test update method
-    public void testUpdate_withValidInput_expectInstanceUpdated() {
+    public void testUpdate_withValidInput_expectSuccess() {
         
         FIOAlert     alert;
         JSONObject[] inputs = provideValidJSON();
@@ -265,12 +265,11 @@ public class FIOAlertTestCase extends TestCase {
         for (int i = 0; i < inputs.length; i++) {
             
             alert = new FIOAlert(provideProperOptimizedJSON());
-            alert.update(inputs[i]);
-            assertFalse(alert.isEmpty());
+            assertTrue(alert.update(inputs[i]));
         }
     }
     
-    public void testUpdate_withInvalidInput_expectInstanceEmpty() {
+    public void testUpdate_withInvalidInput_expectFailure() {
 
         FIOAlert     alert;
         JSONObject[] inputs = provideInvalidJSON();
@@ -278,8 +277,7 @@ public class FIOAlertTestCase extends TestCase {
         for (int i = 0; i < inputs.length; i++) {
             
             alert = new FIOAlert(provideProperOptimizedJSON());
-            alert.update(inputs[i]);
-            assertTrue(alert.isEmpty());
+            assertFalse(alert.update(inputs[i]));
         }
     }
     

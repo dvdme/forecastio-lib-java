@@ -3,14 +3,11 @@ package test.forecastiolib;
 import java.util.ArrayList;
 import java.util.Date;
 
+import junit.framework.TestCase;
 import net.sf.json.JSONObject;
 import dme.forecastiolib.FIODataPoint;
-import dme.forecastiolib.FIOFlags;
-import dme.forecastiolib.alerts.FIOAlert;
-import dme.forecastiolib.enums.FIOAlertPropertiesEnum;
 import dme.forecastiolib.enums.FIODataPointPropertiesEnum;
 import dme.forecastiolib.json.JSONSlotNotFoundException;
-import junit.framework.TestCase;
 
 /**
  * Test case for the FIOFlags class.
@@ -179,6 +176,11 @@ public class FIODataPointTestCase extends TestCase {
         json.remove(FIODataPointPropertiesEnum.OZONE);
         list.add(json);
         
+        json = provideProperOptimizedJSON();
+        json.element("key1", 0);
+        json.element("key2", "value2");
+        list.add(json);
+        
         
         // return list
         returnList = new JSONObject[list.size()];
@@ -300,7 +302,7 @@ public class FIODataPointTestCase extends TestCase {
     
     
     // test update method
-    public void testUpdate_withValidInput_expectInstanceUpdated() {
+    public void testUpdate_withValidInput_expectSuccess() {
         
         FIODataPoint dataPoint;
         JSONObject[] inputs = provideValidJSON();
@@ -308,10 +310,7 @@ public class FIODataPointTestCase extends TestCase {
         for (int i = 0; i < inputs.length; i++) {
             
             dataPoint = new FIODataPoint(provideProperOptimizedJSON());
-            dataPoint.update(inputs[i]);
-            
-            if (!inputs[i].isEmpty())
-                assertFalse(dataPoint.isEmpty());
+            assertTrue(dataPoint.update(inputs[i]));
         }
     }
     
@@ -323,9 +322,7 @@ public class FIODataPointTestCase extends TestCase {
         for (int i = 0; i < inputs.length; i++) {
             
             dataPoint = new FIODataPoint(provideProperOptimizedJSON());
-            dataPoint.update(inputs[i]);
-            
-            assertTrue(dataPoint.isEmpty());
+            assertFalse(dataPoint.update(inputs[i]));
         }
     }
     
@@ -355,6 +352,7 @@ public class FIODataPointTestCase extends TestCase {
 
             dataPoint = new FIODataPoint(inputs[i]);
             assertTrue(dataPoint.size() == dataPoint.getDataElements().length);
+            assertTrue(dataPoint.size() <= FIODataPointPropertiesEnum.getEnums().length);
         }
     }
     
@@ -371,8 +369,10 @@ public class FIODataPointTestCase extends TestCase {
         input.element(FIODataPointPropertiesEnum.TIME, new Date().getTime());
         input.element(FIODataPointPropertiesEnum.SUNRISE_TIME, new Date().getTime());
         
-        assertTrue(dataPoint.getDataElements()[0].equals(FIODataPointPropertiesEnum.TIME));
-        assertTrue(dataPoint.getDataElements()[1].equals(FIODataPointPropertiesEnum.SUNRISE_TIME));
+        dataPoint.update(input);
+        
+        assertTrue(dataPoint.getDataElements()[1].equals(FIODataPointPropertiesEnum.TIME));
+        assertTrue(dataPoint.getDataElements()[0].equals(FIODataPointPropertiesEnum.SUNRISE_TIME));
     }
 
 
@@ -381,170 +381,171 @@ public class FIODataPointTestCase extends TestCase {
 
         FIODataPoint dataPoint;
         JSONObject[] inputs    = provideJSON();
-        boolean      isEmpty   = true;
+        boolean      isEmpty;
 
         for (int i = 0; i < inputs.length; i++) {
 
             dataPoint = new FIODataPoint(inputs[i]);
-
+            isEmpty   = true;
+            
             try {
                 dataPoint.getTime();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getSummary();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getIcon();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getSunriseTime();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getSunsetTime();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getMoonPhase();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getNearestStormDistance();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getNearestStormBearing();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getPrecipitationIntensity();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getPrecipitationIntensityMax();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getPrecipitationIntensityMaxTime();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getPrecipitationProbability();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getPrecipitationType();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getPrecipitationAccumulation();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getTemperature();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getTemperatureMax();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getTemperatureMaxTime();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getTemperatureMin();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getTemperatureMinTime();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getApparentTemperature();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getApparentTemperatureMax();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getApparentTemperatureMaxTime();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getApparentTemperatureMin();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getApparentTemperatureMinTime();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getDewPoint();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getWindSpeed();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getWindBearing();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getCloudCover();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getHumidity();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getPressure();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getVisibility();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             try {
                 dataPoint.getOzone();
-                isEmpty = true;
+                isEmpty = false;
             } catch (JSONSlotNotFoundException exception) {}
             
             assertTrue(dataPoint.isEmpty() == isEmpty);

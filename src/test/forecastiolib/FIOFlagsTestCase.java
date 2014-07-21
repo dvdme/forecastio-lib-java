@@ -1,17 +1,14 @@
 package test.forecastiolib;
 
 import java.util.ArrayList;
-import java.util.Date;
 
+import junit.framework.TestCase;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.RandomStringUtils;
 
 import dme.forecastiolib.FIOFlags;
-import dme.forecastiolib.alerts.FIOAlert;
-import dme.forecastiolib.enums.FIOAlertPropertiesEnum;
 import dme.forecastiolib.enums.FIOFlagsObjectsEnum;
-import junit.framework.TestCase;
 
 
 /**
@@ -80,7 +77,7 @@ public class FIOFlagsTestCase extends TestCase {
         json = JSONObject.fromObject("{\"metar-stations\":[\"BATN6\",\"C1099\",\"C8670\",\"C9714\",\"D0486\",\"D3216\",\"D6004\",\"E0405\",\"E1020\",\"E1296\",\"E2876\",\"KLGA\",\"KNYC\",\"KQ12\",\"KTEB\",\"ROBN4\"],\"darksky-stations\":[\"725033-94728\",\"725060-99999\",\"997271-99999\",\"999999-94706\",\"999999-94728\"],\"darksky-unavailable\":[\"725033-94728\",\"725060-99999\",\"997271-99999\",\"999999-94706\",\"999999-94728\"],\"datapoint-stations\":[\"uk-324386\",\"uk-324387\",\"uk-350150\",\"uk-350734\",\"uk-350928\",\"uk-350929\",\"uk-352036\",\"uk-352196\",\"uk-352409\",\"uk-352932\",\"uk-353331\",\"uk-353605\",\"uk-353669\",\"uk-353846\",\"uk-354160\",\"uk-354379\"],\"isd-stations\":[\"725033-94728\",\"725060-99999\",\"997271-99999\",\"999999-94706\",\"999999-94728\"],\"lamp-stations\":[\"KBLM\",\"KCDW\",\"KEWR\",\"KFRG\",\"KHPN\",\"KJFK\",\"KLGA\",\"KMMU\",\"KNYC\",\"KSMQ\",\"KTEB\"],\"madis-stations\":[\"BATN6\",\"C1099\",\"C8670\",\"C9714\",\"D0486\",\"D3216\",\"D6004\",\"E0405\",\"E1020\",\"E1296\",\"E2876\",\"KLGA\",\"KNYC\",\"KQ12\",\"KTEB\",\"ROBN4\"]}}");
         list.add(json);
         
-        json.put("test", RandomStringUtils.random(120));
+        json.put("test", RandomStringUtils.randomAlphabetic(120));
         list.add(json);
         
         returnList = new JSONObject[list.size()];
