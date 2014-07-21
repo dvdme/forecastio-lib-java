@@ -24,6 +24,7 @@ public class FIOAlertsTestCase extends TestCase {
     
     //
     // FIELDS
+    //
     // A proper standard FIOAlert instance.
     public FIOAlerts alerts;
     
@@ -121,7 +122,7 @@ public class FIOAlertsTestCase extends TestCase {
         assertTrue(alerts.size() == 1);
     }
 
-    public void testConstructor_withInvalidInputJSON_expectedEmptyAlert() {
+    public void testConstructor_withInvalidInputJSON_expectedEmptyInstance() {
 
         FIOAlerts   alerts;
         JSONArray[] inputs = provideInvalidJSON();
