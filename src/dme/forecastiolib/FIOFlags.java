@@ -9,7 +9,15 @@ import dme.forecastiolib.enums.FIOAlertPropertiesEnum;
 import dme.forecastiolib.enums.FIOFlagsObjectsEnum;
 import dme.forecastiolib.json.JSONSlotNotFoundException;
 
-
+/**
+ * Flags handler.<br />
+ * <br />
+ * Helper used for handling Flags objects. More information available <a href="https://developer.forecast.io/docs/v2">here</a>.
+ *
+ * @author   David Ervideira
+ * @author   Theo FIDRY (theo.fidry@gmail.com)
+ * @version  1.0.0
+ */
 public class FIOFlags {
 
     

@@ -10,6 +10,7 @@ import org.w3c.dom.ranges.RangeException;
  * <br />
  * Helper used for handling Alerts objects. More information available <a href="https://developer.forecast.io/docs/v2">here</a>.
  *
+ * @author   David Ervideira
  * @author   Theo FIDRY (theo.fidry@gmail.com)
  * @version  1.0.0
  */

@@ -9,6 +9,7 @@ import net.sf.json.JSONObject;
  * <br />
  * Helper used for handling Alerts objects. More information available <a href="https://developer.forecast.io/docs/v2">here</a>.
  *
+ * @author   David Ervideira
  * @author   Theo FIDRY (theo.fidry@gmail.com)
  * @version  1.0.0
  */
