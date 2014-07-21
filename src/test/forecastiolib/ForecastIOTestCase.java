@@ -1,26 +1,16 @@
 package test.forecastiolib;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
 
-import net.sf.json.JSONObject;
+import junit.framework.TestCase;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.w3c.dom.ranges.RangeException;
 
-import dme.forecastiolib.FIODataPoint;
 import dme.forecastiolib.ForecastIO;
 import dme.forecastiolib.enums.FIODataBlocksEnum;
-import dme.forecastiolib.enums.FIODataPointPropertiesEnum;
 import dme.forecastiolib.enums.FIOLangEnum;
 import dme.forecastiolib.enums.FIOUnitsEnum;
 import dme.forecastiolib.json.JSONNotFoundException;
-import dme.forecastiolib.json.JSONSlotNotFoundException;
-import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
 
 
 /**

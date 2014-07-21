@@ -40,7 +40,7 @@ public class FIODataBlock {
     /**
      * Instantiate an instance which contains the data points present in the JSON.
      * 
-     * @param data JSON source | null
+     * @param dataBlock JSON source | null
      */
     public FIODataBlock(JSONObject dataBlock) { update(dataBlock); }
 

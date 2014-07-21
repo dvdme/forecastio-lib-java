@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Date;
 import java.util.zip.GZIPInputStream;
 
 import net.sf.json.JSONArray;
@@ -36,31 +35,31 @@ public class ForecastIO {
 	                            LONGITUDE_MAX = 180,
 	                            LONGITUDE_MIN = -180;
 	
-	private String apiKey,                 // API key
-	               exclude = "",          // used to exclude uneeded reports to reduce latency and saving cache space
-	               lang = FIOLangEnum.DEFAULT,                   // defines the language in which text summaries are returned
-            	   units   = FIOUnitsEnum.DEFAULT;      // defines the units of the API response
+	private String apiKey,                             // API key
+	               exclude = "",                       // used to exclude unneeded reports to reduce latency and saving cache space
+	               lang = FIOLangEnum.DEFAULT,         // defines the language in which text summaries are returned
+            	   units   = FIOUnitsEnum.DEFAULT;     // defines the units of the API response
 	             
-	private int time = -1; // optional, used for requesting a arbitrary point in time
+	private int time = -1;                             // optional, used for requesting a arbitrary point in time
 	
-	private double latitude,               // geographic latitude coordinate of a location in decimal degrees
-                   longitude;              // geographic longitude coordinate of a location in decimal degrees
+	private double latitude,                           // geographic latitude coordinate of a location in decimal degrees
+                   longitude;                          // geographic longitude coordinate of a location in decimal degrees
 	
-	private boolean extend = false;        // request hourly data for the next seven days rather than the next two when set to true
+	private boolean extend = false;                    // request hourly data for the next seven days rather than the next two when set to true
 
 	
 	// Data blocks
-	private FIODataPoint currently;    // contains the current weather conditions at the requested location
+	private FIODataPoint currently;                    // contains the current weather conditions at the requested location
 	
-	private FIODataBlock daily,        // contains the weather conditions day-by-day for the next week
-	                     hourly,       // contains the weather conditions hour-by-hour for the next two days
-	                     minutely;     // contains the weather conditions minute-by-minute for the next hour
+	private FIODataBlock daily,                        // contains the weather conditions day-by-day for the next week
+	                     hourly,                       // contains the weather conditions hour-by-hour for the next two days
+	                     minutely;                     // contains the weather conditions minute-by-minute for the next hour
 	
-	private FIOFlags flags;            // contains miscellaneous metadata concerning this request
+	private FIOFlags flags;                            // contains miscellaneous metadata concerning this request
 	
-	private JSONObject  
-	                   forecast  = null;   // array of alert objects, which, if present, contains any severe weather alerts, issued by a
-    FIOAlerts alerts;
+	private JSONObject forecast  = null;               // array of alert objects, which, if present, contains any severe weather alerts, issued by a
+	
+    private FIOAlerts alerts;
 	                                                   // governmental weather authority, pertinent to the requested location
 
 	
@@ -69,12 +68,24 @@ public class ForecastIO {
     //
     /**
      * Instantiate a ForecastIO wrapper with default options.
+     * 
+     * @param key
+     * @param latitude
+     * @param longitude
+     * @throws IllegalArgumentException
      */
     public ForecastIO(String key, double latitude, double longitude) throws IllegalArgumentException { this(key, latitude, longitude, null, null, null, false); }
     
     /**
      * Convenience for the full constructor with the current time.
      * 
+     * @param key
+     * @param latitude
+     * @param longitude
+     * @param lang
+     * @param units
+     * @param exclude
+     * @param extend
      * @throws IllegalArgumentException
      */
     public ForecastIO(String key, double latitude, double longitude, String lang, String units, String[] exclude, boolean extend) throws IllegalArgumentException {

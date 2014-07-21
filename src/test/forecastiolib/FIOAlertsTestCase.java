@@ -1,4 +1,4 @@
-package test.forecastiolib.alerts;
+package test.forecastiolib;
 
 import java.util.ArrayList;
 import java.util.Date;

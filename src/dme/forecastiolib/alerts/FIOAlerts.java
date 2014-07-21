@@ -96,8 +96,8 @@ public class FIOAlerts {
      * <br />
      * If the JSON passed is invalid, this instance will be emptied.
      * 
-     * @param  dataBlock JSON source | null
-     * @return true on success, false otherwise
+     * @param  data JSON source | null
+     * @return      true on success, false otherwise
      */
     public boolean update(JSONArray data) {
         
