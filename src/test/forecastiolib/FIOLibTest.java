@@ -26,6 +26,7 @@ public class FIOLibTest {
 		
 		ForecastIO fio = new ForecastIO(apikey);
 		fio.setUnits(ForecastIO.UNITS_SI);
+		fio.setLang(ForecastIO.LANG_ENGLISH);
 		fio.getForecast("38.7252993", "-9.1500364");
 		
 		//ForecastIO info

@@ -18,6 +18,7 @@ public class ForecastIO {
 	private String unitsURL;
 	private String timeURL;
 	private String excludeURL;
+	private String langURL;
 	private boolean extend;
 
 	public static final String UNITS_US = "us";
@@ -25,6 +26,13 @@ public class ForecastIO {
 	public static final String UNITS_CA = "ca";
 	public static final String UNITS_UK = "uk";
 	public static final String UNITS_AUTO = "auto";
+	
+	public static final String LANG_ENGLISH = "en";
+	public static final String LANG_GERMAN = "de";
+	public static final String LANG_SPANISH = "es";
+	public static final String LANG_FRENCH = "fr";
+	public static final String LANG_DUTCH = "nl";
+	public static final String LANG_TETUM = "tet";
 
 
 	private JsonObject forecast;
@@ -51,6 +59,7 @@ public class ForecastIO {
 			this.excludeURL = null;
 			this.extend = false;
 			this.unitsURL = UNITS_AUTO;
+			this.langURL = LANG_ENGLISH;
 		}
 		else {
 			System.err.println("The API Key doesn't seam to be valid.");
@@ -72,6 +81,7 @@ public class ForecastIO {
 			this.excludeURL = null;
 			this.extend = false;
 			this.unitsURL = UNITS_AUTO;
+			this.langURL = LANG_ENGLISH;
 
 			getForecast(LATITUDE, LONGITUDE);
 		}
@@ -81,7 +91,7 @@ public class ForecastIO {
 
 	}//construtor - end
 
-	public ForecastIO(String LATITUDE, String LONGITUDE, String UNITS, String API_KEY){	
+	public ForecastIO(String LATITUDE, String LONGITUDE, String UNITS, String LANG, String API_KEY){	
 
 		if (API_KEY.length()==32) {
 			this.ForecastIOApiKey = API_KEY;
@@ -96,6 +106,7 @@ public class ForecastIO {
 			this.excludeURL = null;
 			this.extend = false;
 			this.setUnits(UNITS);
+			this.setLang(LANG);
 			getForecast(LATITUDE, LONGITUDE);
 		} else {
 			System.err.println("The API Key doesn't seam to be valid.");
@@ -242,6 +253,38 @@ public class ForecastIO {
 		else
 			this.unitsURL = "auto";
 	}
+	
+	/**
+	 * Returns the language that are setted in the request.
+	 * @return String with the language setted
+	 */
+	public String getLang(){
+		return this.langURL;
+	}
+	
+	/**
+	 * Sets the language to be passed in the request. If the language is not unavailable, english is setted.<br>
+	 * Units can be setted with constants like  ForecastIO.LANG_ENGLISH.
+	 * For more information refer to the API Docs:
+	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @param units
+	 */
+	public void setLang(String lang){
+		if(lang.equals("en"))
+			this.langURL = "en";
+		else if(lang.equals("de"))
+			this.langURL = "de";
+		else if(lang.equals("es"))
+			this.langURL = "es";
+		else if(lang.equals("fr"))
+			this.langURL = "fr";
+		else if(lang.equals("nl"))
+			this.langURL = "nl";
+		else if(lang.equals("tet"))
+			this.langURL = "tet";
+		else
+			this.langURL = "en";
+	}
 
 	/**
 	 * Returns the currently data point
@@ -365,11 +408,11 @@ public class ForecastIO {
 		if(timeURL!=null)
 			url.append(","+timeURL);
 		url.append("?units="+unitsURL);
+		url.append("&lang="+langURL);
 		if(excludeURL!=null)
 			url.append("&exclude="+excludeURL);
 		if(extend)
 			url.append("&extend=hourly");
-
 		return url.toString();
 	}
 
