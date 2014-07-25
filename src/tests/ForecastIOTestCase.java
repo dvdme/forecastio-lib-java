@@ -517,7 +517,7 @@ public class ForecastIOTestCase extends TestCase {
         
         // test the access to the API response when no call has been made yet
         try {
-            forecast.getAPIResponse();
+            forecast.getResponse();
             fail("Excepted exception.");
         } catch (JSONNotFoundException exception) {
             // is the result expected
@@ -529,8 +529,8 @@ public class ForecastIOTestCase extends TestCase {
         
         // test the access to the API response once a call has been made
         try {
-            forecast.getAPIResponse();
-            assertNotNull(forecast.getAPIResponse());
+            forecast.getResponse();
+            assertNotNull(forecast.getResponse());
         } catch (Exception exception) {
             fail("Expected a non null API response.");
         }

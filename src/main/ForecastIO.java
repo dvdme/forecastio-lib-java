@@ -183,7 +183,7 @@ public class ForecastIO {
      * Invalid data blocks are not considered. A valid data block is a FIODataBlockEnum 'enum'.<br />
      * If there is not at least one valid data block or if the parameter is null, it will achieve the same effect as resetting this option.
      * 
-     * @param array of data blocks | null
+     * @param excludeList array of data blocks | null
      */
     public final void setExcludeList(String[] excludeList) {
                 
@@ -364,7 +364,7 @@ public class ForecastIO {
      * @return API response
      * @throws JSONNotFoundException
      */
-    public final String getAPIResponse() throws JSONNotFoundException {
+    public final String getResponse() throws JSONNotFoundException {
         
         if (forecast == null)
             throw new JSONNotFoundException();
@@ -572,7 +572,7 @@ public class ForecastIO {
      */
     public boolean requestForecast() {
 
-        String reply = requestJSON(getRequestURL());
+        String reply = requestJSON(getURL());
 
         if (reply == null)
             return false;
@@ -662,34 +662,12 @@ public class ForecastIO {
      */
     public final boolean hasAlerts() { return this.alerts.isEmpty(); }
     
-    
-    //
-    // PRIVATE HELPERS
-    //
-    /**
-     * Check if the API key is valid.
-     * 
-     * @param key
-     * 
-     * @return
-     */
-    private boolean isKeyValid(String key) {
-        
-        if (key == null)
-            return false;
-        
-        if (key.length() != 32)
-            return false;
-        
-        return true;
-    }
-    
     /**
      * Build and return the URL to use for the Forecast call.
      * 
-     * @return
+     * @return API URL
      */
-    private String getRequestURL() {
+    public String getURL() {
         
         // default URL for Forecast call
         String url = APIURL + "/" + apiKey + "/" + Double.toString(latitude) + "," + Double.toString(longitude);
@@ -712,7 +690,29 @@ public class ForecastIO {
         
         return url;
     }
-
+    
+    
+    //
+    // PRIVATE HELPERS
+    //
+    /**
+     * Check if the API key is valid.
+     * 
+     * @param key
+     * 
+     * @return
+     */
+    private boolean isKeyValid(String key) {
+        
+        if (key == null)
+            return false;
+        
+        if (key.length() != 32)
+            return false;
+        
+        return true;
+    }
+    
     /**
      * Do the request and return the JSON.
      * 

@@ -114,7 +114,7 @@ public class FIOFlags {
      * 
      * @return list the stations' id | empty
      */
-    public final String[] getLampStations() throws JSONSlotNotFoundException {
+    public final String[] getLampStations() {
         
         try {
             return returnStringArrayProperty(FIOFlagsObjectsEnum.LAMP_STATIONS);
