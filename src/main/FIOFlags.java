@@ -30,7 +30,7 @@ public class FIOFlags {
     // CONSTRUCTORS
     //
     /**
-     * Instanciate a flags report with the values contained in the JSON passed.
+     * Instantiate a flags report with the values contained in the JSON passed.
      * 
      * @param data
      */

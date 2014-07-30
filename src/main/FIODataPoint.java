@@ -150,9 +150,9 @@ public class FIODataPoint {
      * @return storm direction
      * @throws JSONSlotNotFoundException
      */
-    public final long getNearestStormBearing() throws JSONSlotNotFoundException {
+    public final double getNearestStormBearing() throws JSONSlotNotFoundException {
         
-        return returnLongProperty(FIODataPointPropertiesEnum.NEAREST_STORM_BEARING);
+        return returnDoubleProperty(FIODataPointPropertiesEnum.NEAREST_STORM_BEARING);
     }
     
     /**
@@ -234,9 +234,9 @@ public class FIODataPoint {
      * @return snow fall accumulation
      * @throws JSONSlotNotFoundException
      */
-    public final long getPrecipitationAccumulation() throws JSONSlotNotFoundException {
+    public final double getPrecipitationAccumulation() throws JSONSlotNotFoundException {
         
-        return returnLongProperty(FIODataPointPropertiesEnum.PRECIPITATION_ACCUMULATION);
+        return returnDoubleProperty(FIODataPointPropertiesEnum.PRECIPITATION_ACCUMULATION);
     }
     
     /**
@@ -247,9 +247,9 @@ public class FIODataPoint {
      * @return temperature
      * @throws JSONSlotNotFoundException
      */
-    public final long getTemperature() throws JSONSlotNotFoundException {
+    public final double getTemperature() throws JSONSlotNotFoundException {
         
-        return returnLongProperty(FIODataPointPropertiesEnum.TEMPERATURE);
+        return returnDoubleProperty(FIODataPointPropertiesEnum.TEMPERATURE);
     }
     
     /**
@@ -594,18 +594,10 @@ public class FIODataPoint {
         throw new JSONSlotNotFoundException();
     }
     
-    private long returnLongProperty(String property) throws JSONSlotNotFoundException {
-        
-        if (data.containsKey(property))
-            return ((Long)data.get(property)).longValue();
-        
-        throw new JSONSlotNotFoundException();
-    }
-    
     private double returnDoubleProperty(String property) throws JSONSlotNotFoundException {
         
         if (data.containsKey(property))
-            return ((Double)data.get(property)).doubleValue();
+            return (Double.valueOf(data.get(property).toString())).doubleValue();
         
         throw new JSONSlotNotFoundException();
     }
@@ -613,7 +605,7 @@ public class FIODataPoint {
     private int returnIntProperty(String property) throws JSONSlotNotFoundException {
         
         if (data.containsKey(property))
-            return ((Integer)data.get(property)).intValue();
+            return (Integer.valueOf(data.get(property).toString())).intValue();
         
         throw new JSONSlotNotFoundException();
     }

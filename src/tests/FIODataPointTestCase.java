@@ -36,7 +36,7 @@ public class FIODataPointTestCase extends TestCase {
      */
     public static JSONObject provideProperOptimizedJSON() {
 
-        return JSONObject.fromObject("{\"time\":1405893600,\"summary\":\"Light rain starting in the afternoon.\",\"icon\":\"rain\",\"sunriseTime\":1405915854,\"sunsetTime\":1405971926,\"moonPhase\":0.83,\"nearestStormDistance\":88,\"nearestStormDistanceBearing\":\"23\",\"precipIntensity\":0.0047,\"precipIntensityMax\":0.013,\"precipIntensityMaxTime\":1405965600,\"precipProbability\":0.84,\"precipType\":\"rain\",\"temperatureMin\":61.35,\"temperatureMinTime\":1405911600,\"temperatureMax\":80.05,\"temperatureMaxTime\":1405951200,\"apparentTemperatureMin\":61.35,\"apparentTemperatureMinTime\":1405911600,\"apparentTemperatureMax\":83.24,\"apparentTemperatureMaxTime\":1405951200,\"dewPoint\":64.95,\"humidity\":0.85,\"windSpeed\":10.02,\"windBearing\":315,\"visibility\":5.59,\"cloudCover\":0.54,\"pressure\":1015.78,\"ozone\":331.37}");
+        return JSONObject.fromObject("{\"time\":1405893600,\"summary\":\"Light rain starting in the afternoon.\",\"icon\":\"rain\",\"sunriseTime\":1405915854,\"sunsetTime\":1405971926,\"moonPhase\":0.83,\"nearestStormDistance\":88,\"nearestStormDistanceBearing\":\"23\",\"precipIntensity\":0.0047,\"precipIntensityMax\":0.013,\"precipIntensityMaxTime\":1405965600,\"precipProbability\":0.84,\"precipType\":\"rain\",\"temperature\":77.97,\"temperatureMin\":61.35,\"temperatureMinTime\":1405911600,\"temperatureMax\":80.05,\"temperatureMaxTime\":1405951200,\"apparentTemperature\":64.3,\"apparentTemperatureMin\":61.35,\"apparentTemperatureMinTime\":1405911600,\"apparentTemperatureMax\":83.24,\"apparentTemperatureMaxTime\":1405951200,\"dewPoint\":64.95,\"humidity\":0.85,\"windSpeed\":10.02,\"windBearing\":315,\"visibility\":5.59,\"cloudCover\":0.54,\"pressure\":1015.78,\"ozone\":331.37}");
     }
     
     public static JSONObject[] provideValidJSON() {
@@ -61,7 +61,19 @@ public class FIODataPointTestCase extends TestCase {
         list.add(json);
         
         json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.SUMMARY, "");
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
         json.remove(FIODataPointPropertiesEnum.ICON);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.ICON, "");
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.ICON, "unsupported icon");
         list.add(json);
         
         json = provideProperOptimizedJSON();
@@ -77,7 +89,19 @@ public class FIODataPointTestCase extends TestCase {
         list.add(json);
         
         json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.MOONPHASE, 0);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.MOONPHASE, 1);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
         json.remove(FIODataPointPropertiesEnum.NEAREST_STORM_DISTANCE);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.NEAREST_STORM_DISTANCE, 0);
         list.add(json);
         
         json = provideProperOptimizedJSON();
@@ -85,7 +109,19 @@ public class FIODataPointTestCase extends TestCase {
         list.add(json);
         
         json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.NEAREST_STORM_BEARING, 0);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.NEAREST_STORM_BEARING, 360);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
         json.remove(FIODataPointPropertiesEnum.PRECIPITATION_INTENSITY);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.PRECIPITATION_INTENSITY, 0);
         list.add(json);
         
         json = provideProperOptimizedJSON();
@@ -93,7 +129,15 @@ public class FIODataPointTestCase extends TestCase {
         list.add(json);
         
         json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.PRECIPITATION_INTENSITY_MAX, 0);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
         json.remove(FIODataPointPropertiesEnum.PRECIPITATION_PROBABILITY);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.PRECIPITATION_PROBABILITY, 0);
         list.add(json);
         
         json = provideProperOptimizedJSON();
@@ -101,7 +145,19 @@ public class FIODataPointTestCase extends TestCase {
         list.add(json);
         
         json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.PRECIPITATION_TYPE, "");
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.PRECIPITATION_TYPE, "unsupported type");
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
         json.remove(FIODataPointPropertiesEnum.PRECIPITATION_ACCUMULATION);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.PRECIPITATION_ACCUMULATION, 0);
         list.add(json);
         
         json = provideProperOptimizedJSON();
@@ -109,7 +165,31 @@ public class FIODataPointTestCase extends TestCase {
         list.add(json);
         
         json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.TEMPERATURE, 0);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.TEMPERATURE, -10);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.TEMPERATURE, 10);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
         json.remove(FIODataPointPropertiesEnum.TEMPERATURE_MAX);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.TEMPERATURE_MAX, 0);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.TEMPERATURE_MAX, -10);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.TEMPERATURE_MAX, 10);
         list.add(json);
         
         json = provideProperOptimizedJSON();
@@ -121,6 +201,18 @@ public class FIODataPointTestCase extends TestCase {
         list.add(json);
         
         json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.TEMPERATURE_MIN, 0);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.TEMPERATURE_MIN, -10);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.TEMPERATURE_MIN, 10);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
         json.remove(FIODataPointPropertiesEnum.TEMPERATURE_MIN_TIME);
         list.add(json);
         
@@ -129,7 +221,31 @@ public class FIODataPointTestCase extends TestCase {
         list.add(json);
         
         json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE, 0);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE, -10);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE, 10);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
         json.remove(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE_MAX);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE_MAX, 0);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE_MAX, -10);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE_MAX, 10);
         list.add(json);
         
         json = provideProperOptimizedJSON();
@@ -141,6 +257,18 @@ public class FIODataPointTestCase extends TestCase {
         list.add(json);
         
         json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE_MIN, 0);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE_MIN, -10);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE_MIN, 10);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
         json.remove(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE_MIN_TIME);
         list.add(json);
         
@@ -149,7 +277,15 @@ public class FIODataPointTestCase extends TestCase {
         list.add(json);
         
         json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.DEW_POINT, 0);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
         json.remove(FIODataPointPropertiesEnum.WIND_SPEED);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.WIND_SPEED, 0);
         list.add(json);
         
         json = provideProperOptimizedJSON();
@@ -157,7 +293,23 @@ public class FIODataPointTestCase extends TestCase {
         list.add(json);
         
         json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.WIND_SPEED, 0);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.WIND_SPEED, 360);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
         json.remove(FIODataPointPropertiesEnum.CLOUD_COVER);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.CLOUD_COVER, 0);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.CLOUD_COVER, 1);
         list.add(json);
         
         json = provideProperOptimizedJSON();
@@ -165,7 +317,19 @@ public class FIODataPointTestCase extends TestCase {
         list.add(json);
         
         json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.HUMIDITY, 0);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.HUMIDITY, 1);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
         json.remove(FIODataPointPropertiesEnum.PRESSURE);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.PRESSURE, 0);
         list.add(json);
         
         json = provideProperOptimizedJSON();
@@ -173,7 +337,15 @@ public class FIODataPointTestCase extends TestCase {
         list.add(json);
         
         json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.VISIBILITY, 0);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
         json.remove(FIODataPointPropertiesEnum.OZONE);
+        list.add(json);
+        
+        json = provideProperOptimizedJSON();
+        json.element(FIODataPointPropertiesEnum.OZONE, 0);
         list.add(json);
         
         json = provideProperOptimizedJSON();
