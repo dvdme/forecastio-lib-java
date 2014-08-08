@@ -455,6 +455,142 @@ public class FIODataPointTestCase extends TestCase {
     }
     
     
+    // test values access
+    public void testValues_expectProperValues() {
+        
+        JSONObject   input     = provideProperOptimizedJSON();
+        FIODataPoint dataPoint = new FIODataPoint();
+        
+        input.element(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE, 57.37);
+        dataPoint.update(input);
+        assertTrue(57.37 == dataPoint.getApparentTemperature());
+        
+        input.element(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE_MAX, 57.37);
+        dataPoint.update(input);
+        assertTrue(57.37 == dataPoint.getApparentTemperatureMax());
+        
+        input.element(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE_MAX_TIME, 1407502800);
+        dataPoint.update(input);
+        assertTrue(1407502800 == dataPoint.getApparentTemperatureMaxTime());
+        
+        input.element(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE_MIN, 57.37);
+        dataPoint.update(input);
+        assertTrue(57.37 == dataPoint.getApparentTemperatureMin());
+        
+        input.element(FIODataPointPropertiesEnum.APPARENT_TEMPERATURE_MIN_TIME, 1407502800);
+        dataPoint.update(input);
+        assertTrue(1407502800 == dataPoint.getApparentTemperatureMinTime());
+        
+        input.element(FIODataPointPropertiesEnum.CLOUD_COVER, 0.27);
+        dataPoint.update(input);
+        assertTrue(0.27 == dataPoint.getCloudCover());
+        
+        input.element(FIODataPointPropertiesEnum.DEW_POINT, 54.37);
+        dataPoint.update(input);
+        assertTrue(54.37 == dataPoint.getDewPoint());
+        
+        input.element(FIODataPointPropertiesEnum.HUMIDITY, 0.75);
+        dataPoint.update(input);
+        assertTrue(0.75 == dataPoint.getHumidity());
+        
+        input.element(FIODataPointPropertiesEnum.ICON, "clear-day");
+        dataPoint.update(input);
+        assertEquals("clear-day", dataPoint.getIcon());
+        
+        input.element(FIODataPointPropertiesEnum.MOONPHASE, 0.42);
+        dataPoint.update(input);
+        assertTrue(0.42 == dataPoint.getMoonPhase());
+        
+        input.element(FIODataPointPropertiesEnum.NEAREST_STORM_BEARING, 58);
+        dataPoint.update(input);
+        assertTrue(58 == dataPoint.getNearestStormBearing());
+        
+        input.element(FIODataPointPropertiesEnum.NEAREST_STORM_DISTANCE, 27);
+        dataPoint.update(input);
+        assertTrue(27 == dataPoint.getNearestStormDistance());
+        
+        input.element(FIODataPointPropertiesEnum.OZONE, 310.53);
+        dataPoint.update(input);
+        assertTrue(310.53 == dataPoint.getOzone());
+        
+        input.element(FIODataPointPropertiesEnum.PRECIPITATION_ACCUMULATION, 310.53);
+        dataPoint.update(input);
+        assertTrue(310.53 == dataPoint.getPrecipitationAccumulation());
+        
+        input.element(FIODataPointPropertiesEnum.PRECIPITATION_INTENSITY, 0.0008);
+        dataPoint.update(input);
+        assertTrue(0.0008 == dataPoint.getPrecipitationIntensity());
+        
+        input.element(FIODataPointPropertiesEnum.PRECIPITATION_INTENSITY_MAX, 0.0026);
+        dataPoint.update(input);
+        assertTrue(0.0026 == dataPoint.getPrecipitationIntensityMax());
+        
+        input.element(FIODataPointPropertiesEnum.PRECIPITATION_INTENSITY_MAX_TIME, 1407758400);
+        dataPoint.update(input);
+        assertTrue(1407758400 == dataPoint.getPrecipitationIntensityMaxTime());
+        
+        input.element(FIODataPointPropertiesEnum.PRECIPITATION_PROBABILITY, 0.03);
+        dataPoint.update(input);
+        assertTrue(0.03 == dataPoint.getPrecipitationProbability());
+        
+        input.element(FIODataPointPropertiesEnum.PRECIPITATION_TYPE, "rain");
+        dataPoint.update(input);
+        assertEquals("rain", dataPoint.getPrecipitationType());
+        
+        input.element(FIODataPointPropertiesEnum.PRESSURE, 1013.19);
+        dataPoint.update(input);
+        assertTrue(1013.19 == dataPoint.getPressure());
+        
+        input.element(FIODataPointPropertiesEnum.SUMMARY, "Partly cloudy until afternoon.");
+        dataPoint.update(input);
+        assertEquals("Partly cloudy until afternoon.", dataPoint.getSummary());
+        
+        input.element(FIODataPointPropertiesEnum.SUNRISE_TIME, 1407763387);
+        dataPoint.update(input);
+        assertTrue(1407763387 == dataPoint.getSunriseTime());
+        
+        input.element(FIODataPointPropertiesEnum.SUNSET_TIME, 1407812960);
+        dataPoint.update(input);
+        assertTrue(1407812960 == dataPoint.getSunsetTime());
+        
+        input.element(FIODataPointPropertiesEnum.TEMPERATURE, 57.37);
+        dataPoint.update(input);
+        assertTrue(57.37 == dataPoint.getTemperature());
+        
+        input.element(FIODataPointPropertiesEnum.TEMPERATURE_MAX, 57.37);
+        dataPoint.update(input);
+        assertTrue(57.37 == dataPoint.getTemperatureMax());
+        
+        input.element(FIODataPointPropertiesEnum.TEMPERATURE_MAX_TIME, 1407502800);
+        dataPoint.update(input);
+        assertTrue(1407502800 == dataPoint.getTemperatureMaxTime());
+        
+        input.element(FIODataPointPropertiesEnum.TEMPERATURE_MIN, 57.37);
+        dataPoint.update(input);
+        assertTrue(57.37 == dataPoint.getTemperatureMin());
+        
+        input.element(FIODataPointPropertiesEnum.TEMPERATURE_MIN_TIME, 1407502800);
+        dataPoint.update(input);
+        assertTrue(1407502800 == dataPoint.getTemperatureMinTime());
+        
+        input.element(FIODataPointPropertiesEnum.TIME, 1407740400);
+        dataPoint.update(input);
+        assertTrue(1407740400 == dataPoint.getTime());
+        
+        input.element(FIODataPointPropertiesEnum.VISIBILITY, 10);
+        dataPoint.update(input);
+        assertTrue(10 == dataPoint.getVisibility());
+        
+        input.element(FIODataPointPropertiesEnum.WIND_BEARING, 237);
+        dataPoint.update(input);
+        assertTrue(237 == dataPoint.getWindBearing());
+        
+        input.element(FIODataPointPropertiesEnum.WIND_SPEED, 6.37);
+        dataPoint.update(input);
+        assertTrue(6.37 == dataPoint.getWindSpeed());
+    }
+    
+    
     // test isValid method
     public void testIsValid_withValidInput_expectedSuccess() {
         
