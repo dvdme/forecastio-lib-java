@@ -1,25 +1,14 @@
-/bin
-
 *.pydevproject
 .metadata
 .gradle
-<<<<<<< HEAD
-bin/*
-tmp/*
-=======
 bin/
 tmp/
->>>>>>> enhanceWrapper
 *.tmp
 *.bak
 *.swp
 *~.nib
 local.properties
-<<<<<<< HEAD
-.settings/*
-=======
 .settings/
->>>>>>> enhanceWrapper
 .loadpath
 
 # External tool builders
