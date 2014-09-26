@@ -82,7 +82,7 @@ public class FIODataBlock {
 	 * Returns a data point from the this data block
 	 * For more information refer to the API Docs:
 	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-	 * @param index
+	 * @param index the index to get
 	 * @return A FIODataPoint
 	 */
 	public FIODataPoint datapoint(int index){

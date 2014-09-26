@@ -39,6 +39,8 @@ public class FIOFlags {
 				this.flags.put("metar-stations", toStringArray(fio.getFlags().get("metar-stations").asArray()));
 
 			//TODO metno-licenses
+			if(fio.getFlags().names().contains("metno-licenses"))
+				this.flags.put("metar-stations", toStringArray(fio.getFlags().get("metno-licenses").asArray()));
 
 			if(fio.getFlags().names().contains("sources"))
 				this.flags.put("sources", toStringArray(fio.getFlags().get("sources").asArray()));
@@ -156,6 +158,18 @@ public class FIOFlags {
 	}
 
 	//TODO metno-licenses
+	/**
+	 * Returns an array with the metno licenses
+	 * For more information refer to the API Docs:
+	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @return array with the stations
+	 */
+	public String [] metnoLicenses(){
+		if(flags.containsKey("metno-licenses"))
+			return flags.get("metno-licenses");
+		else
+			return new String[]{"no data"};
+	}
 
 	/**
 	 * Returns an array with the sources

@@ -10,6 +10,9 @@ A jar file is available under the jar folder for convenience.
 Java 1.7<br>
 Tested under Windows 7 64bits, Linux Mint 15 and Ubuntu 13.04 (and 14.04) 64bits, but it should run everywhere.
 
+####Update (26-09-2014):
+* Supported languages updated. Javadocs slightly improved. Flag `metno-license` supported.
+
 ####Update (23-07-2014):
 * The language option is now supported. [Forecast.io](http://www.forecast.io) is available now in english, german, dutch, french, spanish and tetum. If some other is selected, english will be setted.
 Please note that in `FIOLibTest.java` some messages are hardcoded in english, this has nothing to do with the language option.
@@ -43,7 +46,7 @@ Please note that in `FIOLibTest.java` some messages are hardcoded in english, th
 * It can read Data Points and Data blocks from the [Forecast.io](http://www.forecast.io) API.
   * This means it can read Currently, Minutely, Hourly and Daily data.
 * It reads all available fields.
-* It reads all the available flags except one - `metno-license`. 
+* It reads all the available flags ~~except one - `metno-license`.~~ 
 * It reads all the available alerts. 
 * It reads all the available errors. 
 

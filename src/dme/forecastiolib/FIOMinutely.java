@@ -23,7 +23,7 @@ public class FIOMinutely {
 
 	/**
 	 * Returns the data point for the given minute in the minutely report
-	 * @param minute
+	 * @param minute the minute to get
 	 * @return return the data point with the report
 	 */
 	public FIODataPoint getMinute(int minute){

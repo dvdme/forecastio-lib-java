@@ -27,12 +27,17 @@ public class ForecastIO {
 	public static final String UNITS_UK = "uk";
 	public static final String UNITS_AUTO = "auto";
 	
-	public static final String LANG_ENGLISH = "en";
+	public static final String LANG_BOSNIAN = "bs";
 	public static final String LANG_GERMAN = "de";
+	public static final String LANG_ENGLISH = "en";
 	public static final String LANG_SPANISH = "es";
 	public static final String LANG_FRENCH = "fr";
+	public static final String LANG_ITALIAN = "it";
 	public static final String LANG_DUTCH = "nl";
+	public static final String LANG_POLISH = "pl";
+	public static final String LANG_PORTUGUESE = "pt";
 	public static final String LANG_TETUM = "tet";
+	public static final String LANG_X_PG_LATIN = "Igpay";
 
 
 	private JsonObject forecast;
@@ -193,7 +198,7 @@ public class ForecastIO {
 	 * Sets if the hourly report should be extended in the request.
 	 * For more information refer to the API Docs:
 	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-	 * @param extend
+	 * @param extend true or false to extend or not the request
 	 */
 	public void setExtend(boolean extend) {
 		this.extend = extend;
@@ -237,7 +242,7 @@ public class ForecastIO {
 	 * Units can be setted with constants like  ForecastIO.UNITS_AUTO.
 	 * For more information refer to the API Docs:
 	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-	 * @param units
+	 * @param units the units to be setted
 	 */
 	public void setUnits(String units){
 		if(units.equals("us"))
@@ -267,7 +272,8 @@ public class ForecastIO {
 	 * Units can be setted with constants like  ForecastIO.LANG_ENGLISH.
 	 * For more information refer to the API Docs:
 	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-	 * @param units
+	 * @param lang the language to set. this can be setted with ForecastIO.LANG_ENGLISH (example for english). If a constant<br>
+	 * for a given language is not present, language can be setted with the code (en for english) 
 	 */
 	public void setLang(String lang){
 		if(lang.equals("en"))
@@ -282,6 +288,16 @@ public class ForecastIO {
 			this.langURL = "nl";
 		else if(lang.equals("tet"))
 			this.langURL = "tet";
+		else if(lang.equals("pt"))
+			this.langURL = "pt";
+		else if(lang.equals("pl"))
+			this.langURL = "pl";
+		else if(lang.equals("Igpay"))
+			this.langURL = "Igpay";
+		else if(lang.equals("bs"))
+			this.langURL = "bs";
+		else if(lang.equals("it"))
+			this.langURL = "it";
 		else
 			this.langURL = "en";
 	}
@@ -428,8 +444,8 @@ public class ForecastIO {
 
 	/**
 	 * Gets the forecast reports for the given coordinates with the setted options
-	 * @param LATITUDE
-	 * @param LONGITUDE
+	 * @param LATITUDE the geographical latitude
+	 * @param LONGITUDE the geographical longitude
 	 * @return True if successful 
 	 */
 	public boolean getForecast(String LATITUDE, String LONGITUDE) {
@@ -463,6 +479,7 @@ public class ForecastIO {
 	 * Parses the forecast reports for the given coordinates with the setted options
 	 * Useful to use with an external http library
 	 * @param http_response String
+	 * @return boolean
 	 */
 
 	public boolean getForecast(String http_response) {
@@ -520,8 +537,8 @@ public class ForecastIO {
 	 * Returns the url that is created by internal UrlBuilder method.
 	 * Useful to use with an external http library
 	 *
-	 * @param LATITUDE
-	 * @param LONGITUDE
+	 * @param LATITUDE the geographical latitude
+	 * @param LONGITUDE the geographical longitude
 	 * @return url string.
 	 */
 	public String getUrl(String LATITUDE, String LONGITUDE) {

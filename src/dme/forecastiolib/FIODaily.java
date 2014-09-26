@@ -24,7 +24,7 @@ public class FIODaily {
 
 	/**
 	 * Returns the data point for the given day in the daily report
-	 * @param day
+	 * @param day the day to get
 	 * @return return the data point with the report
 	 */
 	public FIODataPoint getDay(int day){

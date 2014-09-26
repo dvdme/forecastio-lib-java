@@ -23,7 +23,7 @@ public class FIOHourly {
 
 	/**
 	 * Returns the data point for the given day in the hourly report
-	 * @param hour
+	 * @param hour the hour to get
 	 * @return return the data point with the report
 	 */
 	public FIODataPoint getHour(int hour){

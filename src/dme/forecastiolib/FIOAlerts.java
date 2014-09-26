@@ -58,6 +58,7 @@ public class FIOAlerts {
 	 * Returns the title for the alert. Returns null if index doesn't exist.
 	 * For more information refer to the API Docs:
 	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @param index index to get
 	 * @return the title for the alert. Null if index doesn't exist.
 	 */
 	public String getAlertTitle(int index){
@@ -71,6 +72,7 @@ public class FIOAlerts {
 	 * Returns the time for the alert. Returns null if index doesn't exist.
 	 * For more information refer to the API Docs:
 	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @param index index to get
 	 * @return the time for the alert. Null if index doesn't exist.
 	 */
 	public String getAlertTime(int index){
@@ -89,6 +91,7 @@ public class FIOAlerts {
 	 * Returns the expiration time for the alert. Returns null if index doesn't exist.
 	 * For more information refer to the API Docs:
 	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @param index index to get
 	 * @return the expiration time for the alert. Null if index doesn't exist.
 	 */
 	public String getAlertExpireTime(int index){
@@ -107,6 +110,7 @@ public class FIOAlerts {
 	 * Returns the description for the alert. Returns null if index doesn't exist.
 	 * For more information refer to the API Docs:
 	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @param index index to get
 	 * @return the description for the alert. Null if index doesn't exist.
 	 */
 	public String getAlertDescription(int index){
@@ -120,6 +124,7 @@ public class FIOAlerts {
 	 * Returns the uri for the alert. Returns null if index doesn't exist.
 	 * For more information refer to the API Docs:
 	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @param index index to get
 	 * @return the uri for the alert. Null if index doesn't exist.
 	 */
 	public String getAlertURI(int index){
@@ -133,6 +138,7 @@ public class FIOAlerts {
 	 * Returns a string with all the alert information. Returns null if index doesn't exist.
 	 * For more information refer to the API Docs:
 	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @param index index to get
 	 * @return string with all the alert information. Null if index doesn't exist.
 	 */
 	public String getAlert(int index){

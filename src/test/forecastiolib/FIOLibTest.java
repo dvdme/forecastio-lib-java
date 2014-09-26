@@ -10,7 +10,7 @@ import dme.forecastiolib.ForecastIO;
 
 public class FIOLibTest {
 	
-	private static final String apikey = "YOUR_API_KEY";
+	private static final String apikey = "a66c3d9fd49043109081f945a9d4abba";
 	  	   
 	public static void main(String[] args) {
 	
@@ -27,7 +27,7 @@ public class FIOLibTest {
 		ForecastIO fio = new ForecastIO(apikey);
 		fio.setUnits(ForecastIO.UNITS_SI);
 		fio.setLang(ForecastIO.LANG_ENGLISH);
-		fio.getForecast("38.7252993", "-9.1500364");
+		fio.getForecast("38.7252993" , "-9.1500364");
 		
 		//ForecastIO info
 		System.out.println("Latitude: "+fio.getLatitude());
