@@ -20,6 +20,12 @@ public class ForecastIO {
 	private String excludeURL;
 	private String langURL;
 	private boolean extend;
+	
+	private String Cache_Control;
+	private String Expires;
+	private String X_Forecast_API_Calls;
+	private String X_Response_Time;
+	
 
 	public static final String UNITS_US = "us";
 	public static final String UNITS_SI = "si";
@@ -230,21 +236,22 @@ public class ForecastIO {
 	}
 
 	/**
-	 * Returns the units that are setted in the request.
-	 * @return String with the units setted
+	 * Returns the units that are set in the request.
+	 * @return String with the units set
 	 */
 	public String getUnits(){
 		return this.unitsURL;
 	}
 
 	/**
-	 * Sets the units to be passed in the request. If the units are unavailable, auto is setted.<br>
-	 * Units can be setted with constants like  ForecastIO.UNITS_AUTO.
+	 * Sets the units to be passed in the request. If the units are unavailable, auto is set.<br>
+	 * Units can be set with constants like  ForecastIO.UNITS_AUTO.
 	 * For more information refer to the API Docs:
 	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-	 * @param units the units to be setted
+	 * @param units the units to be set - if an unrecognized code is given, units will be set to "auto"
 	 */
 	public void setUnits(String units){
+		
 		if(units.equals("us"))
 			this.unitsURL = "us";
 		else if(units.equals("si"))
@@ -257,25 +264,28 @@ public class ForecastIO {
 			this.unitsURL = "auto";
 		else
 			this.unitsURL = "auto";
+			
+		this.unitsURL = units;
 	}
 	
 	/**
-	 * Returns the language that are setted in the request.
-	 * @return String with the language setted
+	 * Returns the language that are set in the request.
+	 * @return String with the language set
 	 */
 	public String getLang(){
 		return this.langURL;
 	}
 	
 	/**
-	 * Sets the language to be passed in the request. If the language is not unavailable, english is setted.<br>
-	 * Units can be setted with constants like  ForecastIO.LANG_ENGLISH.
+	 * Sets the language to be passed in the request. If the language is not unavailable, english is set.<br>
+	 * Units can be set with constants like  ForecastIO.LANG_ENGLISH.
 	 * For more information refer to the API Docs:
 	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-	 * @param lang the language to set. this can be setted with ForecastIO.LANG_ENGLISH (example for english). If a constant<br>
-	 * for a given language is not present, language can be setted with the code (en for english) 
+	 * @param lang the language to set. this can be set with ForecastIO.LANG_ENGLISH (example for english).<br>
+	 * if an unrecognized code is given, language will be set to english.
 	 */
 	public void setLang(String lang){
+		
 		if(lang.equals("en"))
 			this.langURL = "en";
 		else if(lang.equals("de"))
@@ -300,6 +310,7 @@ public class ForecastIO {
 			this.langURL = "it";
 		else
 			this.langURL = "en";
+		
 	}
 
 	/**
@@ -544,6 +555,39 @@ public class ForecastIO {
 	public String getUrl(String LATITUDE, String LONGITUDE) {
 		return urlBuilder(LATITUDE, LONGITUDE);
 	}
+	
+	/**
+	 * Returns the Cache-Control response header value
+	 * @return the string with the header value
+	 */
+	public String getHeaderCache_Control() {
+		return Cache_Control;
+	}
+	
+	/**
+	 * Returns the Expires response header value
+	 * @return the string with the header value
+	 */
+	public String getHeaderExpires() {
+		return Expires;
+	}
+	
+	/**
+	 * Returns the X-Forecast-API-Calls response header value<br>
+	 * This is the number os API calls made today from one given API Key.
+	 * @return the string with the header value
+	 */
+	public String getHeaderX_Forecast_API_Calls() {
+		return X_Forecast_API_Calls;
+	}
+	
+	/**
+	 * Returns the X-Response-Time response header value
+	 * @return the string with the header value
+	 */
+	public String getHeaderX_Response_Time() {
+		return X_Response_Time;
+	}
 
 	private String httpGET(String requestURL) {
 
@@ -565,11 +609,16 @@ public class ForecastIO {
 			connection.setDoOutput(false);
 			connection.setRequestProperty("Accept-Encoding", "gzip");
 			connection.connect();
-			if(connection.getResponseCode() == 400){
-				System.out.println("Bad Responde. Maybe an invalid location was provided.\n");
+			if(connection.getResponseCode() != HttpURLConnection.HTTP_OK){
+				System.err.println("Bad Responde. Maybe an invalid location was provided.\n");
 				return null;
 			}
 			else {
+				
+				Cache_Control = connection.getHeaderField("Cache-Control");
+				Expires = connection.getHeaderField("Expires");
+				X_Forecast_API_Calls = connection.getHeaderField("X-Forecast-API-Calls");
+				X_Response_Time = connection.getHeaderField("X-Response-Time");
 				
 				try {
 					if(connection.getRequestProperty("Accept-Encoding") != null){

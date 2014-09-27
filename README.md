@@ -10,8 +10,14 @@ A jar file is available under the jar folder for convenience.
 Java 1.7<br>
 Tested under Windows 7 64bits, Linux Mint 15 and Ubuntu 13.04 (and 14.04) 64bits, but it should run everywhere.
 
+####Update (27-09-2014):
+* Response headers that return api calls already made for a given api key and response time are read and available in a get method.
+* Javadocs slightly improved (again).
+
 ####Update (26-09-2014):
-* Supported languages updated. Javadocs slightly improved. Flag `metno-license` supported.
+* Supported languages updated.
+* Javadocs slightly improved.
+* Flag `metno-license` supported.
 
 ####Update (23-07-2014):
 * The language option is now supported. [Forecast.io](http://www.forecast.io) is available now in english, german, dutch, french, spanish and tetum. If some other is selected, english will be setted.

@@ -10,7 +10,7 @@ import dme.forecastiolib.ForecastIO;
 
 public class FIOLibTest {
 	
-	private static final String apikey = "a66c3d9fd49043109081f945a9d4abba";
+	private static final String apikey = "YOUR_API_KEY";
 	  	   
 	public static void main(String[] args) {
 	
@@ -25,16 +25,25 @@ public class FIOLibTest {
 		//Alcatraz: 37.8267 , -122.423
 		
 		ForecastIO fio = new ForecastIO(apikey);
-		fio.setUnits(ForecastIO.UNITS_SI);
+		fio.setUnits(ForecastIO.UNITS_SI);;
 		fio.setLang(ForecastIO.LANG_ENGLISH);
+		fio.setLang("ru");
 		fio.getForecast("38.7252993" , "-9.1500364");
+		
+		//Response Headers info
+		System.out.println("Response Headers:");
+		System.out.println("Cache-Control: "+fio.getHeaderCache_Control());
+		System.out.println("Expires: "+fio.getHeaderExpires());
+		System.out.println("X-Forecast-API-Calls: "+fio.getHeaderX_Forecast_API_Calls());
+		System.out.println("X-Response-Time: "+fio.getHeaderX_Response_Time());
+		System.out.println("\n");
 		
 		//ForecastIO info
 		System.out.println("Latitude: "+fio.getLatitude());
 		System.out.println("Longitude: "+fio.getLongitude());
 		System.out.println("Timezone: "+fio.getTimezone());
 		System.out.println("Offset: "+fio.offsetValue());
-		System.out.println("\n");
+		System.out.println("\n");	
 		
 		//Currently data
 		FIOCurrently currently = new FIOCurrently(fio);
