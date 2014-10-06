@@ -20,19 +20,21 @@ public class ForecastIO {
 	private String excludeURL;
 	private String langURL;
 	private boolean extend;
-	
+
 	private String Cache_Control;
 	private String Expires;
 	private String X_Forecast_API_Calls;
 	private String X_Response_Time;
 	
+	private String rawResponse;
+
 
 	public static final String UNITS_US = "us";
 	public static final String UNITS_SI = "si";
 	public static final String UNITS_CA = "ca";
 	public static final String UNITS_UK = "uk";
 	public static final String UNITS_AUTO = "auto";
-	
+
 	public static final String LANG_BOSNIAN = "bs";
 	public static final String LANG_GERMAN = "de";
 	public static final String LANG_ENGLISH = "en";
@@ -248,26 +250,13 @@ public class ForecastIO {
 	 * Units can be set with constants like  ForecastIO.UNITS_AUTO.
 	 * For more information refer to the API Docs:
 	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-	 * @param units the units to be set - if an unrecognized code is given, units will be set to "auto"
+	 * @param units the units to be set. Units can set with a constant like ForecastIO.UNITS_SI.
+	 * (If the units are invalid the API will return an error)
 	 */
 	public void setUnits(String units){
-		
-		if(units.equals("us"))
-			this.unitsURL = "us";
-		else if(units.equals("si"))
-			this.unitsURL = "si";
-		else if(units.equals("ca"))
-			this.unitsURL = "ca";
-		else if(units.equals("uk"))
-			this.unitsURL = "uk";
-		else if(units.equals("auto"))
-			this.unitsURL = "auto";
-		else
-			this.unitsURL = "auto";
-			
 		this.unitsURL = units;
 	}
-	
+
 	/**
 	 * Returns the language that are set in the request.
 	 * @return String with the language set
@@ -275,42 +264,19 @@ public class ForecastIO {
 	public String getLang(){
 		return this.langURL;
 	}
-	
+
 	/**
 	 * Sets the language to be passed in the request. If the language is not unavailable, english is set.<br>
 	 * Units can be set with constants like  ForecastIO.LANG_ENGLISH.
 	 * For more information refer to the API Docs:
 	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-	 * @param lang the language to set. this can be set with ForecastIO.LANG_ENGLISH (example for english).<br>
-	 * if an unrecognized code is given, language will be set to english.
+	 * @param lang the language to set. this can be set with the constant ForecastIO.LANG_ENGLISH (example for english). 
+	 * If a constant is not available for a given an available API language it can be set with the language code.
+	 * (If the language is invalid the API will return an error)
 	 */
 	public void setLang(String lang){
-		
-		if(lang.equals("en"))
-			this.langURL = "en";
-		else if(lang.equals("de"))
-			this.langURL = "de";
-		else if(lang.equals("es"))
-			this.langURL = "es";
-		else if(lang.equals("fr"))
-			this.langURL = "fr";
-		else if(lang.equals("nl"))
-			this.langURL = "nl";
-		else if(lang.equals("tet"))
-			this.langURL = "tet";
-		else if(lang.equals("pt"))
-			this.langURL = "pt";
-		else if(lang.equals("pl"))
-			this.langURL = "pl";
-		else if(lang.equals("Igpay"))
-			this.langURL = "Igpay";
-		else if(lang.equals("bs"))
-			this.langURL = "bs";
-		else if(lang.equals("it"))
-			this.langURL = "it";
-		else
-			this.langURL = "en";
-		
+		this.langURL = lang;
+
 	}
 
 	/**
@@ -344,7 +310,7 @@ public class ForecastIO {
 	public JsonObject getFlags(){
 		return this.flags;
 	}
-	
+
 	/**
 	 * Returns the alerts data 
 	 * @return JsonObject with the data
@@ -415,7 +381,7 @@ public class ForecastIO {
 		else
 			return true;
 	}
-	
+
 	/**
 	 * Checks if there is any flags data available
 	 * @return true or false
@@ -454,7 +420,7 @@ public class ForecastIO {
 	}
 
 	/**
-	 * Gets the forecast reports for the given coordinates with the setted options
+	 * Gets the forecast reports for the given coordinates with the set options
 	 * @param LATITUDE the geographical latitude
 	 * @param LONGITUDE the geographical longitude
 	 * @return True if successful 
@@ -487,7 +453,7 @@ public class ForecastIO {
 	 */
 
 	/**
-	 * Parses the forecast reports for the given coordinates with the setted options
+	 * Parses the forecast reports for the given coordinates with the set options
 	 * Useful to use with an external http library
 	 * @param http_response String
 	 * @return boolean
@@ -555,7 +521,7 @@ public class ForecastIO {
 	public String getUrl(String LATITUDE, String LONGITUDE) {
 		return urlBuilder(LATITUDE, LONGITUDE);
 	}
-	
+
 	/**
 	 * Returns the Cache-Control response header value
 	 * @return the string with the header value
@@ -563,7 +529,7 @@ public class ForecastIO {
 	public String getHeaderCache_Control() {
 		return Cache_Control;
 	}
-	
+
 	/**
 	 * Returns the Expires response header value
 	 * @return the string with the header value
@@ -571,7 +537,7 @@ public class ForecastIO {
 	public String getHeaderExpires() {
 		return Expires;
 	}
-	
+
 	/**
 	 * Returns the X-Forecast-API-Calls response header value<br>
 	 * This is the number os API calls made today from one given API Key.
@@ -580,13 +546,21 @@ public class ForecastIO {
 	public String getHeaderX_Forecast_API_Calls() {
 		return X_Forecast_API_Calls;
 	}
-	
+
 	/**
 	 * Returns the X-Response-Time response header value
 	 * @return the string with the header value
 	 */
 	public String getHeaderX_Response_Time() {
 		return X_Response_Time;
+	}
+	
+	/**
+	 * Returns the raw JSON response
+	 * @return the string with the JSON response
+	 */
+	public String getRawResponse() {
+		return rawResponse;
 	}
 
 	private String httpGET(String requestURL) {
@@ -609,40 +583,66 @@ public class ForecastIO {
 			connection.setDoOutput(false);
 			connection.setRequestProperty("Accept-Encoding", "gzip");
 			connection.connect();
-			if(connection.getResponseCode() != HttpURLConnection.HTTP_OK){
-				System.err.println("Bad Responde. Maybe an invalid location was provided.\n");
-				return null;
-			}
-			else {
-				
-				Cache_Control = connection.getHeaderField("Cache-Control");
-				Expires = connection.getHeaderField("Expires");
-				X_Forecast_API_Calls = connection.getHeaderField("X-Forecast-API-Calls");
-				X_Response_Time = connection.getHeaderField("X-Response-Time");
-				
+
+			Cache_Control = connection.getHeaderField("Cache-Control");
+			Expires = connection.getHeaderField("Expires");
+			X_Forecast_API_Calls = connection.getHeaderField("X-Forecast-API-Calls");
+			X_Response_Time = connection.getHeaderField("X-Response-Time");
+
+			if(connection.getResponseCode() == HttpURLConnection.HTTP_OK){
+
 				try {
 					if(connection.getRequestProperty("Accept-Encoding") != null){
-						reader = new BufferedReader(new InputStreamReader( new GZIPInputStream( connection.getInputStream())));
+
+						reader = new BufferedReader(new InputStreamReader( new GZIPInputStream( connection.getInputStream() )));
 						while( (s = reader.readLine()) != null )
 							response = s;
+
 					} else {
+
 						reader = new BufferedReader(new InputStreamReader( connection.getInputStream() ));
 						while( (s = reader.readLine()) != null )
 							response = s;
+
 					}
 				} catch (IOException e){
 					System.err.println("Error: "+e.getMessage());
 				} finally {
 					if (reader != null) {
-                        try {
-                            reader.close();
-                            reader = null;
-                        } catch (IOException e) {
-                        	System.err.println("Error: "+e.getMessage());
-                        }
-                    }
+						try {
+							reader.close();
+							reader = null;
+						} catch (IOException e) {
+							System.err.println("Error: "+e.getMessage());
+						}
+					}
 				}
-			}
+
+			} //if HTTP_OK - End
+			// else if HttpURLConnection Not Ok
+			else {
+
+				try {
+					reader = new BufferedReader(new InputStreamReader( connection.getErrorStream() ));
+					while( (s = reader.readLine()) != null )
+						response = s;
+				} catch (IOException e){
+					System.err.println("Error: "+e.getMessage());
+				} finally {
+					if (reader != null) {
+						try {
+							reader.close();
+							reader = null;
+						} catch (IOException e) {
+							System.err.println("Error: "+e.getMessage());
+						}
+					}
+				}
+				//If response is not ok print error and return null
+				System.err.println("Bad Response: " + response + "\n");
+				return null;
+
+			} //else if HttpURLConnection Not Ok - End
 		} catch (IOException e) {
 			System.err.println("Error: "+e.getMessage());		
 			response = null;
@@ -650,6 +650,7 @@ public class ForecastIO {
 			connection.disconnect();
 		}
 		
+		rawResponse = response;
 		return response;
 	}//httpGET - end
 
