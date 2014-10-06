@@ -1,4 +1,4 @@
-package dme.forecastiolib;
+package com.github.dvdme.ForecastIOLib;
 
 import java.io.BufferedReader;
 import java.io.IOException;

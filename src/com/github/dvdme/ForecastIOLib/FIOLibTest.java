@@ -1,12 +1,5 @@
-package test.forecastiolib;
+package com.github.dvdme.ForecastIOLib;
 
-import dme.forecastiolib.FIOAlerts;
-import dme.forecastiolib.FIOCurrently;
-import dme.forecastiolib.FIODaily;
-import dme.forecastiolib.FIOFlags;
-import dme.forecastiolib.FIOHourly;
-import dme.forecastiolib.FIOMinutely;
-import dme.forecastiolib.ForecastIO;
 
 public class FIOLibTest {
 

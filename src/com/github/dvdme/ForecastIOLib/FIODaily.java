@@ -1,4 +1,4 @@
-package dme.forecastiolib;
+package com.github.dvdme.ForecastIOLib;
 
 public class FIODaily {
 

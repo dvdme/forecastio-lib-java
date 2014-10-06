@@ -6,7 +6,7 @@
 
  */
 
-package dme.forecastiolib;
+package com.github.dvdme.ForecastIOLib;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

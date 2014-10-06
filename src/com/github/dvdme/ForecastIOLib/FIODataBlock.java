@@ -1,4 +1,4 @@
-package dme.forecastiolib;
+package com.github.dvdme.ForecastIOLib;
 
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
