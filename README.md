@@ -2,13 +2,25 @@ ForecastIO-Lib-Java
 ===================
 A Java library for the [Forecast.io](http://www.forecast.io) API.
 It is quite functional at this point.
-It still does not fully implements the API but it handles most 
-of the data and I intended to continue further development.
+The API is fully implemented except for callbacks.
+Further development will continue.
 Code is available as an Eclipse project.
-A jar file is available under the jar folder for convenience.
+A jar file with the dependencies is available under the jar/ folder for convenience.
 
 Java 1.7<br>
-Tested under Windows 7 64bits, Linux Mint 15 and Ubuntu 13.04 (and 14.04) 64bits, but it should run everywhere.
+Tested under Windows 7 64bits, Linux Mint 15 (17 also) and Ubuntu 13.04 (14.04 also) 64bits, but it should run everywhere.
+
+####Update (07-10-2014):
+* I converted the project to maven and it is now available in the repositories. I had to rename the package so now is com.github.dvdme.ForecastIOLib. Here's the dependency:
+```xml
+<dependency>
+	<groupId>com.github.dvdme</groupId>
+	<artifactId>ForecastIOLib</artifactId>
+	<version>1.5.1</version>
+</dependency>
+```
+* setUnits() and setLang() methods were simplified. 
+* New getRawResponse() method to return the raw JSON response.
 
 ####Update (27-09-2014):
 * Response headers that return api calls already made for a given api key and response time are read and available in a get method.
@@ -20,7 +32,7 @@ Tested under Windows 7 64bits, Linux Mint 15 and Ubuntu 13.04 (and 14.04) 64bits
 * Flag `metno-license` supported.
 
 ####Update (23-07-2014):
-* The language option is now supported. [Forecast.io](http://www.forecast.io) is available now in english, german, dutch, french, spanish and tetum. If some other is selected, english will be setted.
+* The language option is now supported. [Forecast.io](http://www.forecast.io) is available now in english, german, dutch, french, spanish and tetum. If some other is selected, english will be set.
 Please note that in `FIOLibTest.java` some messages are hardcoded in english, this has nothing to do with the language option.
 (Also, the examples are update with the new option).
 
@@ -84,18 +96,25 @@ for better understanding of the data and for the API key. - You'll need a key to
 * **minimal-json**
 ForecastIO-Lib-Java uses the [minimal-json](https://github.com/ralfstx/minimal-json) for 
 parsing the Json API response. I find this library to be great...
-This in not a dependency because I added the classes to my project.
-[https://github.com/ralfstx/minimal-json](https://github.com/ralfstx/minimal-json<br>
-[http://eclipsesource.com/blogs/2013/04/18/minimal-json-parser-for-java/](http://eclipsesource.com/blogs/2013/04/18/minimal-json-parser-for-java/)
+~~This in not a dependency because I added the classes to my project.~~
+This is a dependency on pom.xml. Anyway there is still a file under jar/ with the dependencies.
 
 ######About the package name
-In case someone wonders, `dme` are just my initials.
-As there is no TLD `.dme` I decided to use them for the package.
+~~In case someone wonders, `dme` are just my initials. As there is no TLD `.dme` I decided to use them for the package.~~
+Because it is now available on maven, the package is com.github.dvdme.ForecastIOLib.
 
 Usage Examples
 --------------
 To use it add the jar file to your project build path or add the classes from
-dme.forecastiolib and com.eclipse.json ( [minimal-json](https://github.com/ralfstx/minimal-json) )
+com.github.dvdme.ForecastIOLib and com.eclipse.json ( [minimal-json](https://github.com/ralfstx/minimal-json) ) or add the dependency to pom:
+
+```xml
+<dependency>
+  <groupId>com.github.dvdme</groupId>
+  <artifactId>ForecastIOLib</artifactId>
+  <version>1.5.1</version>
+</dependency>
+```
 
 Data is initialized and fetched by the ForecastIO class:
 
@@ -271,5 +290,5 @@ The code is available under the terms of the [Eclipse Public License](http://www
 
 Last Update
 -----------
-23-07-2014
+07-10-2014
 
