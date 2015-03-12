@@ -9,15 +9,22 @@ A jar file with the dependencies is available under the jar/ folder for convenie
 Java 1.7<br>
 Tested under Windows 7 64bits, Linux Mint 15 (17 also) and Ubuntu 13.04 (14.04 also) 64bits, but it should run everywhere.
 
-####Update (07-10-2014):
-* I converted the project to maven and it is now available in the repositories. I had to rename the package so now is com.github.dvdme.ForecastIOLib. Here's the dependency:
+#### Maven dependency:
 ```xml
 <dependency>
 	<groupId>com.github.dvdme</groupId>
 	<artifactId>ForecastIOLib</artifactId>
-	<version>1.5.1</version>
+	<version>LATEST</version>
 </dependency>
 ```
+* Versions 1.5.1 and 1.5.2 are on maven. I recommend using the latest.
+
+####Update (12-03-2015):
+* Bug fix: No longer crashes with half hour timezones.
+* Code improvements on httpGET() method.
+
+####Update (07-10-2014):
+* I converted the project to maven and it is now available in the repositories. I had to rename the package so now is com.github.dvdme.ForecastIOLib.
 * setUnits() and setLang() methods were simplified. 
 * New getRawResponse() method to return the raw JSON response.
 
