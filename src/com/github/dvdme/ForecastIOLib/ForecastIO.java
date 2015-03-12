@@ -232,10 +232,10 @@ public class ForecastIO {
 	 * @return String with the offset
 	 */
 	public String offset(){
-		if(this.forecast.get("offset").asInt()<0)
-			return ""+"-"+this.forecast.get("offset").asInt();
-		else if(this.forecast.get("offset").asInt()>0)
-			return ""+"+"+this.forecast.get("offset").asInt();
+		if(this.forecast.get("offset").asDouble()<0)
+			return ""+this.forecast.get("offset").asDouble();
+		else if(this.forecast.get("offset").asDouble()>0)
+			return ""+"+"+this.forecast.get("offset").asDouble();
 		else
 			return "";
 	}
@@ -400,13 +400,13 @@ public class ForecastIO {
 		StringBuilder url = new StringBuilder("");
 		url.append(ForecastIOURL);
 		url.append(ForecastIOApiKey+"/");
-		url.append(LATITUDE+","+LONGITUDE);
+		url.append(LATITUDE.trim()+","+LONGITUDE.trim());
 		if(timeURL!=null)
-			url.append(","+timeURL);
-		url.append("?units="+unitsURL);
-		url.append("&lang="+langURL);
+			url.append(","+timeURL.trim());
+		url.append("?units="+unitsURL.trim());
+		url.append("&lang="+langURL.trim());
 		if(excludeURL!=null)
-			url.append("&exclude="+excludeURL);
+			url.append("&exclude="+excludeURL.trim());
 		if(extend)
 			url.append("&extend=hourly");
 		return url.toString();
