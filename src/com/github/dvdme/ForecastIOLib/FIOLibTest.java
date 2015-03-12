@@ -3,8 +3,7 @@ package com.github.dvdme.ForecastIOLib;
 
 public class FIOLibTest {
 
-	//private static final String apikey = "YOUR_API_KEY";
-	private static final String apikey = "a66c3d9fd49043109081f945a9d4abba";
+	private static final String apikey = "YOUR_API_KEY";
 
 	public static void main(String[] args) {
 
@@ -22,7 +21,7 @@ public class FIOLibTest {
 		ForecastIO fio = new ForecastIO(apikey);
 		fio.setUnits(ForecastIO.UNITS_SI);
 		fio.setLang(ForecastIO.LANG_ENGLISH);
-		fio.getForecast("10.4880555" , "-66.8791667");
+		fio.getForecast("38.7252993" , "-9.1500364");
 
 		//Response Headers info
 		System.out.println("Response Headers:");
