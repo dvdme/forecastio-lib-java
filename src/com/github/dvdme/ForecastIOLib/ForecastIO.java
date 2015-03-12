@@ -45,9 +45,10 @@ public class ForecastIO {
 	public static final String LANG_POLISH = "pl";
 	public static final String LANG_PORTUGUESE = "pt";
 	public static final String LANG_TETUM = "tet";
-	public static final String LANG_X_PG_LATIN = "Igpay";
+	public static final String LANG_PIG_LATIN = "x-pig-latin";
+	public static final String LANG_RUSSIAN = "ru";
 
-
+	
 	private JsonObject forecast;
 
 	private JsonObject currently;
@@ -213,13 +214,13 @@ public class ForecastIO {
 	}
 
 	/**
-	 * Returns the timezone offset in an integer
+	 * Returns the timezone offset in an double
 	 * For more information refer to the API Docs:
 	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
-	 * @return integer with the offset
+	 * @return double with the offset
 	 */
-	public int offsetValue(){
-		return this.forecast.get("offset").asInt();
+	public double offsetValue(){
+		return this.forecast.get("offset").asDouble();
 	}
 
 	/**

@@ -3,7 +3,8 @@ package com.github.dvdme.ForecastIOLib;
 
 public class FIOLibTest {
 
-	private static final String apikey = "YOUR_API_KEY";
+	//private static final String apikey = "YOUR_API_KEY";
+	private static final String apikey = "a66c3d9fd49043109081f945a9d4abba";
 
 	public static void main(String[] args) {
 
@@ -16,11 +17,12 @@ public class FIOLibTest {
 		//Brasilia: -15.83454 , -47.98828
 		//London:   51.51121 , -0.11982
 		//Alcatraz: 37.8267 , -122.423
+		//Caracas:  10.4880555, -66.8791667
 
 		ForecastIO fio = new ForecastIO(apikey);
 		fio.setUnits(ForecastIO.UNITS_SI);
 		fio.setLang(ForecastIO.LANG_ENGLISH);
-		fio.getForecast("38.7252993" , "-9.1500364");
+		fio.getForecast("10.4880555" , "-66.8791667");
 
 		//Response Headers info
 		System.out.println("Response Headers:");
@@ -109,7 +111,7 @@ public class FIOLibTest {
 		//Alerts data
 		FIOAlerts alerts = new FIOAlerts(fio);
 		if(alerts.NumberOfAlerts() <= 0){
-			System.out.println("No alerts for this locatoin.");
+			System.out.println("No alerts for this location.");
 		} else {
 			System.out.println("Alerts");
 			for(int i=0; i<alerts.NumberOfAlerts(); i++)
