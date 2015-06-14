@@ -695,6 +695,20 @@ public class FIODataPoint {
 			return -1d;
 	}
 
+	/**
+	 * Percentage complete of the current lunar month
+	 * For more information refer to the API Docs:
+	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @return A Double number representing the fractional part of the lunation number of the given day.
+	 * Returns null if the field is not defined.
+	 */
+	public Double moonPhase() {
+		if (this.datapoint.containsKey("moonPhase"))
+			return asDouble(this.datapoint.get("moonPhase"));
+		else
+			return null;
+	}
+
 	private Double asDouble(Object obj){
 		return Double.parseDouble( String.valueOf(obj) );
 	}
