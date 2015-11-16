@@ -598,13 +598,14 @@ public class ForecastIO {
 
 				try {
                     //create the appropriate stream wrapper based on the encoding type
+					//use UTF-8 when parsing the JSON responses
 
                     if (encoding != null && encoding.equalsIgnoreCase("gzip")) {
-						reader = new BufferedReader(new InputStreamReader( new GZIPInputStream( connection.getInputStream() )));
+						reader = new BufferedReader(new InputStreamReader( new GZIPInputStream( connection.getInputStream() ), "UTF-8"));
 					} else if (encoding != null && encoding.equalsIgnoreCase("deflate")) {
-                        reader = new BufferedReader(new InputStreamReader( new InflaterInputStream( connection.getInputStream(), new Inflater(true) )));
+                        reader = new BufferedReader(new InputStreamReader( new InflaterInputStream( connection.getInputStream(), new Inflater(true) ), "UTF-8"));
                     } else {
-						reader = new BufferedReader(new InputStreamReader( connection.getInputStream() ));
+						reader = new BufferedReader(new InputStreamReader( connection.getInputStream(),"UTF-8" ));
 					}
 
                     while( (s = reader.readLine()) != null )
