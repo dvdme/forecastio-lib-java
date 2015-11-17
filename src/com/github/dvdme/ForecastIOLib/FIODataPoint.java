@@ -118,6 +118,15 @@ public class FIODataPoint {
 		String time = dfm.format( t * 1000 );
 		return time;
 	}
+	
+	/**
+	 * Returns the UNIX timestamp at which this data point occurs (seconds since UNIX epoch).
+	 * e.g. 1433361600 = Wed, 03 Jun 2015 20:00:00 GMT
+	 * @return A machine-readable UNIX timestamp as a long. 
+	 */
+	public long timestamp() {
+		return Long.parseLong( String.valueOf(this.datapoint.get("time")) );
+	}
 
 	/**
 	 * Returns a human-readable text summary of the data point.
