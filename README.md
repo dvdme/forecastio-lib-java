@@ -6,8 +6,10 @@ The API is fully implemented except for callbacks.
 Further development will continue.
 A jar file with the dependencies is available under the jar/ folder for convenience.
 
-Java 1.7<br>
-Tested under Windows 7 64bits, Linux Mint 15 (17 also) and Ubuntu 13.04 (14.04 also) 64bits, but it should run everywhere.
+ **Please note that the version on maven is not updated (yet) to use this version use the jar on this repository**
+
+Developed with Java 1.7<br>
+There should be no trouble running this anywhere as long as there is Java support.
 
 #### Maven dependency:
 ```xml
