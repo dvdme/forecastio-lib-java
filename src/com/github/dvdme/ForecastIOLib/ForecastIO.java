@@ -22,6 +22,8 @@ public class ForecastIO {
 	private String excludeURL;
 	private String langURL;
 	private boolean extend;
+    private int connectTimeout = 30000;
+    private int readTimeout = 30000;
 
 	private String Cache_Control;
 	private String Expires;
@@ -60,7 +62,7 @@ public class ForecastIO {
 	private JsonObject flags;
 	private JsonArray alerts;
 
-	public ForecastIO(String API_KEY){	
+	public ForecastIO(String API_KEY){
 
 		if (API_KEY.length()==32) {
 			this.ForecastIOApiKey = API_KEY;
@@ -215,7 +217,37 @@ public class ForecastIO {
 		this.extend = extend;
 	}
 
-	/**
+    /**
+     * @return the connection timeout in milliseconds.
+     */
+    public int getConnectTimeout() {
+        return connectTimeout;
+    }
+
+    /**
+     * Sets the connection timeout in milliseconds.
+     * @param connectTimeout timeout in milliseonds.
+     */
+    public void setConnectTimeout(int connectTimeout) {
+        this.connectTimeout = connectTimeout;
+    }
+
+    /**
+     * @return the read timeout in milliseconds.
+     */
+    public int getReadTimeout() {
+        return readTimeout;
+    }
+
+    /**
+     * Sets the read timeout in milliseconds.
+     * @param readTimeout timeout in milliseonds.
+     */
+    public void setReadTimeout(int readTimeout) {
+        this.readTimeout = readTimeout;
+    }
+
+    /**
 	 * Returns the timezone offset in an double
 	 * For more information refer to the API Docs:
 	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
@@ -585,6 +617,8 @@ public class ForecastIO {
 			connection.setDoInput(true);
 			connection.setDoOutput(false);
 			connection.setRequestProperty("Accept-Encoding", "gzip, deflate");
+            connection.setConnectTimeout(connectTimeout);
+            connection.setReadTimeout(readTimeout);
 			connection.connect();
 
 			Cache_Control = connection.getHeaderField("Cache-Control");
