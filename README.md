@@ -6,7 +6,7 @@ The API is fully implemented except for callbacks.
 Further development will continue.
 A jar file with the dependencies is available under the jar/ folder for convenience.
 
- **Please note that the version on maven is not updated (yet) to use this version use the jar on this repository**
+ ~~**Please note that the version on maven is not updated (yet) to use this version use the jar on this repository**~~ **It is now**
 
 Developed with Java 1.7<br>
 There should be no trouble running this anywhere as long as there is Java support.
@@ -19,7 +19,7 @@ There should be no trouble running this anywhere as long as there is Java suppor
 	<version>LATEST</version>
 </dependency>
 ```
-* Versions 1.5.1 and 1.5.2 are on maven. I recommend using the latest.
+* Versions 1.5.1 ,1.5.2 and 1.5.3 are on maven. I recommend using the latest.
 
 ####Update (12-03-2015):
 * Bug fix: No longer crashes with half hour timezones.
@@ -286,11 +286,7 @@ weather software.
 
 Contributors
 ------------
-* [David Ervideira](http://github.com/dvdme) 
-  * Initial implementation and main development 
-
-* [Rob Kennedy](http://github.com/brobzilla)
-  * Add the possibility to use an external http library
+* Thanks to everyone that {contribuited](https://github.com/dvdme/forecastio-lib-java/graphs/contributors) to make this software better.
 
 License
 -------
@@ -298,5 +294,5 @@ The code is available under the terms of the [Eclipse Public License](http://www
 
 Last Update
 -----------
-07-10-2014
+18-11-2015
 
