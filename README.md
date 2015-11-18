@@ -286,7 +286,7 @@ weather software.
 
 Contributors
 ------------
-* Thanks to everyone that {contribuited](https://github.com/dvdme/forecastio-lib-java/graphs/contributors) to make this software better.
+* Thanks to everyone that [contribuited](https://github.com/dvdme/forecastio-lib-java/graphs/contributors) to make this software better.
 
 License
 -------
