@@ -6,8 +6,6 @@ The API is fully implemented except for callbacks.
 Further development will continue.
 A jar file with the dependencies is available under the jar/ folder for convenience.
 
- ~~**Please note that the version on maven is not updated (yet) to use this version use the jar on this repository**~~ **It is now**
-
 Developed with Java 1.7<br>
 There should be no trouble running this anywhere as long as there is Java support.
 
