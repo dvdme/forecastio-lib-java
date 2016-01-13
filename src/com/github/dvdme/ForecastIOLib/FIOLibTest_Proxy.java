@@ -5,9 +5,9 @@ import com.github.dvdme.ForecastIOLib.ForecastIO;
 
 public class FIOLibTest_Proxy {
 
-	private static final String apikey = "14cb89e62dc7b1df44810d5592ce294e";
-	private static final String proxyname = "172.24.5.1";
-	private static final int proxyport = 8080;
+	private static final String apikey = "YOUR_API_KEY";
+	private static final String proxyname = "YOUR_PROXY_IP_OR_HOSTNAME";
+	private static final int proxyport = 8080; // YOUR_PROXY_PORT
 
 	public static void main(String[] args) {
 
