@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.dvdme</groupId>
 	<artifactId>ForecastIOLib</artifactId>
-	<version>1.5.3-SNAPSHOT</version>
+	<version>1.5.5</version>
 	<name>ForecastIO-Lib-Java</name>
 	<description>A Java Wrapper Library to get weather data from the Forecast.io API</description>
 	<url>https://github.com/dvdme/forecastio-lib-java/</url>
@@ -98,7 +98,7 @@
 		<dependency>
 			<groupId>com.eclipsesource.minimal-json</groupId>
 			<artifactId>minimal-json</artifactId>
-			<version>0.9.1</version>
+			<version>0.9.4</version>
 		</dependency>
 	</dependencies>
 </project>
