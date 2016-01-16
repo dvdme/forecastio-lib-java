@@ -148,6 +148,13 @@ fio.getForecast(response);
 fio.getForecast(JsonObject.readFrom(response));
 ```
 
+If a proxy has to be used:
+```java
+ForecastIO fio = new ForecastIO(your_api_key); //instantiate the class with the API key. 
+fio.setHTTPProxy(proxyhostname, proxyport);    //tell, which proxy to use
+```
+If proxyhostname equals the NullPointer, no proxy will be used.
+
 Currently, minutely, hourly, daily and flags classes are all initialized in the same way,
 with a ForecastIO class as an argument:
 
