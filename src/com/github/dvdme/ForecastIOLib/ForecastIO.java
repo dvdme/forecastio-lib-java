@@ -11,6 +11,7 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
+import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 
@@ -539,7 +540,8 @@ public class ForecastIO {
 			String reply = httpGET( urlBuilder(LATITUDE, LONGITUDE) );
 			if(reply == null)
 				return false;
-			this.forecast = JsonObject.readFrom(reply);
+			this.forecast = Json.parse(reply).asObject();
+			//this.forecast = JsonObject.readFrom(reply);
 		} catch (NullPointerException e) {
 			System.err.println("Unable to connect to the API: "+e.getMessage());
 			return false;
@@ -567,8 +569,8 @@ public class ForecastIO {
 	 */
 
 	public boolean getForecast(String http_response) {
-
-		this.forecast = JsonObject.readFrom(http_response);
+		this.forecast = Json.parse(http_response).asObject();
+		//this.forecast = JsonObject.readFrom(http_response);
 		return getForecast(this.forecast);
 	}
 
