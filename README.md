@@ -279,7 +279,7 @@ send me an <a href="mailto:david.dme@gmail.com">email</a>.<br>
 Documentation
 -------------
 I generated a javadoc based in the comments I made.
-It is included in the files under the javadoc/ folder but
+It is included in the files under the javadoc/ folder and here [forecastiolib.dme.ninja](http://forecastiolib.dme.ninja) but
 do not expect it to be best documentation ever.
 
 History
