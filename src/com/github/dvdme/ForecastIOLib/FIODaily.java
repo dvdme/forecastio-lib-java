@@ -40,4 +40,19 @@ public class FIODaily {
 		return this.daily == null ? -1 : this.daily.datablockSize();
 	}
 
+	/**
+	 * Returns forecast summary
+	 * @return forecast summary or null
+	 */
+	public String getSummary() {
+		return daily == null ? null : daily.summary();
+	}
+
+	/**
+	 * Returns forecast icon
+	 * @return forecast icon or null
+	 */
+	public String getIcon() {
+		return daily == null ? null : daily.icon();
+	}
 }

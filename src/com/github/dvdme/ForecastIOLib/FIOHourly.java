@@ -39,4 +39,20 @@ public class FIOHourly {
 		return this.hourly == null ? -1 : this.hourly.datablockSize();
 	}
 
+	/**
+	 * Returns forecast summary
+	 * @return forecast summary or null
+	 */
+	public String getSummary() {
+		return hourly == null ? null : hourly.summary();
+	}
+
+	/**
+	 * Returns forecast icon
+	 * @return forecast icon or null
+	 */
+	public String getIcon() {
+		return hourly == null ? null : hourly.icon();
+	}
+
 }
