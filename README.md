@@ -1,10 +1,9 @@
 ForecastIO-Lib-Java
 ===================
-A Java library for the [Forecast.io](http://www.forecast.io) API.
-It is quite functional at this point.
+A Java library for the [darksky.net](https://darksky.net) API (previously forecast.io).
 The API is fully implemented except for callbacks.
 Further development will continue.
-A jar file with the dependencies is available under the jar/ folder for convenience.
+A jar file with the dependencies is available under the jar/ folder for convenience. **This jar file is not updated**
 
 Developed with Java 1.7<br>
 There should be no trouble running this anywhere as long as there is Java support.
@@ -19,6 +18,9 @@ There should be no trouble running this anywhere as long as there is Java suppor
 ```
 * Versions 1.5.1 to 1.5.5 are on maven. Avoid using 1.5.3  and 1.5.4 because it was having issues building on graddle because of a not so well made jar file. I recommend using the latest.
 * If anyone wants to check the auto generated javadocs they are here: [forecastiolib.dme.ninja](http://forecastiolib.dme.ninja)
+
+####Update (11-10-2016):
+* Changed api url from api.forecast.io to api.darksky.net
 
 ####Update (16-01-2016):
 * Added proxy support
@@ -98,7 +100,7 @@ contain the currently, minutely, hourly, daily, flags and alerts reports.
 The classes `FIODataPoint`, `FIODataBlock` handle the data in the previous reports
 (except for the flags). Most of the work is done by the `FIODataPoint` class.
 
-Please refer to the API docs [https://developer.forecast.io](https://developer.forecast.io)
+Please refer to the API docs [https://darksky.net/dev/](https://darksky.net/dev/)
 for better understanding of the data and for the API key. - You'll need a key to get it to work.
 
 ####External Libraries:
@@ -287,7 +289,7 @@ History
 I started writing this library for two main reasons:
 First, I wanted to make a serious open source library that was meant
 to used by anyone and not just by me for quite sometime.
-Second, I came across the [Forecast.io](http://www.forecast.io) API that I found to be functional
+Second, I came across the [darksky.net](https://www.darksky.net) API that I found to be functional
 with clear and good information.
 Also, I like the weather and weather data and weather prediction so this
 is going to be very useful for me to implement my crazy ideas about
@@ -300,3 +302,13 @@ Contributors
 License
 -------
 The code is available under the terms of the [Eclipse Public License](http://www.eclipse.org/legal/epl-v10.html).
+
+
+Acknowledgements
+---------------
+
+[![Jet Brains IntelliJ IDEA](/art/icon_IntelliJIDEA.png)](http://www.jetbrains.com/idea/)
+
+Thanks to JetBrains for providing an open source license for [IntelliJ IDEA](https://www.jetbrains.com/idea/).
+
+[Powered by Dark Sky](https://darksky.net/poweredby/)
