@@ -29,7 +29,7 @@ There should be no trouble running this anywhere as long as there is Java suppor
 
 ####Update (07-10-2014):
 * I converted the project to maven and it is now available in the repositories. I had to rename the package so now is com.github.dvdme.ForecastIOLib.
-* setUnits() and setLang() methods were simplified. 
+* setUnits() and setLang() methods were simplified.
 * New getRawResponse() method to return the raw JSON response.
 
 ####Update (27-09-2014):
@@ -57,14 +57,14 @@ Please note that in `FIOLibTest.java` some messages are hardcoded in english, th
 * Other code improvements.
 
 ####Update (29-06-2013):
-* Return null if the field is not defined rather than -1d where -1 might be an accurate value.( Contribution by [matthew-cox](https://github.com/matthew-cox) ) 
+* Return null if the field is not defined rather than -1d where -1 might be an accurate value.( Contribution by [matthew-cox](https://github.com/matthew-cox) )
 
 ####Update (27-06-2013):
-* Fixed bug in timeURL in the internal url builder. ( Contribution by [matthew-cox](https://github.com/matthew-cox) ) 
+* Fixed bug in timeURL in the internal url builder. ( Contribution by [matthew-cox](https://github.com/matthew-cox) )
 * Fixed some typos in the README.md
 
 ####Update (22-06-2013):
-* Thanks to a contribution by [brobzilla](http://github.com/brobzilla), ForecastIO-Lib-Java can be used with an external HTTP library. 
+* Thanks to a contribution by [brobzilla](http://github.com/brobzilla), ForecastIO-Lib-Java can be used with an external HTTP library.
   The request URL can be obtained by the `getUrl` method in the `ForecastIO` class.
   The ForecastIO method `getForecast` can now also be called with a `JsonObject` or with a `String` as parameter.
   Check the "Usage Examples" bellow to see how to use an external HTTP library.
@@ -74,9 +74,9 @@ Please note that in `FIOLibTest.java` some messages are hardcoded in english, th
 * It can read Data Points and Data blocks from the [Forecast.io](http://www.forecast.io) API.
   * This means it can read Currently, Minutely, Hourly and Daily data.
 * It reads all available fields.
-* It reads all the available flags ~~except one - `metno-license`.~~ 
-* It reads all the available alerts. 
-* It reads all the available errors. 
+* It reads all the available flags ~~except one - `metno-license`.~~
+* It reads all the available alerts.
+* It reads all the available errors.
 
 ####What it does not:
 * ~~It does not read alerts and errors (the confidence in the prediction provided by the API).~~ Already implemented.
@@ -87,24 +87,24 @@ Please note that in `FIOLibTest.java` some messages are hardcoded in english, th
 * ~~Add support to errors (confidence in prediction)~~ Done.
 * ~~Add support to alerts~~ Done.
 * (maybe) Add the ability to export data to CSV
-* (maybe) Add the ability of converting units of received data: 
+* (maybe) Add the ability of converting units of received data:
       (This would make sense if there were the need of displaying data in various units without having to make multiple queries.)
 
 ####How it works:
 The ForecastIO-Lib-Java currently has 9 classes (I'll probably add two more to deal with errors).
 The main class is `ForecastIO`: It handles the connection the gets the initial data from the API.
-The classes `FIOCurrently`, `FIOMinutely`, `FIOHourly`, `FIODaily`, `FIOFlags` and `FIOAlerts` 
+The classes `FIOCurrently`, `FIOMinutely`, `FIOHourly`, `FIODaily`, `FIOFlags` and `FIOAlerts`
 contain the currently, minutely, hourly, daily, flags and alerts reports.
-The classes `FIODataPoint`, `FIODataBlock` handle the data in the previous reports 
+The classes `FIODataPoint`, `FIODataBlock` handle the data in the previous reports
 (except for the flags). Most of the work is done by the `FIODataPoint` class.
 
-Please refer to the API docs [https://developer.forecast.io](https://developer.forecast.io) 
+Please refer to the API docs [https://developer.forecast.io](https://developer.forecast.io)
 for better understanding of the data and for the API key. - You'll need a key to get it to work.
 
-####External Libraries: 
+####External Libraries:
 
 * **minimal-json**
-ForecastIO-Lib-Java uses the [minimal-json](https://github.com/ralfstx/minimal-json) for 
+ForecastIO-Lib-Java uses the [minimal-json](https://github.com/ralfstx/minimal-json) for
 parsing the Json API response. I find this library to be great...
 ~~This in not a dependency because I added the classes to my project.~~
 This is a dependency on pom.xml. Anyway there is still a file under jar/ with the dependencies.
@@ -129,7 +129,7 @@ com.github.dvdme.ForecastIOLib and com.eclipse.json ( [minimal-json](https://git
 Data is initialized and fetched by the ForecastIO class:
 
 ```java
-ForecastIO fio = new ForecastIO(your_api_key); //instantiate the class with the API key. 
+ForecastIO fio = new ForecastIO(your_api_key); //instantiate the class with the API key.
 fio.setUnits(ForecastIO.UNITS_SI);             //sets the units as SI - optional
 fio.setExcludeURL("hourly,minutely");             //excluded the minutely and hourly reports from the reply
 fio.getForecast("38.7252993", "-9.1500364");   //sets the latitude and longitude - not optional
@@ -140,7 +140,7 @@ fio.getForecast("38.7252993", "-9.1500364");   //sets the latitude and longitude
 ...or using an external http library:
 
 ```java
-ForecastIO fio = new ForecastIO(your_api_key); //instantiate the class with the API key. 
+ForecastIO fio = new ForecastIO(your_api_key); //instantiate the class with the API key.
 fio.setUnits(ForecastIO.UNITS_SI);             //sets the units as SI - optional
 fio.setExclude("hourly,minutely");             //excluded the minutely and hourly reports from the reply
 String response = Some_External_Http_Library.GET(fio.getUrl("38.7252993", "-9.1500364")); //use the getUrl method to access the
@@ -154,7 +154,7 @@ fio.getForecast(JsonObject.readFrom(response));
 
 If a proxy has to be used:
 ```java
-ForecastIO fio = new ForecastIO(your_api_key); //instantiate the class with the API key. 
+ForecastIO fio = new ForecastIO(your_api_key); //instantiate the class with the API key.
 fio.setHTTPProxy(proxyhostname, proxyport);    //tell, which proxy to use
 ```
 If proxyhostname equals the NullPointer, no proxy will be used.
@@ -261,8 +261,8 @@ Alerts report:
     FIOAlerts alerts = new FIOAlerts(fio);
 	//Check if there are alerts
 	if(alerts.NumberOfAlerts() <= 0){
-		System.out.println("No alerts for this locatoin.");
-	} 
+		System.out.println("No alerts for this location.");
+	}
 	//if there are alerts, print them.
 	else {
 		System.out.println("Alerts");
@@ -284,8 +284,8 @@ do not expect it to be best documentation ever.
 
 History
 -------
-I started writing this library for two main reasons: 
-First, I wanted to make a serious open source library that was meant 
+I started writing this library for two main reasons:
+First, I wanted to make a serious open source library that was meant
 to used by anyone and not just by me for quite sometime.
 Second, I came across the [Forecast.io](http://www.forecast.io) API that I found to be functional
 with clear and good information.
