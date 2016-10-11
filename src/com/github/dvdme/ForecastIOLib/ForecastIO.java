@@ -18,7 +18,7 @@ import com.eclipsesource.json.JsonObject;
 public class ForecastIO {
 
 
-	private static final String ForecastIOURL = "https://api.forecast.io/forecast/";
+	private static final String ForecastIOURL = "https://api.darksky.net/forecast/";
 	private String ForecastIOApiKey = "";
 	private String unitsURL;
 	private String timeURL;
