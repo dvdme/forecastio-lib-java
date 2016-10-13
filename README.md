@@ -311,4 +311,4 @@ Acknowledgements
 
 Thanks to JetBrains for providing an open source license for [IntelliJ IDEA](https://www.jetbrains.com/idea/).
 
-[Powered by Dark Sky](https://darksky.net/poweredby/)
+[![Powered by Dark Sky](https://darksky.net/dev/img/attribution/poweredby.png)](https://darksky.net/poweredby/)
