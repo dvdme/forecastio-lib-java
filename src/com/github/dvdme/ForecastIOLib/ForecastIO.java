@@ -19,6 +19,7 @@ public class ForecastIO {
 
 
 	private static final String ForecastIOURL = "https://api.darksky.net/forecast/";
+	private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 	private String ForecastIOApiKey = "";
 	private String unitsURL;
 	private String timeURL;
@@ -236,6 +237,21 @@ public class ForecastIO {
 	 */
 	public void setTime(String time) {
 		this.timeURL = time;
+	}
+	
+	/**
+	 * Sets the time for the request.
+	 * Time is parsed as follows:<br>
+	 * [YYYY]-[MM]-[DD]T[HH]:[MM]:[SS]{+,-}[HH][MM]<br>
+	 * The last {+,-}[HH][MM] is the timezone<br>
+	 * Example:<br>
+	 * [2013-05-06T12:00:00-0400]<br>
+	 * For more information refer to the API Docs:
+	 * <a href="https://developer.forecast.io">https://developer.forecast.io</a>
+	 * @param time to be parsed
+	 */
+	public void setTime(Date time){
+		this.timeURL = dateFormat.format(time);
 	}
 
 	/**
