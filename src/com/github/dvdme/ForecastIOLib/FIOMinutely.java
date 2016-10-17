@@ -38,5 +38,21 @@ public class FIOMinutely {
 	public int minutes(){
 		return this.minutely == null ? -1 : this.minutely.datablockSize();
 	}
+	
+	/**
+	 * Returns forecast summary
+	 * @return forecast summary or null
+	 */
+	public String getSummary() {
+		return minutely == null ? null : minutely.summary();
+	}
+	
+	/**
+	 * Returns forecast icon
+	 * @return forecast icon or null
+	 */
+	public String getIcon() {
+		return minutely == null ? null : minutely.icon();
+	}
 
 }
