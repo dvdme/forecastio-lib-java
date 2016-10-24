@@ -8,7 +8,7 @@ import com.github.dvdme.ForecastIOLib.ForecastIO;
 
 public class FIOCsvTest {
 	
-	private static final String apikey = "07eb02c656703f0749f2779732b54dc1";
+	private static final String apikey = "APIKEY";
 
 	public static void main(String[] args) {
 
