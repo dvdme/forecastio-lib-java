@@ -15,8 +15,7 @@ public class FIOCsvTest {
 		ForecastIO fio = new ForecastIO(apikey);
 		fio.setUnits(ForecastIO.UNITS_SI);
 		fio.setLang(ForecastIO.LANG_ENGLISH);
-		fio.getForecast("38.7252993" , "-9.1500364"); //local
-		//fio.getForecast("42.3601","-71.0589"); //online
+		fio.getForecast("38.7252993" , "-9.1500364"); 
 
 		//Response Headers info
 		System.out.println("Response Headers:");
@@ -38,7 +37,7 @@ public class FIOCsvTest {
 		//Currently data
 		FIOCurrently currently = new FIOCurrently(fio);
 		
-		String filePathCurrently = "C:\\Users\\rui\\Desktop\\currently.csv";
+		String filePathCurrently = "C:\\Users\\currently.csv";
 		FIOCsv fioCsvCurrently = new FIOCsv(filePathCurrently);
 		fioCsvCurrently.writeToCsv(currently);
 		
@@ -47,7 +46,7 @@ public class FIOCsvTest {
 		//Minutely data
 		FIOMinutely minutely = new FIOMinutely(fio);
 		
-		String filePathMinutely = "C:\\Users\\rui\\Desktop\\minutely.csv";
+		String filePathMinutely = "C:\\Users\\minutely.csv";
 		FIOCsv fioCsvMinutely = new FIOCsv(filePathMinutely);
 		fioCsvMinutely.writeToCsv(minutely);
 		
@@ -56,7 +55,7 @@ public class FIOCsvTest {
 		//Hourly data
 		FIOHourly hourly = new FIOHourly(fio);
 		
-		String filePathHourly = "C:\\Users\\rui\\Desktop\\hourly.csv";
+		String filePathHourly = "C:\\Users\\hourly.csv";
 		FIOCsv fioCsvHourly = new FIOCsv(filePathHourly);
 		fioCsvHourly.writeToCsv(hourly);
 		
@@ -65,7 +64,7 @@ public class FIOCsvTest {
 		//Daily data
 		FIODaily daily = new FIODaily(fio);
 		
-		String filePathDaily = "C:\\Users\\rui\\Desktop\\daily.csv";
+		String filePathDaily = "C:\\Users\\daily.csv";
 		FIOCsv fioCsvDaily = new FIOCsv(filePathDaily);
 		fioCsvDaily.writeToCsv(daily);
 	}
