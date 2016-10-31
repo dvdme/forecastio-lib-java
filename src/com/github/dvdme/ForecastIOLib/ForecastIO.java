@@ -590,6 +590,7 @@ public class ForecastIO {
 	public boolean getForecast(String http_response) {
 		this.forecast = Json.parse(http_response).asObject();
 		//this.forecast = JsonObject.readFrom(http_response);
+        this.rawResponse = http_response;
 		return getForecast(this.forecast);
 	}
 
