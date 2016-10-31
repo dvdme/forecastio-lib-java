@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Date;
 
 import static org.junit.Assert.*;
 
@@ -36,32 +37,27 @@ public class ForecastIOTest {
     @Test
     public void getLatitude() throws Exception {
         double lat = fio.getLatitude();
-        assertEquals(38.7252993, lat, 0.0001);
+        assertEquals("Got wrong latitude", 38.7252993, lat, 0.0001);
     }
 
     @Test
     public void getLongitude() throws Exception {
-
+        double lon = fio.getLongitude();
+        assertEquals("Got wrong longitude", -9.1500364, lon, 0.0001);
     }
 
     @Test
     public void getTimezone() throws Exception {
-
+        String timezone = fio.getTimezone();
+        assertEquals("Got wrong timezone", "Europe/Lisbon", timezone);
     }
 
     @Test
     public void getTime() throws Exception {
-
-    }
-
-    @Test
-    public void setTime() throws Exception {
-
-    }
-
-    @Test
-    public void setTime1() throws Exception {
-
+        // TODO test set time with Date()
+        String time = "2013-05-06T12:00:00-0400";
+        fio.setTime(time);
+        assertEquals("Got wrong time after setTime()", time, fio.getTime());
     }
 
     @Test
@@ -81,12 +77,9 @@ public class ForecastIOTest {
 
     @Test
     public void isExtend() throws Exception {
-
-    }
-
-    @Test
-    public void setExtend() throws Exception {
-
+        assertEquals("Got wrong isExtend()", false, fio.isExtend());
+        fio.setExtend(true);
+        assertEquals("Got wrong isExtend() after setExtend(true)", true, fio.isExtend());
     }
 
     @Test
@@ -111,37 +104,37 @@ public class ForecastIOTest {
 
     @Test
     public void offsetValue() throws Exception {
-
+        double offset = fio.offsetValue();
+        assertEquals("Got wrong offset value", 0.0, offset, 0.001);
     }
 
     @Test
     public void offset() throws Exception {
-
+        String offset = fio.offset();
+        assertEquals("Got wrong offset", "0", fio.offset());
     }
 
     @Test
     public void getUnits() throws Exception {
-
-    }
-
-    @Test
-    public void setUnits() throws Exception {
-
+        String units = fio.getUnits();
+        assertEquals("Got wrong units", "auto", fio.getUnits());
+        fio.setUnits(ForecastIO.UNITS_SI);
+        assertEquals("Got wrong units after setUnits()", "si", fio.getUnits());
     }
 
     @Test
     public void getLang() throws Exception {
-
-    }
-
-    @Test
-    public void setLang() throws Exception {
-
+        String lang = fio.getLang();
+        assertEquals("Got wrong lang", "en", fio.getLang());
+        fio.setLang(ForecastIO.LANG_GERMAN);
+        assertEquals("Got wrong lang after setLang()", "de", fio.getLang());
     }
 
     @Test
     public void getCurrently() throws Exception {
-
+        FIOCurrently cur = new FIOCurrently(fio);
+        assertNotNull("Got null FIOurrently object", cur);
+        assertTrue("Got false hasCurrently()", fio.hasCurrently());
     }
 
     @Test
@@ -166,11 +159,6 @@ public class ForecastIOTest {
 
     @Test
     public void getDaily() throws Exception {
-
-    }
-
-    @Test
-    public void hasCurrently() throws Exception {
 
     }
 
