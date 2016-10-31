@@ -84,22 +84,26 @@ public class ForecastIOTest {
 
     @Test
     public void getConnectTimeout() throws Exception {
-
+        assertEquals("Got wrong connect timeout", 30000, fio.getConnectTimeout());
     }
 
     @Test
     public void setConnectTimeout() throws Exception {
-
+        int timeout = 10000;
+        fio.setConnectTimeout(timeout);
+        assertEquals("Got wrong connect timeout after setConnectTimeout()", 10000, fio.getConnectTimeout());
     }
 
     @Test
     public void getReadTimeout() throws Exception {
-
+        assertEquals("Got wrong read timeout", 30000, fio.getReadTimeout());
     }
 
     @Test
     public void setReadTimeout() throws Exception {
-
+        int timeout = 10000;
+        fio.setReadTimeout(timeout);
+        assertEquals("Got wrong connect read after setConnectTimeout()", 10000, fio.getReadTimeout());
     }
 
     @Test
@@ -139,52 +143,37 @@ public class ForecastIOTest {
 
     @Test
     public void getMinutely() throws Exception {
-
+        FIOMinutely min = new FIOMinutely(fio);
+        assertNotNull("Got null FIOMinutely object", min);
+        assertFalse("Got true hasMinutely()", fio.hasMinutely());
     }
 
     @Test
     public void getHourly() throws Exception {
-
+        FIOHourly hour = new FIOHourly(fio);
+        assertNotNull("Got null FIOHourly object", hour);
+        assertTrue("Got false hasHourly()", fio.hasHourly());
     }
 
     @Test
     public void getFlags() throws Exception {
-
+        FIOFlags flags = new FIOFlags(fio);
+        assertNotNull("Got null FIOFlags object", flags);
+        assertTrue("Got false hasFlags()", fio.hasFlags());
     }
 
     @Test
     public void getAlerts() throws Exception {
-
+        FIOAlerts flags = new FIOAlerts(fio);
+        assertNotNull("Got null FIOAlerts object", flags);
+        assertFalse("Got true hasFlags()", fio.hasAlerts());
     }
 
     @Test
     public void getDaily() throws Exception {
-
-    }
-
-    @Test
-    public void hasMinutely() throws Exception {
-
-    }
-
-    @Test
-    public void hasHourly() throws Exception {
-
-    }
-
-    @Test
-    public void hasDaily() throws Exception {
-
-    }
-
-    @Test
-    public void hasFlags() throws Exception {
-
-    }
-
-    @Test
-    public void hasAlerts() throws Exception {
-
+        FIODaily day = new FIODaily(fio);
+        assertNotNull("Got null FIODaily object", day);
+        assertTrue("Got false hasDaily()", fio.hasDaily());
     }
 
     @Test
@@ -194,47 +183,39 @@ public class ForecastIOTest {
 
     @Test
     public void getForecast() throws Exception {
-
+        // TODO this test
     }
 
-    @Test
-    public void getForecast1() throws Exception {
-
-    }
-
-    @Test
-    public void getForecast2() throws Exception {
-
-    }
 
     @Test
     public void getUrl() throws Exception {
-
+        String url = "https://api.darksky.net/forecast/00000000000000000000000000000000/0.0,0.0?units=auto&lang=en";
+        assertEquals("Got wrong url", url, fio.getUrl("0.0", "0.0"));
     }
 
     @Test
     public void getHeaderCache_Control() throws Exception {
-
+        // TODO this test
     }
 
     @Test
     public void getHeaderExpires() throws Exception {
-
+        // TODO this test
     }
 
     @Test
     public void getHeaderX_Forecast_API_Calls() throws Exception {
-
+        // TODO this test
     }
 
     @Test
     public void getHeaderX_Response_Time() throws Exception {
-
+        // TODO this test
     }
 
     @Test
     public void getRawResponse() throws Exception {
-
+        assertEquals("Got differet raw string", jsonText, fio.getRawResponse());
     }
 
 }

@@ -357,11 +357,11 @@ public class ForecastIO {
 	 */
 	public String offset(){
 		if(this.forecast.get("offset").asDouble()<0)
-			return ""+this.forecast.get("offset").asDouble();
+			return "-"+this.forecast.get("offset").asDouble();
 		else if(this.forecast.get("offset").asDouble()>0)
-			return ""+"+"+this.forecast.get("offset").asDouble();
+			return "+"+this.forecast.get("offset").asDouble();
 		else
-			return "";
+			return "0";
 	}
 
 	/**
