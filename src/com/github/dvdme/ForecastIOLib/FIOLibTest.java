@@ -3,7 +3,7 @@ package com.github.dvdme.ForecastIOLib;
 
 public class FIOLibTest {
 
-	private static final String apikey = "YOUR_API_KEY";
+	private static final String apikey = "a66c3d9fd49043109081f945a9d4abba";
 
 	public static void main(String[] args) {
 
