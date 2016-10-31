@@ -3,9 +3,12 @@ package com.github.dvdme.ForecastIOLib;
 import com.github.dvdme.ForecastIOLib.FIODaily;
 import com.github.dvdme.ForecastIOLib.ForecastIO;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class FIOLibTest_Proxy {
 
-	private static final String apikey = "YOUR_API_KEY";
 	private static final String proxyname = "YOUR_PROXY_IP_OR_HOSTNAME";
 	private static final int proxyport = 8080; // YOUR_PROXY_PORT
 
@@ -22,6 +25,16 @@ public class FIOLibTest_Proxy {
 		//Alcatraz: 37.8267 , -122.423
 		//Caracas:  10.4880555, -66.8791667
 
+		String apikey = null;
+		String apikeyPath = "test/resources/apikey.txt";
+		try {
+			apikey = new String(Files.readAllBytes(Paths.get(apikeyPath)));
+		} catch (IOException e) {
+			System.err.println(String.format("File with api key not found in apikeyPath=%s", apikeyPath));
+			System.err.println(String.format("Please create one with a valid api key"));
+			System.err.print(e.getMessage());
+			System.exit(0);
+		}
 		ForecastIO fio = new ForecastIO(apikey);
 		fio.setUnits(ForecastIO.UNITS_SI);
 		fio.setLang(ForecastIO.LANG_ENGLISH);
