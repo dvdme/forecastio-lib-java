@@ -10,8 +10,7 @@ package com.github.dvdme.ForecastIOLib;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.TimeZone;
+import java.util.*;
 
 import com.eclipsesource.json.JsonObject;
 
@@ -65,6 +64,22 @@ public class FIODataPoint {
 		for(int i=0; i<obj.length; i++)
 			out[i] = String.valueOf(obj[i]);
 		return out;
+	}
+
+	/**
+	 * Returns a List with all the Forecast.io fields available
+	 * in this data point. It can be useful to iterate over all
+	 * available fields in a data point.
+	 *
+	 * @return the List with the field's names.
+	 */
+	public List<String> getFieldsList(){
+		Set<String> keys = datapoint.keySet();
+		List<String> fieldsList = new ArrayList<String>();
+		for(String key : keys){
+			fieldsList.add(key);
+		}
+		return fieldsList;
 	}
 
 	/**
