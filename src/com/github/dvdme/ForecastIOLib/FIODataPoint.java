@@ -54,7 +54,7 @@ public class FIODataPoint {
 
 	/**
 	 * Returns a String array with all the Forecast.io fields available
-	 * in this data point. It can be usefull to iterate over all
+	 * in this data point. It can be useful to iterate over all
 	 * available fields in a data point.
 	 * 
 	 * @return the String array with the field's names.
@@ -98,7 +98,11 @@ public class FIODataPoint {
 		if(key.contains("Time")){
 			DateFormat dfm = new SimpleDateFormat("HH:mm:ss");
 			dfm.setTimeZone(TimeZone.getTimeZone(timezone));
-			out = dfm.format( Long.parseLong(String.valueOf(this.datapoint.get(key))) * 1000 );
+			
+			if(this.datapoint.get(key) != null)
+				out = dfm.format( Long.parseLong(String.valueOf(this.datapoint.get(key))) * 1000 );
+			else
+				out = null;
 		}
 		else 
 			out = String.valueOf( datapoint.get(key) );
