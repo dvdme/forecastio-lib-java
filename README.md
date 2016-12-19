@@ -5,6 +5,8 @@ The API is fully implemented except for callbacks.
 Further development will continue.
 A jar file with the dependencies is available under the jar/ folder for convenience. **This jar file is not updated**
 
+Latest version is on maven central.
+
 Developed with Java 1.7<br>
 There should be no trouble running this anywhere as long as there is Java support.
 
@@ -16,7 +18,7 @@ There should be no trouble running this anywhere as long as there is Java suppor
 	<version>LATEST</version>
 </dependency>
 ```
-* Versions 1.5.1 to 1.5.5 are on maven. Avoid using 1.5.3  and 1.5.4 because it was having issues building on graddle because of a not so well made jar file. I recommend using the latest.
+* Versions 1.5.1 to 1.6.0 are on maven. Avoid using 1.5.3  and 1.5.4 because it was having issues building on graddle because of a not so well made jar file. I recommend using the latest.
 * If anyone wants to check the auto generated javadocs they are here: [forecastiolib.dme.ninja](http://forecastiolib.dme.ninja)
 
 ####Update (11-10-2016):
