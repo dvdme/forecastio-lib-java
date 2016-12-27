@@ -37,7 +37,7 @@ public class ForecastIOTest {
     @Test
     public void getLatitude() throws Exception {
         double lat = fio.getLatitude();
-        assertEquals("Got wrong latitude", 38.7252993, lat, 0.0001);
+        assertEquals("Got wrong latitude", 38.7252993, 0, 0.0001);
     }
 
     @Test
