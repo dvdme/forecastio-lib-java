@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ForecastIOLib">
+    <output-path>$PROJECT_DIR$/classes/artifacts/ForecastIOLib</output-path>
+    <root id="archive" name="ForecastIOLib.jar" />
+  </artifact>
+</component>

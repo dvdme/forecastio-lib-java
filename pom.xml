@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.dvdme</groupId>
 	<artifactId>ForecastIOLib</artifactId>
-	<version>1.5.5</version>
+	<version>1.6.1</version>
 	<name>ForecastIO-Lib-Java</name>
 	<description>A Java Wrapper Library to get weather data from the Forecast.io API</description>
 	<url>https://github.com/dvdme/forecastio-lib-java/</url>
