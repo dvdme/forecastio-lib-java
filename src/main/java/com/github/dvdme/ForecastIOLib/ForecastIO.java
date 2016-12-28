@@ -459,7 +459,7 @@ public class ForecastIO {
 	 * @return true or false
 	 */
 	public boolean hasCurrently(){
-		if(this.currently == null)
+		if(this.currently == null || this.currently.isEmpty())
 			return false;
 		else
 			return true;
@@ -470,7 +470,7 @@ public class ForecastIO {
 	 * @return true or false
 	 */
 	public boolean hasMinutely(){
-		if(this.minutely == null)
+		if(this.minutely == null || this.minutely.isEmpty())
 			return false;
 		else
 			return true;
@@ -481,7 +481,7 @@ public class ForecastIO {
 	 * @return true or false
 	 */
 	public boolean hasHourly(){
-		if(this.hourly == null)
+		if(this.hourly == null || this.hourly.isEmpty())
 			return false;
 		else
 			return true;
@@ -492,7 +492,7 @@ public class ForecastIO {
 	 * @return true or false
 	 */
 	public boolean hasDaily(){
-		if(this.daily == null)
+		if(this.daily == null || this.daily.isEmpty())
 			return false;
 		else
 			return true;
@@ -503,7 +503,7 @@ public class ForecastIO {
 	 * @return true or false
 	 */
 	public boolean hasFlags(){
-		if(this.flags == null)
+		if(this.flags == null || this.flags.isEmpty())
 			return false;
 		else
 			return true;
@@ -514,7 +514,7 @@ public class ForecastIO {
 	 * @return true or false
 	 */
 	public boolean hasAlerts(){
-		if(this.alerts == null)
+		if(this.alerts == null || this.alerts.isEmpty())
 			return false;
 		else
 			return true;
