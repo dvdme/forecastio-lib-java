@@ -21,7 +21,7 @@ public class FIOLibTest {
 		//Caracas:  10.4880555, -66.8791667
 
 		String apikey = null;
-		String apikeyPath = "test/resources/apikey.txt";
+		String apikeyPath = "src/test/resources/apikey.txt";
 		try {
 			apikey = new String(Files.readAllBytes(Paths.get(apikeyPath)));
 		} catch (IOException e) {

@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -17,12 +18,13 @@ import static org.junit.Assert.*;
 public class ForecastIOTest {
 
     private String fakeApiKey = "00000000000000000000000000000000";
+    private String basePath = "src/test/resources/";
     private String jsonText;
     private ForecastIO fio;
 
     @Before
     public void setUp() throws Exception {
-        jsonText = new String(Files.readAllBytes(Paths.get("src/test/resources/response.json")));
+        jsonText = new String(Files.readAllBytes(Paths.get(basePath + "response.json")));
         fio = new ForecastIO(fakeApiKey);
         assertNotNull("ForecastIO object is null at setUp()", fio);
         fio.getForecast(jsonText);
@@ -137,8 +139,28 @@ public class ForecastIOTest {
     @Test
     public void getCurrently() throws Exception {
         FIOCurrently cur = new FIOCurrently(fio);
-        assertNotNull("Got null FIOurrently object", cur);
+        assertNotNull("Got null FIOCurrently object", cur);
         assertTrue("Got false hasCurrently()", fio.hasCurrently());
+    }
+
+    @Test
+    public void getEmptyCurrently() throws Exception {
+        String jsonText = getJsonText(basePath + "response_empty_currently.json");
+        ForecastIO fio = new ForecastIO(fakeApiKey);
+        fio.getForecast(jsonText);
+        FIOCurrently cur = new FIOCurrently(fio);
+        assertNotNull("Got null FIOCurrently object", cur);
+        assertFalse("Got true hasCurrently()", fio.hasCurrently());
+    }
+
+    @Test
+    public void getNullCurrently() throws Exception {
+        String jsonText = getJsonText(basePath + "response_null_currently.json");
+        ForecastIO fio = new ForecastIO(fakeApiKey);
+        fio.getForecast(jsonText);
+        FIOCurrently cur = new FIOCurrently(fio);
+        assertNotNull("Got null FIOCurrently object", cur);
+        assertFalse("Got true hasCurrently()", fio.hasCurrently());
     }
 
     @Test
@@ -216,6 +238,10 @@ public class ForecastIOTest {
     @Test
     public void getRawResponse() throws Exception {
         assertEquals("Got differet raw string", jsonText, fio.getRawResponse());
+    }
+
+    private String getJsonText(String path) throws IOException {
+        return new String(Files.readAllBytes(Paths.get(path)));
     }
 
 }

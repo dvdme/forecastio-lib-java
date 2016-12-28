@@ -59,4 +59,4 @@ fabric.properties
 
 target/
 
-test/resources/apikey.txt
+src/test/resources/apikey.txt
