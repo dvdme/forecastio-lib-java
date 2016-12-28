@@ -1,3 +1,6 @@
+[![Build Status **master**](https://travis-ci.org/dvdme/forecastio-lib-java.svg?branch=master)](https://travis-ci.org/dvdme/forecastio-lib-java)
+[![Build Status **dev**](https://travis-ci.org/dvdme/forecastio-lib-java.svg?branch=dev)](https://travis-ci.org/dvdme/forecastio-lib-java)
+
 ForecastIO-Lib-Java
 ===================
 A Java library for the [darksky.net](https://darksky.net) API (previously forecast.io).
