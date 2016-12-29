@@ -14,6 +14,8 @@ import java.util.*;
 
 import com.eclipsesource.json.JsonObject;
 
+import static org.apache.commons.lang3.StringUtils.strip;
+
 public class FIODataPoint {
 
 	HashMap<String, Object> datapoint;
@@ -36,7 +38,7 @@ public class FIODataPoint {
 	 */
 	void update(JsonObject dp){
 		for(int i = 0; i < dp.names().size(); i++){
-			datapoint.put(dp.names().get(i), dp.get(dp.names().get(i)));
+            datapoint.put(dp.names().get(i), dp.get(dp.names().get(i)));
 		}
 	}
 
@@ -121,7 +123,7 @@ public class FIODataPoint {
 		}
 		else 
 			out = String.valueOf( datapoint.get(key) );
-		return out;
+		return strip(out, "\"");
 	}
 
 	/**
@@ -742,7 +744,7 @@ public class FIODataPoint {
 	}
 
 	private String asString(Object obj){
-		return String.valueOf(obj);
+		return strip((String.valueOf(obj)), "\"");
 	}
 
 }//public class - end
