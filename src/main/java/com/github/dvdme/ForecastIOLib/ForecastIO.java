@@ -48,18 +48,39 @@ public class ForecastIO {
 	public static final String UNITS_UK = "uk";
 	public static final String UNITS_AUTO = "auto";
 
-	public static final String LANG_BOSNIAN = "bs";
-	public static final String LANG_GERMAN = "de";
-	public static final String LANG_ENGLISH = "en";
-	public static final String LANG_SPANISH = "es";
-	public static final String LANG_FRENCH = "fr";
-	public static final String LANG_ITALIAN = "it";
-	public static final String LANG_DUTCH = "nl";
-	public static final String LANG_POLISH = "pl";
-	public static final String LANG_PORTUGUESE = "pt";
-	public static final String LANG_TETUM = "tet";
-	public static final String LANG_PIG_LATIN = "x-pig-latin";
-	public static final String LANG_RUSSIAN = "ru";
+    public static final String LANG_ARABIC = "ar";
+    public static final String LANG_AZERBAIJANI = "az";
+    public static final String LANG_BELARUSIAN = "be";
+    public static final String LANG_BOSNIAN = "bs";
+    public static final String LANG_CATALAN = "ca";
+    public static final String LANG_CZECH = "cs";
+    public static final String LANG_GERMAN = "de";
+    public static final String LANG_GREEK = "el";
+    public static final String LANG_ENGLISH = "en";
+    public static final String LANG_SPANISH = "es";
+    public static final String LANG_ESTONIAN = "et";
+    public static final String LANG_FRENCH = "fr";
+    public static final String LANG_CROATIAN = "hr";
+    public static final String LANG_HUNGARIAN = "hu";
+    public static final String LANG_INDONESIAN = "id";
+    public static final String LANG_ITALIAN = "it";
+    public static final String LANG_ICELANDIC = "is";
+    public static final String LANG_CORNISH = "kw";
+    public static final String LANG_NORWEGIAN_BOKMAL = "nb";
+    public static final String LANG_DUTCH = "nl";
+    public static final String LANG_POLISH = "pl";
+    public static final String LANG_PORTUGUESE = "pt";
+    public static final String LANG_RUSSIAN = "ru";
+    public static final String LANG_SLOVAK = "sk";
+    public static final String LANG_SLOVENIAN = "sl";
+    public static final String LANG_SERBIAN = "sr";
+    public static final String LANG_SWEDISH = "sw";
+    public static final String LANG_TETUM = "tet";
+    public static final String LANG_TURKISH = "tr";
+    public static final String LANG_UKRAINIAN = "uk";
+    public static final String LANG_PIG_LATIN = "x-pig-latin";
+    public static final String LANG_SIMPLIFIED_CHINESE = "zh";
+    public static final String LANG_TRADITIONAL_CHINESE = "zh-tw";
 
 	
 	private JsonObject forecast;
@@ -693,6 +714,8 @@ public class ForecastIO {
 	}
 
 	private String httpGET(String requestURL) {
+
+
 
 		//Variables
 		URL request = null;
