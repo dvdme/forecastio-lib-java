@@ -41,13 +41,14 @@ public class ForecastIO {
 	
 	private Proxy proxy_to_use;
 
+    // Units Constants
+    public static final String UNITS_AUTO = "auto";
+    public static final String UNITS_CA = "ca";
+    public static final String UNITS_UK2 = "uk2";
+    public static final String UNITS_US = "us";
+    public static final String UNITS_SI = "si";
 
-	public static final String UNITS_US = "us";
-	public static final String UNITS_SI = "si";
-	public static final String UNITS_CA = "ca";
-	public static final String UNITS_UK = "uk";
-	public static final String UNITS_AUTO = "auto";
-
+    // Languages Constants
     public static final String LANG_ARABIC = "ar";
     public static final String LANG_AZERBAIJANI = "az";
     public static final String LANG_BELARUSIAN = "be";
