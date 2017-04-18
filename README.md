@@ -28,36 +28,36 @@ There should be no trouble running this anywhere as long as there is Java suppor
 * Versions 1.5.1 to 1.6.0 are on maven. Avoid using 1.5.3  and 1.5.4 because it was having issues building on graddle because of a not so well made jar file. I recommend using the latest.
 * If anyone wants to check the auto generated javadocs they are here: [forecastiolib.dme.ninja](http://forecastiolib.dme.ninja)
 
-####Update (11-10-2016):
+#### Update (11-10-2016):
 * Changed api url from api.forecast.io to api.darksky.net
 
-####Update (16-01-2016):
+#### Update (16-01-2016):
 * Added proxy support
 
-####Update (12-03-2015):
+#### Update (12-03-2015):
 * Bug fix: No longer crashes with half hour timezones.
 * Code improvements.
 
-####Update (07-10-2014):
+#### Update (07-10-2014):
 * I converted the project to maven and it is now available in the repositories. I had to rename the package so now is com.github.dvdme.ForecastIOLib.
 * setUnits() and setLang() methods were simplified.
 * New getRawResponse() method to return the raw JSON response.
 
-####Update (27-09-2014):
+#### Update (27-09-2014):
 * Response headers that return api calls already made for a given api key and response time are read and available in a get method.
 * Javadocs slightly improved (again).
 
-####Update (26-09-2014):
+#### Update (26-09-2014):
 * Supported languages updated.
 * Javadocs slightly improved.
 * Flag `metno-license` supported.
 
-####Update (23-07-2014):
+#### Update (23-07-2014):
 * The language option is now supported. [Forecast.io](http://www.forecast.io) is available now in english, german, dutch, french, spanish and tetum. If some other is selected, english will be set.
 Please note that in `FIOLibTest.java` some messages are hardcoded in english, this has nothing to do with the language option.
 (Also, the examples are update with the new option).
 
-####Update (15-12-2013):
+#### Update (15-12-2013):
 * Alerts are now supported.
 * Errors are now supported.
 * New properties in DataPoints are now supported.
@@ -67,21 +67,21 @@ Please note that in `FIOLibTest.java` some messages are hardcoded in english, th
 * Improved flags class.
 * Other code improvements.
 
-####Update (29-06-2013):
+#### Update (29-06-2013):
 * Return null if the field is not defined rather than -1d where -1 might be an accurate value.( Contribution by [matthew-cox](https://github.com/matthew-cox) )
 
-####Update (27-06-2013):
+#### Update (27-06-2013):
 * Fixed bug in timeURL in the internal url builder. ( Contribution by [matthew-cox](https://github.com/matthew-cox) )
 * Fixed some typos in the README.md
 
-####Update (22-06-2013):
+#### Update (22-06-2013):
 * Thanks to a contribution by [brobzilla](http://github.com/brobzilla), ForecastIO-Lib-Java can be used with an external HTTP library.
   The request URL can be obtained by the `getUrl` method in the `ForecastIO` class.
   The ForecastIO method `getForecast` can now also be called with a `JsonObject` or with a `String` as parameter.
   Check the "Usage Examples" bellow to see how to use an external HTTP library.
 * Better error handling while using the internal HTTP method.
 
-####What is does:
+#### What is does:
 * It can read Data Points and Data blocks from the [Forecast.io](http://www.forecast.io) API.
   * This means it can read Currently, Minutely, Hourly and Daily data.
 * It reads all available fields.
@@ -89,11 +89,11 @@ Please note that in `FIOLibTest.java` some messages are hardcoded in english, th
 * It reads all the available alerts.
 * It reads all the available errors.
 
-####What it does not:
+#### What it does not:
 * ~~It does not read alerts and errors (the confidence in the prediction provided by the API).~~ Already implemented.
 * It does not implements the `callback` request option. Did not seamed relevant for this.
 
-####To Do:
+#### To Do:
 * ~~Improve time zone support~~ Kind of done.
 * ~~Add support to errors (confidence in prediction)~~ Done.
 * ~~Add support to alerts~~ Done.
@@ -101,7 +101,7 @@ Please note that in `FIOLibTest.java` some messages are hardcoded in english, th
 * (maybe) Add the ability of converting units of received data:
       (This would make sense if there were the need of displaying data in various units without having to make multiple queries.)
 
-####How it works:
+#### How it works:
 The ForecastIO-Lib-Java currently has 9 classes (I'll probably add two more to deal with errors).
 The main class is `ForecastIO`: It handles the connection the gets the initial data from the API.
 The classes `FIOCurrently`, `FIOMinutely`, `FIOHourly`, `FIODaily`, `FIOFlags` and `FIOAlerts`
@@ -112,7 +112,7 @@ The classes `FIODataPoint`, `FIODataBlock` handle the data in the previous repor
 Please refer to the API docs [https://darksky.net/dev/](https://darksky.net/dev/)
 for better understanding of the data and for the API key. - You'll need a key to get it to work.
 
-####External Libraries:
+#### External Libraries:
 
 * **minimal-json**
 ForecastIO-Lib-Java uses the [minimal-json](https://github.com/ralfstx/minimal-json) for
@@ -120,7 +120,7 @@ parsing the Json API response. I find this library to be great...
 ~~This in not a dependency because I added the classes to my project.~~
 This is a dependency on pom.xml. Anyway there is still a file under jar/ with the dependencies.
 
-######About the package name
+###### About the package name
 ~~In case someone wonders, `dme` are just my initials. As there is no TLD `.dme` I decided to use them for the package.~~
 Because it is now available on maven, the package is com.github.dvdme.ForecastIOLib.
 
