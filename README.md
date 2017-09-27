@@ -1,7 +1,6 @@
 | Branch        | Travis CI     | Appveyor | Maven Cental | Bintray |
 | ------------- |:-------------:| -----    |--------------|--------------|
 | master        |[![Build Status](https://travis-ci.org/dvdme/forecastio-lib-java.svg?branch=master)](https://travis-ci.org/dvdme/forecastio-lib-java)|[![Build status](https://ci.appveyor.com/api/projects/status/6g4ls99cfx3umqxb/branch/master?svg=true)](https://ci.appveyor.com/project/dvdme/forecastio-lib-java/branch/master)|[![Maven Central](https://img.shields.io/maven-central/v/com.github.dvdme/ForecastIOLib.svg)](http://search.maven.org/#search%7Cga%7C1%7Ccom.github.dvdme.ForecastIOLib)|[![Bintray](https://img.shields.io/bintray/v/dvdme/maven/com.github.dvdme%3AForecastIOLib.svg)](https://bintray.com/dvdme/maven/com.github.dvdme%3AForecastIOLib)
-|
 | dev           |[![Build Status](https://travis-ci.org/dvdme/forecastio-lib-java.svg?branch=dev)](https://travis-ci.org/dvdme/forecastio-lib-java)|[![Build status](https://ci.appveyor.com/api/projects/status/6g4ls99cfx3umqxb/branch/dev?svg=true)](https://ci.appveyor.com/project/dvdme/forecastio-lib-java/branch/master)|[![Maven Central](https://img.shields.io/badge/maven--central-not%20available-lightgrey.svg)](https://github.com/dvdme/forecastio-lib-java)|[![Bintray](https://img.shields.io/badge/Bintray-not%20available-lightgrey.svg)](https://github.com/dvdme/forecastio-lib-java)
 
 ForecastIO-Lib-Java
