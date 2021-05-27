@@ -1,4 +1,6 @@
 # ForecastIO-Lib-Java
+[![build-status](https://img.shields.io/github/workflow/status/eau-claire-energy-cooperative/forecastio-lib-java/Java%20CI?logo=Github)](https://github.com/eau-claire-energy-cooperative/forecastio-lib-java/actions/workflows/maven.yml?query=branch%3Amain)
+[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg)](https://github.com/RichardLitt/standard-readme)
 
 A Java library for the [darksky.net](https://darksky.net) API (previously forecast.io). The API is fully implemented except for callbacks. Further development will continue. A jar file with the dependencies is available under the jar/ folder for convenience. **This jar file is not updated** Latest version is on maven central.
 
