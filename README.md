@@ -3,19 +3,22 @@
 | master        |[![Build Status](https://travis-ci.org/dvdme/forecastio-lib-java.svg?branch=master)](https://travis-ci.org/dvdme/forecastio-lib-java)|[![Build status](https://ci.appveyor.com/api/projects/status/6g4ls99cfx3umqxb/branch/master?svg=true)](https://ci.appveyor.com/project/dvdme/forecastio-lib-java/branch/master)
 | dev           |[![Build Status](https://travis-ci.org/dvdme/forecastio-lib-java.svg?branch=dev)](https://travis-ci.org/dvdme/forecastio-lib-java)|[![Build status](https://ci.appveyor.com/api/projects/status/6g4ls99cfx3umqxb/branch/dev?svg=true)](https://ci.appveyor.com/project/dvdme/forecastio-lib-java/branch/master)
 
-ForecastIO-Lib-Java
-===================
-A Java library for the [darksky.net](https://darksky.net) API (previously forecast.io).
-The API is fully implemented except for callbacks.
-Further development will continue.
-A jar file with the dependencies is available under the jar/ folder for convenience. **This jar file is not updated**
+# ForecastIO-Lib-Java
 
-Latest version is on maven central.
+A Java library for the [darksky.net](https://darksky.net) API (previously forecast.io). The API is fully implemented except for callbacks. Further development will continue. A jar file with the dependencies is available under the jar/ folder for convenience. **This jar file is not updated** Latest version is on maven central.
 
-Developed with Java 1.7<br>
-There should be no trouble running this anywhere as long as there is Java support.
+Developed with Java 1.7
 
-#### Maven dependency:
+## Background
+
+I started writing this library for two main reasons:
+
+First, I wanted to make a serious open source library that was meant to used by anyone and not just by me for quite sometime. Second, I came across the [darksky.net](https://www.darksky.net) API that I found to be functional with clear and good information. Also, I like the weather and weather data and weather prediction so this is going to be very useful for me to implement my crazy ideas about weather software.
+
+## Install
+
+Install as a  Maven dependency:
+
 ```xml
 <dependency>
 	<groupId>com.github.dvdme</groupId>
@@ -24,53 +27,9 @@ There should be no trouble running this anywhere as long as there is Java suppor
 </dependency>
 ```
 * Versions 1.5.1 to 1.6.0 are on maven. Avoid using 1.5.3  and 1.5.4 because it was having issues building on graddle because of a not so well made jar file. I recommend using the latest.
-* If anyone wants to check the auto generated javadocs they are here: [forecastiolib.dme.ninja](http://forecastiolib.dme.ninja)
+* If anyone wants to check the auto generated javadocs they are here: [forecastiolib.dme.ninja(http://forecastiolib.dme.ninja)
 
-####What is does:
-* It can read Data Points and Data blocks from the [Forecast.io](http://www.forecast.io) API.
-  * This means it can read Currently, Minutely, Hourly and Daily data.
-* It reads all available fields.
-* It reads all the available flags ~~except one - `metno-license`.~~
-* It reads all the available alerts.
-* It reads all the available errors.
-
-####What it does not:
-* ~~It does not read alerts and errors (the confidence in the prediction provided by the API).~~ Already implemented.
-* It does not implements the `callback` request option. Did not seamed relevant for this.
-
-####To Do:
-* ~~Improve time zone support~~ Kind of done.
-* ~~Add support to errors (confidence in prediction)~~ Done.
-* ~~Add support to alerts~~ Done.
-* (maybe) Add the ability to export data to CSV
-* (maybe) Add the ability of converting units of received data:
-      (This would make sense if there were the need of displaying data in various units without having to make multiple queries.)
-
-####How it works:
-The ForecastIO-Lib-Java currently has 9 classes (I'll probably add two more to deal with errors).
-The main class is `ForecastIO`: It handles the connection the gets the initial data from the API.
-The classes `FIOCurrently`, `FIOMinutely`, `FIOHourly`, `FIODaily`, `FIOFlags` and `FIOAlerts`
-contain the currently, minutely, hourly, daily, flags and alerts reports.
-The classes `FIODataPoint`, `FIODataBlock` handle the data in the previous reports
-(except for the flags). Most of the work is done by the `FIODataPoint` class.
-
-Please refer to the API docs [https://darksky.net/dev/](https://darksky.net/dev/)
-for better understanding of the data and for the API key. - You'll need a key to get it to work.
-
-####External Libraries:
-
-* **minimal-json**
-ForecastIO-Lib-Java uses the [minimal-json](https://github.com/ralfstx/minimal-json) for
-parsing the Json API response. I find this library to be great...
-~~This in not a dependency because I added the classes to my project.~~
-This is a dependency on pom.xml. Anyway there is still a file under jar/ with the dependencies.
-
-######About the package name
-~~In case someone wonders, `dme` are just my initials. As there is no TLD `.dme` I decided to use them for the package.~~
-Because it is now available on maven, the package is com.github.dvdme.ForecastIOLib.
-
-Usage Examples
---------------
+## Usage
 To use it add the jar file to your project build path or add the classes from
 com.github.dvdme.ForecastIOLib and com.eclipse.json ( [minimal-json](https://github.com/ralfstx/minimal-json) ) or add the dependency to pom:
 
@@ -227,39 +186,41 @@ Alerts report:
 	}
 ```
 
-Issues
-------
-To report issues please do it in [Github](https://github.com/dvdme/forecastio-lib-java) or
-send me an <a href="mailto:david.dme@gmail.com">email</a>.<br>
+### What is does:
+* It can read Data Points and Data blocks from the [Forecast.io](http://www.forecast.io) API.
+  * This means it can read Currently, Minutely, Hourly and Daily data.
+* It reads all available fields.
+* It reads all the available flags ~~except one - `metno-license`.~~
+* It reads all the available alerts.
+* It reads all the available errors.
 
-Documentation
--------------
-I generated a javadoc based in the comments I made.
-It is included in the files under the javadoc/ folder and here [forecastiolib.dme.ninja](http://forecastiolib.dme.ninja) but
-do not expect it to be best documentation ever.
+### What it does not:
+* ~~It does not read alerts and errors (the confidence in the prediction provided by the API).~~ Already implemented.
+* It does not implements the `callback` request option. Did not seamed relevant for this.
 
-History
--------
-I started writing this library for two main reasons:
-First, I wanted to make a serious open source library that was meant
-to used by anyone and not just by me for quite sometime.
-Second, I came across the [darksky.net](https://www.darksky.net) API that I found to be functional
-with clear and good information.
-Also, I like the weather and weather data and weather prediction so this
-is going to be very useful for me to implement my crazy ideas about
-weather software.
+### To Do:
+* ~~Improve time zone support~~ Kind of done.
+* ~~Add support to errors (confidence in prediction)~~ Done.
+* ~~Add support to alerts~~ Done.
+* (maybe) Add the ability to export data to CSV
+* (maybe) Add the ability of converting units of received data:
+      (This would make sense if there were the need of displaying data in various units without having to make multiple queries.)
 
-Contributors
-------------
-* Thanks to everyone that [contribuited](https://github.com/dvdme/forecastio-lib-java/graphs/contributors) to make this software better.
 
-License
--------
+## Documentation
+
+I generated a javadoc based in the comments I made. It is included in the files under the javadoc/ folder and here [forecastiolib.dme.ninja](http://forecastiolib.dme.ninja) but do not expect it to be best documentation ever.
+
+
+## Contributors
+Thanks to everyone that [contribuited](https://github.com/dvdme/forecastio-lib-java/graphs/contributors) to make this software better.
+
+## License
+
 The code is available under the terms of the [Eclipse Public License](http://www.eclipse.org/legal/epl-v10.html).
 
 
-Acknowledgements
----------------
+## Acknowledgements
 
 [![Jet Brains IntelliJ IDEA](/art/icon_IntelliJIDEA.png)](http://www.jetbrains.com/idea/)
 
