@@ -208,19 +208,19 @@ Alerts report:
 
 I generated a javadoc based in the comments I made. It is included in the files under the javadoc/ folder and here [forecastiolib.dme.ninja](http://forecastiolib.dme.ninja) but do not expect it to be best documentation ever.
 
+## Acknowledgements
 
-## Contributors
-Thanks to everyone that [contribuited](https://github.com/dvdme/forecastio-lib-java/graphs/contributors) to make this software better.
+Thanks to JetBrains for providing an open source license for [IntelliJ IDEA](https://www.jetbrains.com/idea/).
+
+[DarkSKY](https://darksky.net/poweredby/)
+
+## Contributing
+
+Create PR if you have something to add or fix! 
+
+Thanks to everyone that [contributed](https://github.com/dvdme/forecastio-lib-java/graphs/contributors) to make this software better.
 
 ## License
 
 The code is available under the terms of the [Eclipse Public License](http://www.eclipse.org/legal/epl-v10.html).
 
-
-## Acknowledgements
-
-[![Jet Brains IntelliJ IDEA](/art/icon_IntelliJIDEA.png)](http://www.jetbrains.com/idea/)
-
-Thanks to JetBrains for providing an open source license for [IntelliJ IDEA](https://www.jetbrains.com/idea/).
-
-[![Powered by Dark Sky](https://darksky.net/dev/img/attribution/poweredby.png)](https://darksky.net/poweredby/)
