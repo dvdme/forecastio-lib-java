@@ -1,3 +1,13 @@
+# Last update
+
+[The ForecastIO / DarkSky API is no longer available.](https://darksky.net/dev)
+
+This repository has not been updated for a long time but since it is from the times I was starting my career and more people used this, it will reamin archived here.
+
+
+
+
+
 | Branch        | Travis CI     | Appveyor |
 | ------------- |:-------------:| -----    |
 | master        |[![Build Status](https://travis-ci.org/dvdme/forecastio-lib-java.svg?branch=master)](https://travis-ci.org/dvdme/forecastio-lib-java)|[![Build status](https://ci.appveyor.com/api/projects/status/6g4ls99cfx3umqxb/branch/master?svg=true)](https://ci.appveyor.com/project/dvdme/forecastio-lib-java/branch/master)
